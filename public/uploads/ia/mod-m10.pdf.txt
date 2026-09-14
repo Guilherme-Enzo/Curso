@@ -1,0 +1,113 @@
+AUTO ELETRICA  -  INJECAO ELETRONICA
+Material de estudo - apostila do modulo
+MODULO 10
+Sistema de Alimentação
+Bomba, regulador de pressão, bico injetor, vazão, estanqueidade, limpeza e retro lavagem, filtro e 
+rampa de injeção.
+Conteudo deste modulo:
+  10.1 - Bomba de Combustível
+  10.2 - Regulador de Pressão
+  10.3 - Bico Injetor
+  10.4 - Vazão de Bicos Injetores
+  10.5 - Estanqueidade
+  10.6 - Limpeza de Bicos e Retro Lavagem
+  10.7 - Filtro de Combustível
+  10.8 - Rampa de Injeção
+10.1  Bomba de Combustível
+Existem bombas mecânicas, usadas em sistemas com carburador, e elétricas, comuns na injeção. 
+A função da bomba é gerar e fornecer vazão de combustível no sistema; quem gera pressão é o 
+regulador, que cria a restrição. A bomba elétrica é alimentada com 12V pelo relé, geralmente é 
+temporizada e é acionada por um pulso negativo ao ligar a chave.
+A elétrica trabalha com pressão de 1 a 5 bar; a mecânica de alta pressão usada na injeção direta, 
+como a do Jetta, trabalha de 7 até 200 bar com válvula eletromagnética controlada pela UCE. O 
+pré-filtro fica abaixo da bomba, e o conjunto costuma incluir o sensor de nível no copo ou módulo 
+da bomba.
+
+10.2  Regulador de Pressão
+O regulador gera pressão por restrição de fluxo, sendo constituído de membrana e mola calibrada 
+para a pressão de trabalho, por exemplo 3,5 bar. Quando a pressão de combustível passa desse 
+valor, vence a mola e parte do combustível é aliviada pela membrana; quando cai, a mola tranca a 
+passagem, num ciclo contínuo. Em um exemplo com vazão teórica de 200 litros por hora, sem o 
+regulador o combustível circula apenas com vazão, sem pressão.
+
+O regulador tem uma tomada de vácuo ligada ao coletor de admissão; se a membrana furar, o 
+motor  aspira  combustível  em  excesso.  Para  diagnosticar,  aspire  a  tomada  de  vácuo  e,  se  sair  
+gasolina, o componente deve ser substituído.
+
+10.3  Bico Injetor
+Os eletroinjetores possuem características que exigem atenção: vazão, que define o quanto o bico 
+injeta  e  é  verificada  na  máquina  de  teste  e  limpeza  ou  com  relógio  de  pressão  e  scanner;  
+resistência   elétrica,   que   não   pode   variar   muito   entre   os   bicos,   sob   risco   de   alterar   o   
+funcionamento e a corrente de consumo; e atomização ou leque, que raramente altera a eficiência 
+do cilindro mesmo com mesma vazão.
+A estanqueidade verifica se, pressurizado em repouso sem acionamento, o bico não deixa passar 
+combustível; o teste o submete a uma pressão de até 20% maior que a normal de trabalho, pois 
+bicos sem estanqueidade gotejam e afogam o veículo na partida.
+10.4  Vazão de Bicos Injetores
+O teste de vazão é um dos mais utilizados no diagnóstico: verifica se todos os injetores injetam a 
+mesma quantidade de fluido. A norma define que não pode haver mais de 10% de diferença de 
+vazão  entre  os  injetores.  Num  exemplo  do  livro,  a  base  de  40  ML  daria  tolerância  de  4  ML,  ou  
+seja, entre 36 e 44 ML; num teste real, o cilindro 3 ficou com 46 ML (excesso) e o cilindro 4 com 
+35 ML (falta).
+Deve-se também conferir a vazão base do bico, pois todos os injetores podem cair juntos e ainda 
+estarem  dentro  dos  10%.  As  tabelas  de  vazões  geralmente  não  são  compatíveis  entre  uma  
+máquina de teste e outra.
+
+10.5  Estanqueidade
+Estanqueidade  significa  estanque,  sem  vazamento.  Na  máquina  de  teste,  os  injetores  são  
+pressurizados com 10 a 20% acima da pressão de trabalho: para bicos que trabalham a 3 bar, 
+recomenda-se  de  3,3  a  3,6  bar.  Se  houver  gotejamento,  o  bico  não  é  estanque;  ao  desligar  o  
+veículo,  o  combustível  entra  no  coletor  de  admissão  e  o  motor  afoga  na  partida,  demorando  a  
+funcionar e cheirando a gasolina.
+Todo  o  sistema  deve  ser  estanque:  o  regulador  não  pode  devolver  o  combustível  ao  tanque  
+imediatamente e a bomba tem válvula antirretorno na saída. No veículo, instala-se o manômetro 
+na linha e verifica-se a queda de pressão de 1 a 2 horas após desligar; com o registro, inverte-se 
+o relógio para testar a flauta e a bomba.
+
+10.6  Limpeza de Bicos e Retro Lavagem
+A limpeza padrão é por ultrassom: o injetor é mantido pulsando submerso em líquido detergente, 
+e  a  vibração  solta  a  sujidade.  Deve-se  retirar  o  pré-filtro  do  injetor  e  seguir  o  tempo  pré-  
+determinado pela fabricante; no caso da Mercedes do livro, o autor deixou de 5 a 6 vezes. Após a 
+limpeza, os bicos devem ser testados novamente para confirmar a eficiência.
+A  retro  lavagem  é  um  recurso  extra  quando  o  ultrassom  não  é  suficiente:  o  injetor  trabalha  ao  
+contrário, com combustível entrando por baixo e saindo por cima. Aplica-se retirando o pré-filtro, 
+solto  com  uma  ferramenta  extratora  (parafuso  com  extrator  inercial),  e  instalando  os  injetores  
+invertidos com adaptadores.
+
+10.7  Filtro de Combustível
+O filtro retém as impurezas que poderiam danificar as peças sensíveis do circuito e prejudicar o 
+funcionamento  dos  injetores  ou  da  bomba.  Existe  o  pré-filtro,  que  fica  abaixo  do  módulo  da  
+bomba, e outro filtro após a saída de combustível, que em alguns veículos fica dentro do tanque e 
+
+na maioria externo, de fácil substituição.
+A troca é fundamental: se o filtro oferecer restrição, a bomba de combustível trabalha alterada e o 
+sistema perde vazão de combustível na linha. Geralmente é conectado por engates rápidos pop 
+top, próximo ao tanque, na parte inferior do veículo.
+10.8  Rampa de Injeção
+A rampa de injeção, ou flauta de injetores, tem a função de distribuir o combustível aos injetores e 
+fazer  a  ligação  com  o  circuito  de  alimentação.  Fixada  no  cabeçote  ou  no  coletor  de  admissão,  
+pode ser de plástico ou de metal, conforme o veículo e o sistema.
+No Santana com motor AP e injeção MI, o coletor de alumínio e a flauta de metal transferiam calor 
+ao combustível, que aqueceu demais e em parte ficou gasoso. Por isso adotaram-se isoladores 
+térmicos entre coletor e flauta, que devem ser mantidos originais, pois arruelas comuns de metal 
+transferem calor. A flauta pode ou não possuir o regulador de pressão integrado.
+
+
+
+Pagina 1 de 9
+
+Pagina 2 de 9
+
+Pagina 3 de 9
+
+Pagina 4 de 9
+
+Pagina 5 de 9
+
+Pagina 6 de 9
+
+Pagina 7 de 9
+
+Pagina 8 de 9
+
+Pagina 9 de 9

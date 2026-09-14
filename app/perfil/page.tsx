@@ -1,0 +1,425 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import ErrorModal from "@/app/components/ErrorModal";
+
+type Session = { id: string; name: string; email: string; role: string };
+
+export default function PerfilPage() {
+  const router = useRouter();
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const [name, setName] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [saving, setSaving] = useState<"name" | "password" | null>(null);
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const [editingName, setEditingName] = useState(false);
+  const [editingPassword, setEditingPassword] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState<string | null>(null);
+  const [modalError, setModalError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const res = await fetch("/api/auth/session");
+        if (!res.ok) {
+          router.replace("/login");
+          return;
+        }
+        const data = await res.json();
+        if (!active) return;
+        setSession(data.user);
+        setName(data.user.name);
+      } catch {
+        router.replace("/login");
+      } finally {
+        if (active) setLoading(false);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [router]);
+
+  if (loading) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#050508] text-sm text-zinc-400">
+        Carregando...
+      </main>
+    );
+  }
+
+  async function saveName(e: React.FormEvent) {
+    e.preventDefault();
+    setMsg(null);
+    setSaving("name");
+    try {
+      const res = await fetch("/api/auth/me", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setModalError(data.error || "Erro ao salvar nome");
+        return;
+      }
+      setSession((s) => (s ? { ...s, name: data.user.name } : s));
+      setModalSuccess("Nome atualizado com sucesso!");
+      setTimeout(() => {
+        setEditingName(false);
+        setModalSuccess(null);
+      }, 2000);
+    } catch {
+      setModalError("Falha de conexão");
+    } finally {
+      setSaving(null);
+    }
+  }
+
+  async function savePassword(e: React.FormEvent) {
+    e.preventDefault();
+    setMsg(null);
+    if (newPassword !== confirmPassword) {
+      setMsg({ ok: false, text: "A confirmação da nova senha não confere." });
+      return;
+    }
+    setSaving("password");
+    try {
+      const res = await fetch("/api/auth/me", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setModalError(data.error || "Erro ao trocar a senha");
+        return;
+      }
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setModalSuccess("Senha alterada com sucesso!");
+      setTimeout(() => {
+        setEditingPassword(false);
+        setModalSuccess(null);
+      }, 2000);
+    } catch {
+      setModalError("Falha de conexão");
+    } finally {
+      setSaving(null);
+    }
+  }
+
+  const home = session?.role === "admin" ? "/admin" : session?.role === "teacher" ? "/professor" : "/aluno";
+
+  async function handleLogout() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.replace("/login");
+  }
+
+  return (
+    <main className="min-h-screen bg-[#050508] text-white">
+      <header className="border-b border-zinc-800/70 bg-zinc-900/60 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-xl items-center justify-between px-4 sm:px-6">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 text-lg font-black text-zinc-950 shadow-lg shadow-orange-600/30">
+              ⚡
+            </span>
+            <span className="text-lg font-bold tracking-tight text-white">
+              Auto <span className="text-amber-400">Elétrica</span>
+            </span>
+          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              href={home}
+              className="rounded-lg border border-amber-600/50 bg-amber-500/10 px-4 py-2 text-base font-semibold text-amber-400 transition hover:bg-amber-500/20"
+            >
+              Painel
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="rounded-lg border border-red-700 px-4 py-2 text-base text-red-400 transition hover:border-red-600 hover:bg-red-500/10 hover:text-red-300"
+            >
+              Sair
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div className="mx-auto max-w-xl px-3 py-8 sm:px-6">
+        <h1 className="text-3xl font-bold sm:text-4xl">Perfil</h1>
+        <p className="mt-1 text-base text-zinc-400">
+          Altere seu nome e sua senha de acesso.
+        </p>
+
+        <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+          <p className="text-sm font-semibold text-zinc-300">E-mail</p>
+          <p className="mt-1 text-base font-semibold text-white">{session?.email}</p>
+        </div>
+
+        <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+          <p className="text-sm font-semibold text-zinc-300">Nome</p>
+          <p className="mt-1 text-base font-semibold text-white">{session?.name}</p>
+        </div>
+
+        <button
+          onClick={() => {
+            setEditingName(true);
+            setMsg(null);
+            setModalSuccess(null);
+          }}
+          className="mt-4 w-full rounded-2xl border border-zinc-800 bg-zinc-900 p-5 text-left transition hover:border-amber-600/50 hover:bg-amber-500/5"
+        >
+          <span className="text-sm font-semibold text-zinc-300">Nome</span>
+          <p className="mt-1 text-base font-bold text-amber-400">Alterar nome</p>
+        </button>
+
+        <button
+          onClick={() => {
+            setEditingPassword(true);
+            setMsg(null);
+            setModalSuccess(null);
+          }}
+          className="mt-4 w-full rounded-2xl border border-zinc-800 bg-zinc-900 p-5 text-left transition hover:border-amber-600/50 hover:bg-amber-500/5"
+        >
+          <span className="text-sm font-semibold text-zinc-300">Senha</span>
+          <p className="mt-1 text-base font-bold text-amber-400">Alterar senha</p>
+        </button>
+
+        {editingName && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+            onClick={() => {
+              if (modalSuccess || saving) return;
+              setEditingName(false);
+              setName(session?.name || "");
+            }}
+          >
+            <div
+              className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-zinc-700 bg-zinc-900 p-6 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold text-white">
+                  {modalSuccess ? "Sucesso" : "Alterar nome"}
+                </h2>
+                {!modalSuccess && !saving && (
+                  <button
+                    onClick={() => {
+                      setEditingName(false);
+                      setName(session?.name || "");
+                    }}
+                    className="text-xl text-zinc-500 transition hover:text-white"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              {modalSuccess ? (
+                <div className="mt-6 flex items-center gap-3 rounded-xl border border-emerald-800/60 bg-emerald-500/10 p-5">
+                  <span className="text-2xl">✓</span>
+                  <p className="text-base font-bold text-emerald-400">
+                    {modalSuccess}
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={saveName} className="mt-5 space-y-4">
+                  <div>
+                    <label className="block text-base font-semibold text-zinc-200">
+                      Nome
+                    </label>
+                    <input
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                      minLength={2}
+                      disabled={saving === "name"}
+                      className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-amber-500 disabled:opacity-50"
+                    />
+                  </div>
+
+                  {msg && !msg.ok && (
+                    <p className="text-base text-red-400">{msg.text}</p>
+                  )}
+
+                  {saving === "name" && (
+                    <div className="flex items-center gap-3 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4">
+                      <span className="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-amber-300 border-t-transparent" />
+                      <div>
+                        <p className="text-sm font-bold text-amber-300">
+                          Salvando seu nome, aguarde...
+                        </p>
+                        <p className="mt-0.5 text-xs text-amber-200/70">
+                          O novo nome será usado em todo o site.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex flex-wrap gap-3 pt-2">
+                    <button
+                      type="submit"
+                      disabled={saving === "name"}
+                      className="rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 px-6 py-3 text-base font-bold text-zinc-950 transition hover:-translate-y-0.5 disabled:opacity-50"
+                    >
+                      {saving === "name" ? "Salvando..." : "Salvar nome"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingName(false);
+                        setName(session?.name || "");
+                      }}
+                      className="rounded-xl border border-zinc-700 px-6 py-3 text-base font-semibold text-zinc-300 transition hover:bg-white/5"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        )}
+
+        {editingPassword && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+            onClick={() => {
+              if (modalSuccess || saving) return;
+              setEditingPassword(false);
+              setCurrentPassword("");
+              setNewPassword("");
+              setConfirmPassword("");
+            }}
+          >
+            <div
+              className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-zinc-700 bg-zinc-900 p-6 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold text-white">
+                  {modalSuccess ? "Sucesso" : "Alterar senha"}
+                </h2>
+                {!modalSuccess && !saving && (
+                  <button
+                    onClick={() => {
+                      setEditingPassword(false);
+                      setCurrentPassword("");
+                      setNewPassword("");
+                      setConfirmPassword("");
+                    }}
+                    className="text-xl text-zinc-500 transition hover:text-white"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              {modalSuccess ? (
+                <div className="mt-6 flex items-center gap-3 rounded-xl border border-emerald-800/60 bg-emerald-500/10 p-5">
+                  <span className="text-2xl">✓</span>
+                  <p className="text-base font-bold text-emerald-400">
+                    {modalSuccess}
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={savePassword} className="mt-5 space-y-4">
+                  <div>
+                    <label className="block text-base font-semibold text-zinc-200">
+                      Senha atual
+                    </label>
+                    <input
+                      type="password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      required
+                      disabled={saving === "password"}
+                      className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-amber-500 disabled:opacity-50"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-base font-semibold text-zinc-200">
+                      Nova senha
+                    </label>
+                    <input
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                      minLength={6}
+                      disabled={saving === "password"}
+                      className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-amber-500 disabled:opacity-50"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-base font-semibold text-zinc-200">
+                      Confirmar nova senha
+                    </label>
+                    <input
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      minLength={6}
+                      disabled={saving === "password"}
+                      className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-amber-500 disabled:opacity-50"
+                    />
+                  </div>
+
+                  {msg && !msg.ok && (
+                    <p className="text-base text-red-400">{msg.text}</p>
+                  )}
+
+                  {saving === "password" && (
+                    <div className="flex items-center gap-3 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4">
+                      <span className="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-amber-300 border-t-transparent" />
+                      <p className="text-sm font-bold text-amber-300">
+                        Alterando sua senha, aguarde...
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="flex flex-wrap gap-3 pt-2">
+                    <button
+                      type="submit"
+                      disabled={saving === "password"}
+                      className="rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 px-6 py-3 text-base font-bold text-zinc-950 transition hover:-translate-y-0.5 disabled:opacity-50"
+                    >
+                      {saving === "password" ? "Alterando..." : "Alterar senha"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingPassword(false);
+                        setCurrentPassword("");
+                        setNewPassword("");
+                        setConfirmPassword("");
+                      }}
+                      className="rounded-xl border border-zinc-700 px-6 py-3 text-base font-semibold text-zinc-300 transition hover:bg-white/5"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {modalError && (
+        <ErrorModal message={modalError} onClose={() => setModalError(null)} />
+      )}
+    </main>
+  );
+}

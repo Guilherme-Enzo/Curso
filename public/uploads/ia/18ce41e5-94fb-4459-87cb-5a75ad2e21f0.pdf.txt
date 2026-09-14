@@ -1,0 +1,569 @@
+PLANO COMPLETO DO CURSO
+Método Retrato
+ImAginado
+Criação de imagens realistas com inteligência artificial, direção
+fotográfica e preservação de identidade
+Curso + biblioteca de prompts + agente inteligente + estúdio de geração por créditos
+CECÍLIA | FOTÓGRAFA E CRIADORA DO MÉTODO
+Versão estratégica 1.0 - Setembro de 2026
+
+MÉTODO RETRATO IMAGINADO
+Plano completo do curso, agente e estúdio de geração02
+SEÇÃO 01
+A visão do produto
+Um curso que ensina realismo e transforma o conhecimento em uma ferramenta prática de criação.
+O projeto combina educação, direção fotográfica e tecnologia. A aluna aprende o fundamento,
+utiliza modelos de prompt testados e conta com um agente que traduz sua intenção em uma
+imagem tecnicamente coerente.
+A proposta não é vender apenas uma coleção de comandos. É ensinar uma forma de pensar a
+imagem: identidade, luz, composição, lente, textura, postura, narrativa e correção.
+POSICIONAMENTO RECOMENDADO
+Ensine pessoas comuns, criadoras e profissionais autônomas a produzir retratos e conteúdos visuais
+realistas com IA, preservando identidade e aparência natural, sob a direção de uma fotógrafa experiente.
+Promessa central
+Criar imagens que pareçam fotografias reais, com intenção, beleza e coerência, sem depender de
+prompts enormes nem aceitar resultados genéricos.
+Resultado da aluna
+Antes
+Tentativa e erro, rosto mudando, pele artificial,
+mãos estranhas e estética genérica.
+Depois
+Processo guiado, referências adequadas, prompt
+estruturado, correção objetiva e resultado
+publicável.
+Competência
+A aluna entende por que uma imagem parece real
+e consegue repetir o processo em novas cenas.
+Autonomia
+Ela pode usar o agente para criar, revisar e
+melhorar imagens sem dominar termos técnicos
+complexos.
+A vantagem competitiva de Cecília
+•Mais de 20 anos de repertório fotográfico aplicados à IA.
+•Olhar treinado para luz, enquadramento, expressão, textura e naturalidade.
+•Método construído para preservar a pessoa real, sem padronizar ou rejuvenescer rostos.
+
+MÉTODO RETRATO IMAGINADO
+Plano completo do curso, agente e estúdio de geração03
+SEÇÃO 02
+Ecossistema ImAginado
+Cada produto cumpre uma função e cria uma jornada de valor crescente.
+Retrato ImAginado
+Serviço premium feito por Cecília para clientes que
+desejam receber o resultado pronto.
+Método Retrato ImAginado
+Curso com aulas, exercícios, biblioteca de prompts
+e acesso ao método.
+Estúdio ImAginado
+Aplicativo em que a aluna conversa com o agente,
+envia referências e gera imagens.
+Clube ImAginado
+Assinatura com créditos, novos estilos, aulas de
+atualização e desafios mensais.
+Como as peças se conectam
+VENDA
+Hotmart ou Kiwify
+ACESSO
+Área de membros
+CRIAÇÃO
+Estúdio + agente
+RENDER
+Gemini API
+A compra libera o curso. Dentro da área de membros, a aluna encontra um botão para abrir o
+Estúdio ImAginado. O agente conduz o briefing, cria o comando e envia a solicitação ao modelo de
+imagem. A resposta volta para a galeria da aluna.
+DECISÃO ESTRATÉGICA
+O curso deve ensinar princípios que continuam válidos mesmo quando as ferramentas mudam. O aplicativo
+pode trocar de modelo no futuro sem exigir a reconstrução de todo o produto.
+Público inicial recomendado
+•Mulheres, criadoras e profissionais autônomas que precisam aparecer nas redes com qualidade.
+•Pequenas marcas que precisam de imagens de produto e divulgação sem grandes produções.
+•Fotógrafas e produtoras de conteúdo que querem incorporar IA ao próprio trabalho.
+A primeira turma deve priorizar retratos e conteúdo para redes sociais. Produtos, interiores, pets e
+campanhas podem entrar como bônus ou expansões futuras.
+
+MÉTODO RETRATO IMAGINADO
+Plano completo do curso, agente e estúdio de geração04
+SEÇÃO 03
+Programa do curso - Fundamentos
+Módulos 0 a 4: do uso responsável à preservação de identidade.
+MóduloObjetivoAulas essenciaisEntrega
+0. Comece
+aqui
+Preparar a aluna e
+estabelecer limites de uso.
+Visão do curso; ferramentas;
+organização; consentimento; ética e
+direitos.
+Termo de
+compromisso e pasta
+de projeto.
+1. O que faz
+uma imagem
+parecer real
+Aprender a reconhecer os
+sinais de artificialidade.
+Pele; luz; anatomia; escala; reflexos;
+coerência de cena; ruído e nitidez.
+Checklist de realismo.
+2.
+Referências
+que
+funcionam
+Criar ou selecionar boas
+fotos de referência.
+Ângulos; luz neutra; expressão;
+resolução; variedade; roupas; o que
+evitar.
+Kit pessoal de
+referências.
+3. Linguagem
+fotográfica
+Usar a fotografia para
+dirigir a IA.
+Plano; enquadramento; lente;
+profundidade; direção de luz; cor e
+composição.
+Mapa visual de
+direção.
+4. Identidade
+consistente
+Manter rosto, idade e
+características naturais.
+Âncoras faciais; assimetrias; cabelo;
+corpo; textura; correções sem
+descaracterizar.
+Série de três retratos
+coerentes.
+Princípio editorial
+A aluna não será ensinada a buscar uma perfeição plástica. Ela aprenderá a criar uma fotografia
+convincente, respeitando idade, proporções, textura da pele e características reais da pessoa.
+Exercício de passagem
+Diagnosticar
+Comparar uma imagem artificial e uma
+convincente, marcando os sinais visuais que
+mudam a percepção.
+Planejar
+Montar uma ficha de identidade e um painel de
+direção antes de escrever qualquer prompt.
+Gerar
+Produzir três versões da mesma pessoa, variando
+apenas cenário, luz e enquadramento.
+Avaliar
+Aplicar o checklist de realismo e registrar
+correções específicas, sem recomeçar do zero.
+
+MÉTODO RETRATO IMAGINADO
+Plano completo do curso, agente e estúdio de geração05
+SEÇÃO 04
+Programa do curso - Aplicação
+Módulos 5 a 8: direção, produção, correção e uso comercial.
+MóduloObjetivoAulas essenciaisProjeto
+5. Direção de
+cena
+Transformar intenção em
+direção visual.
+Expressão; gesto; pose; roupa; cenário;
+atmosfera; narrativa; continuidade.
+Ensaio com quatro
+cenas.
+6. Fluxos de
+produção
+Aplicar o método em
+situações reais.
+Retrato profissional; lifestyle; moda;
+produto; UGC; família; pet e campanha.
+Escolha de uma trilha
+prática.
+7. Correção e
+curadoria
+Melhorar o resultado sem
+perder identidade.
+Diagnóstico; edição localizada; mãos;
+texto; cabelo; pele; upscale; seleção
+final.
+Antes e depois
+comentado.
+8. Publicação
+e negócio
+Usar a imagem com
+responsabilidade e valor
+comercial.
+Formatos; exportação; entrega; portfólio;
+precificação; autorização e transparência.
+Miniportfólio com seis
+imagens.
+Biblioteca de recursos
+Prompts testados
+Retrato corporativo, boho, editorial, fashion,
+fitness, produto, UGC, família e pet.
+Prompts de correção
+Rosto, idade, nariz, boca, mãos, cabelo, pele,
+roupa, cenário, cor e iluminação.
+Modelos de briefing
+Ficha curta para criação rápida e ficha completa
+para projetos profissionais.
+Guias visuais
+Lentes, planos, esquemas de luz, enquadramentos
+e proporções para redes sociais.
+Arquivos estruturados
+Versões em linguagem natural e JSON para uso em
+diferentes geradores.
+Atualizações
+Registro de mudanças dos modelos e indicação de
+qual fluxo usar em cada situação.
+Certificação sugerida
+Certificado após a entrega do miniportfólio final e de uma breve justificativa do processo:
+referência, intenção, decisões de direção e correções realizadas.
+
+MÉTODO RETRATO IMAGINADO
+Plano completo do curso, agente e estúdio de geração06
+SEÇÃO 05
+Método R.E.A.L.
+Uma estrutura proprietária para transformar intenção em fotografia convincente.
+O nome é uma proposta de organização didática. Ele pode ser validado com a turma beta antes do
+lançamento definitivo.
+R
+REFERÊNCIA AUTÊNTICA
+Quem é a pessoa ou o objeto? Quais características não podem
+mudar? Que material de referência é realmente útil?
+E
+ENQUADRAMENTO E
+ESTÉTICA
+Qual é o plano, a proporção, a composição, a linguagem visual
+e o destino da imagem?
+A
+ANATOMIA, APARÊNCIA
+E ATMOSFERA
+Como corpo, gesto, roupa, ambiente, materiais e emoção
+coexistem de modo coerente?
+L
+LUZ, LENTE E
+LINGUAGEM
+Qual fonte de luz, distância focal, profundidade, textura e
+acabamento sustentam a intenção?
+O ciclo de criação
+1. Intenção
+Definir objetivo, público, mensagem e sensação
+desejada.
+2. Direção
+Traduzir intenção em decisões fotográficas
+concretas.
+3. Geração
+Criar poucas variações controladas, começando
+com uma prévia econômica.
+4. Diagnóstico
+Nomear o problema visual com precisão antes de
+solicitar a correção.
+5. Refinamento
+Alterar apenas o necessário e preservar o que já
+funciona.
+6. Curadoria
+Selecionar, finalizar e exportar para o destino
+correto.
+REGRA DE OURO
+A cada nova versão, o comando deve declarar o que precisa mudar e o que deve permanecer exatamente
+igual. Isso reduz alterações indesejadas de rosto, cabelo, roupa e cenário.
+
+MÉTODO RETRATO IMAGINADO
+Plano completo do curso, agente e estúdio de geração07
+SEÇÃO 06
+Prompt mestre e agente
+A aluna aprende a estrutura; o agente acelera sua aplicação.
+Estrutura do prompt mestre
+BlocoPerguntaExemplo de decisão
+IdentidadeO que não pode mudar?Rosto, idade, nariz, assimetrias, tom e textura natural
+da pele.
+FinalidadePara onde vai a imagem?Foto de perfil, feed 4:5, capa, anúncio ou catálogo.
+CenaOnde e o que acontece?
+Retrato em estúdio, pessoa de frente, expressão
+segura e acolhedora.
+FotografiaComo seria fotografado?Lente 85 mm, luz lateral suave, profundidade rasa e
+foco nos olhos.
+AparênciaComo preservar naturalidade?
+Poros visíveis, tecido real, cabelos individuais e
+proporções coerentes.
+RestriçõesQuais erros evitar?Sem rejuvenescimento, pele plástica, anatomia
+alterada ou texto ilegível.
+Exemplo resumido
+“Crie um retrato editorial ultra-realista a partir das referências
+enviadas. Preserve rigorosamente identidade facial, idade aparente,
+proporções, nariz, olhos, boca, assimetrias e textura natural da pele.
+Enquadramento de cabeça e ombros, olhar direto para a câmera,
+expressão otimista. Luz lateral suave, lente equivalente a 85 mm,
+fundo complementar discreto e profundidade de campo rasa. Não
+rejuvenescer, não afinar o rosto, não polir a pele e não alterar o
+cabelo.”
+O que o agente deve fazer
+•Conduzir um briefing curto ou completo, conforme o nível da aluna.
+•Detectar informações incompatíveis e pedir apenas o esclarecimento indispensável.
+•Gerar prompt em linguagem natural, versão curta, versão detalhada e JSON quando útil.
+•Escolher o modelo e a resolução conforme custo, finalidade e etapa do processo.
+•Analisar a imagem devolvida e propor correções localizadas.
+•Registrar versões, comandos e consumo de créditos na galeria da aluna.
+
+MÉTODO RETRATO IMAGINADO
+Plano completo do curso, agente e estúdio de geração08
+SEÇÃO 07
+Experiência dentro do Estúdio
+Uma interface simples por fora e um processo protegido por dentro.
+Jornada da aluna
+EtapaAção da alunaResposta do sistema
+1. EscolherSeleciona retrato, produto, UGC ou outra
+trilha.
+Carrega o briefing e os exemplos adequados.
+2.
+Referenciar
+Envia uma ou mais imagens autorizadas.Verifica formato, qualidade e quantidade.
+3. DirigirResponde às perguntas ou descreve
+livremente.
+Organiza as decisões pelo Método R.E.A.L.
+4.
+Visualizar
+Solicita uma prévia.
+Usa modelo econômico e mostra o custo antes de
+gerar.
+5. RefinarMarca ou descreve o que precisa mudar.Preserva o restante e cria uma correção controlada.
+6. FinalizarEscolhe qualidade e formato.Gera a versão final, salva e libera download.
+Controles indispensáveis
+Acesso
+Login individual, confirmação de compra e
+bloqueio após reembolso ou cancelamento.
+Créditos
+Saldo visível, confirmação antes de gerar e
+histórico de consumo.
+Segurança
+Chave da API somente no servidor, limites por
+usuário e prevenção de automação abusiva.
+Privacidade
+Consentimento, prazo de retenção, opção de
+exclusão e política clara para fotos de terceiros.
+Conteúdo
+Regras contra falsidade prejudicial, nudez não
+consentida, menores e uso indevido de identidade.
+Operação
+Painel para custos, falhas, uso por modelo,
+créditos concedidos e suporte.
+PRIVACIDADE PARA RETRATOS
+Como o produto recebe fotografias de pessoas, a política de consentimento e exclusão não é um detalhe
+jurídico: ela faz parte da confiança da marca.
+
+MÉTODO RETRATO IMAGINADO
+Plano completo do curso, agente e estúdio de geração09
+SEÇÃO 08
+Estrutura técnica do MVP
+O objetivo é validar o produto sem construir uma plataforma grande demais.
+Componentes
+ComponenteFunçãoOpção inicial
+Venda e cursoCheckout, aulas, progresso e comunicação.Hotmart ou Kiwify.
+AplicativoTela do agente, galeria, saldo e administração.
+Base44 ou desenvolvimento web sob
+medida.
+Banco e acessoUsuários, permissões, créditos e histórico.Backend gerenciado e autenticação.
+Modelo de imagemGeração, edição e variações.Gemini API com Nano Banana 2 Lite, 2 e
+Pro.
+ArmazenamentoReferências e resultados.Arquivos privados com prazo de
+exclusão.
+IntegraçãoLiberar ou revogar acesso conforme o
+pagamento.
+Webhook de compra, reembolso e
+assinatura.
+Regras de arquitetura
+•Nunca colocar a chave da API no navegador ou em arquivos acessíveis ao aluno.
+•Separar o agente da conexão com o modelo para permitir troca de fornecedor.
+•Registrar custo estimado antes e depois de cada solicitação.
+•Aplicar limite por minuto e por usuário, mesmo quando ainda houver créditos.
+•Excluir arquivos conforme a política divulgada e permitir solicitação de remoção antecipada.
+•Criar mensagens claras para bloqueios, falhas técnicas e créditos não consumidos.
+ESCOPO DO PRIMEIRO MVP
+Login, saldo, envio de referência, briefing guiado, geração de uma imagem por vez, histórico simples e
+painel administrativo. Comunidade, marketplace, aplicativo móvel e múltiplos modelos podem esperar.
+Tecnologia sem aprisionamento
+O curso leva a marca do método, não o nome de uma ferramenta. O Estúdio pode utilizar um
+modelo econômico para rascunhos e um modelo premium para a finalização, ou substituir o
+fornecedor se qualidade, preço ou termos mudarem.
+
+MÉTODO RETRATO IMAGINADO
+Plano completo do curso, agente e estúdio de geração10
+SEÇÃO 09
+Créditos e sustentabilidade
+Geração de imagem é um custo variável e deve estar vinculada ao consumo.
+Referência de custo atual
+ModeloSaída 1K100 imagensUso sugerido
+Nano Banana 2 LiteUS$ 0,0336US$ 3,36Prévia, exercício e alto volume.
+Nano Banana 2US$ 0,067US$ 6,70Resultado principal e edição.
+Nano Banana ProUS$ 0,134US$ 13,40Final premium e cenas exigentes.
+Valores aproximados da saída da imagem, segundo a tabela oficial consultada em 13/09/2026. Não incluem
+entrada, armazenamento, infraestrutura, câmbio, impostos nem tentativas descartadas.
+Por que não prometer ilimitado
+Com 100 alunas gerando 100 imagens por mês, seriam 10.000 renderizações. Apenas a saída
+poderia custar aproximadamente US$ 336 no Lite, US$ 670 no Nano Banana 2 ou US$ 1.340 no
+Pro. Uma única usuária intensiva também pode consumir centenas de tentativas.
+Modelo de créditos sugerido
+AçãoCréditosIntenção
+Prévia 1K no Lite1Explorar a cena com menor custo.
+Imagem 1K no Nano Banana 22Produção principal.
+Imagem 1K/2K no Pro4Finalização premium.
+Correção ou nova versãoConforme o
+modelo
+Toda nova renderização consome
+processamento.
+FORMATO RECOMENDADO
+Curso com pagamento único + créditos iniciais de boas-vindas + assinatura ou pacotes extras. O agente
+pode permitir ampla conversa, mas a renderização sempre desconta créditos.
+Fórmula para precificação
+Custo mensal estimado = alunas ativas x média de gerações por aluna x custo médio por geração.
+Acrescente infraestrutura, armazenamento, suporte, impostos, taxa de pagamento, margem de
+segurança e lucro.
+
+MÉTODO RETRATO IMAGINADO
+Plano completo do curso, agente e estúdio de geração11
+SEÇÃO 10
+Oferta e monetização
+Uma escada simples transforma o curso em entrada para produtos recorrentes e premium.
+NívelProdutoO que incluiObjetivo
+EntradaAula ou desafioExperiência curta, exercício e demonstração
+do agente.
+Atrair e gerar
+confiança.
+PrincipalMétodo Retrato ImAginadoCurso, biblioteca, comunidade e créditos
+iniciais.
+Ensinar o processo
+completo.
+RecorrênciaClube / Estúdio ImAginadoCréditos mensais, atualizações, estilos e
+encontros.
+Cobrir custos e
+gerar receita
+previsível.
+PremiumRetrato ImAginadoDireção e produção realizadas por Cecília.Atender quem
+prefere receber
+pronto.
+ProfissionalLicença ou mentoriaUso avançado para fotógrafas e produtoras.Aumentar ticket e
+autoridade.
+Oferta fundadora para validar
+Turma pequena
+10 a 20 alunas com proximidade, suporte e
+autorização para estudar o uso.
+Preço de validação
+Faixa inicial a testar: R$ 297 a R$ 497, conforme
+profundidade e suporte.
+Créditos
+50 a 100 créditos por aluna, suficientes para
+aprender sem criar promessa ilimitada.
+Prazo
+Acesso ao curso conforme a oferta; créditos com
+regra clara e separada.
+O que vender na comunicação
+•Resultado: imagens realistas e coerentes, não domínio de uma ferramenta específica.
+•Facilidade: o agente transforma a ideia da aluna em direção fotográfica.
+•Identidade: a pessoa continua parecendo ela mesma.
+•Método: menos tentativa aleatória e mais decisão consciente.
+•Autoridade: ensino criado por uma fotógrafa, não por uma coleção automática de prompts.
+Mensagem curta de venda
+“Aprenda a transformar suas fotos e ideias em imagens realistas com
+IA, preservando quem você é. Você aprende o método, recebe
+prompts testados e cria com a ajuda de uma diretora fotográfica
+inteligente.”
+
+MÉTODO RETRATO IMAGINADO
+Plano completo do curso, agente e estúdio de geração12
+SEÇÃO 11
+Plano de lançamento em 30 dias
+Primeiro validar o método e o consumo; depois ampliar a plataforma.
+PeríodoFocoEntregas
+Dias 1 a 3OfertaPúblico, promessa, nome final, resultado, preço beta e escopo.
+Dias 4 a 7Método
+Mapa R.E.A.L., checklist, briefing e primeiros 20 prompts
+testados.
+Dias 8 a 12ConteúdoRoteiros e gravação dos módulos 0 a 4.
+Dias 13 a 16AplicaçãoGravação dos módulos 5 a 8 e organização dos materiais.
+Dias 17 a 21AgenteInstruções, perguntas, formatos de saída, testes e regras de
+segurança.
+Dias 22 a 24MVPLogin, créditos, referências, geração, galeria e painel básico.
+Dias 25 a 27BetaEntrada de 10 a 20 alunas, observação e correções prioritárias.
+Dias 28 a 30LançamentoDepoimentos iniciais, página de venda, conteúdo e abertura da
+turma.
+Ordem de prioridade
+1. Resultado
+Comprovar que o método melhora a imagem e
+reduz tentativa e erro.
+2. Experiência
+Fazer a aluna concluir a primeira boa imagem
+rapidamente.
+3. Economia
+Descobrir quantas gerações são necessárias para
+um resultado aproveitável.
+4. Escala
+Automatizar acesso, suporte e cobrança somente
+após validar os três itens anteriores.
+META DO PRIMEIRO CICLO
+Não é lançar a plataforma perfeita. É obter alunas pagantes, resultados visuais, dados de consumo e provas
+de que o método funciona.
+
+MÉTODO RETRATO IMAGINADO
+Plano completo do curso, agente e estúdio de geração13
+SEÇÃO 12
+Beta, métricas e proteção
+A primeira turma deve produzir evidências para melhorar o curso e proteger a margem.
+Métricas que realmente importam
+MétricaO que revelaSinal inicial saudável
+Tempo até a primeira boa
+imagem
+Clareza do onboarding e do agente.A aluna chega ao resultado na
+primeira sessão.
+Gerações por imagem
+aprovada
+Eficiência do método e custo real.Queda progressiva ao longo do
+curso.
+Taxa de conclusãoQualidade da sequência didática.Maioria entrega o miniportfólio.
+Uso por modeloEquilíbrio entre qualidade e custo.Lite em testes; premium somente
+na finalização.
+Pedidos de suportePontos de confusão ou falha.
+Dúvidas repetidas viram melhoria
+de aula ou interface.
+Conversão para recorrênciaValor percebido do Estúdio.Alunas continuam criando após o
+curso.
+Documentos e políticas mínimas
+•Termos de uso do curso e do Estúdio, com regras de crédito e acesso.
+•Política de privacidade e prazo de armazenamento das imagens.
+•Declaração de que a usuária possui autorização para enviar e transformar as fotografias.
+•Regras específicas para menores de idade e proibição de conteúdo íntimo não consentido.
+•Canal para exclusão de dados e contestação de cobrança de créditos em caso de falha.
+•Aviso de que modelos, preços, disponibilidade e resultados podem mudar.
+USO DE SERVIÇO PAGO
+Para uma operação com fotografias pessoais, prefira a modalidade paga e revise periodicamente os termos
+do fornecedor. Mesmo assim, mantenha consentimento, minimização de dados e exclusão como regras do
+próprio produto.
+
+MÉTODO RETRATO IMAGINADO
+Plano completo do curso, agente e estúdio de geração14
+SEÇÃO 13
+Próximas decisões
+As escolhas abaixo destravam a produção das aulas e do protótipo.
+DecisãoRecomendação inicial
+NomeMétodo Retrato ImAginado - Realismo com IA.
+NichoRetratos e conteúdo realista para redes sociais e negócios.
+Primeira turma10 a 20 alunas beta.
+Área de membrosComparar Hotmart e Kiwify pela experiência, taxas e integrações.
+Aplicativo
+MVP no-code ou web simples, separado da área de aulas e com a mesma
+identidade.
+CréditosComeçar com 50 a 100; medir o consumo antes de definir a assinatura.
+ModeloLite para prévias; Nano Banana 2 para produção; Pro como opção premium.
+Primeiro ativoBriefing do agente + 20 prompts testados + checklist de realismo.
+Sequência de construção
+•Fechar público, promessa e oferta fundadora.
+•Escrever o manual do Método R.E.A.L. e o comportamento do agente.
+•Produzir a biblioteca inicial e testar cada exemplo.
+•Criar o protótipo, simular custos e aplicar regras de acesso.
+•Gravar apenas o conteúdo indispensável para a turma beta.
+•Lançar, medir e ampliar com base em uso real.
+Fontes consultadas
+1. Google AI for Developers. Preços oficiais da Gemini API. Consulta em 13/09/2026.
+2. Google AI for Developers. Termos adicionais da Gemini API. Consulta em 13/09/2026.
+3. Hotmart. Área de membros. Consulta em 13/09/2026.
+4. Kiwify. Documentação de webhooks. Consulta em 13/09/2026.
+5. Base44. Documentação da plataforma. Consulta em 13/09/2026.
+DOCUMENTO DE TRABALHO
+Este plano organiza a primeira versão do curso e do produto digital. Valores, termos, modelos disponíveis e
+decisões jurídicas devem ser revistos antes da abertura das vendas.

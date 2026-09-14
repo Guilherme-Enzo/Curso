@@ -1,0 +1,7282 @@
+Emaranhamento em Sistemas de Partículas
+Indistinguíveis
+Fernando Iemini de Rezende Aguiar
+Agosto de2011
+
+Emaranhamento em Sistemas de
+Partículas Indistinguíveis
+Fernando Iemini de Rezende Aguiar
+Orientador:
+Prof. Dr. Reinaldo Oliveira Vianna
+Dissertação apresentada à UNIVERSIDADE FEDERAL
+DE  MINAS  GERAIS  -  UFMG,  como  requisito  parcial
+para a obtenção do grau de MESTRE EM FÍSICA.
+Belo Horizonte
+Brasil
+Agosto de2011
+
+Dedicatória
+A minha avóClotilde Iemini de Rezende Brasil,
+a qual sempre foi e sempre será meu grandeexemplo
+
+Agradecimentos
+A tarefa de agradecer a todos que fizeram parte, direta ou indiretamente, deste
+trabalho não é de forma alguma uma tarefa simples, visto a grande quantidade
+de nomes a serem lembrados e o esquecimento de alguns é natural. Agradeço
+primeiramente, e principalmente, a minha família, minha avó Clotilde Iemini
+de Rezende Brasil, meus pais Rogers Tadeu Aguiar e Thaís Iemini de Rezende
+Aguiar, e a meus irmãos Thiago e Marcelo Iemini de Rezende Aguar, cujo
+apoio e confiança em mim depositados foram imprescindíveis nesta aventura.
+Aos meus companheiros de trabalho e discussões quânticas, Andre Tanus,
+Leonardo, Mateus Araújo, Marco Túlio, Thiago Debarba, Thiago Maciel, e
+claro  ao  meu  orientador  Reinaldo  O.  Vianna,  cujas  sugestões  e  conselhos
+foram de importância fundamental. Aos meus amigos de longa data Lucas
+Costa Fonseca, Henrique Guimarães, Iury Marques Paiva e todos os demais
+moradores e visitantes do Consulado dos Arantes, a meu primo André Iemini
+Godoy, aos companheiros de banda da Clockwork e ao pessoal do basquete,
+a  todos  estes  pelos  momentos  e  experiências  inesquecíveis,  pelas  viagens
+memoráveis e conversas prazerosas. Por fim, agradeço a todos que tornaram
+meu caminho o mais agradável possível.
+-Este  trabalho  teve  o  apoio  financeiro  direto  e  indireto  daCAPES,  da
+FAPEMIGe doCNPq.
+iii
+
+Resumo
+Neste trabalho abordamos essencialmente o tema da quantificação de emaran-
+hamento  em  sistemas  quânticos  realizando  uma  análise  detalhada  desde
+seus princípios fundamentais, ou seja, dos postulados da teoria de medidas
+de emaranhamento, justificando desta forma as propriedades esperadas de
+"bons quantificadores" de emaranhamento. Apresentamos alguns exemplos
+de medidas de emaranhamento para partículas distinguíveis, e abordamos
+por fim o caso em que as partículas são indistinguíveis uma das outras. Vimos
+que neste caso a quantificação do emaranhamento é um assunto de grandes
+controvérsias com diferentes propostas para sua abordagem, cada qual com
+sua interpretação singular.  Após discorrermos sobre tais abordagens, anal-
+isando suas principais características e fundamentações, apresentamos nosso
+método proposto para quantificá-las com base na utilização das testemunhas
+de emaranhamento.
+iv
+
+Abstract
+In this work we studied the issue of quantification of entanglement in quantum
+systems performing a detailed analysis since its fundamental principles, i.e,
+the postulates of the theory of entanglement measures, and thus justifying
+the expected properties of "good quantifiers" of entanglement. We presented
+some examples of entanglement measures for distinguishable particles, and
+we approach finally the case where the particles are indistinguishable from
+each other.  We saw that, in this case, the quantification of entanglement is
+a subject of great controversies with different proposals to their approach,
+each with its own singular interpretation. After discussing these approaches,
+analysing their main characteristics and foundations, we present our proposed
+method to quantify them based on the use of entanglement witnesses.
+v
+
+Sumário
+Agradecimentosiii
+Resumoiv
+Abstractv
+Introdução1
+1Conceitos Básicos3
+1.1Formalismo e Fundamentos da Mecânica Quântica   .  .  .  .  .  .  .3
+1.2Teorema da Mistura de Schrödinger   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .5
+1.3Decomposição de Schmidt .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .6
+2Emaranhamento Quântico8
+2.1Introdução ao emaranhamento quântico .  .  .  .  .  .  .  .  .  .  .  .  .  .8
+2.2Medidas de emaranhamento    .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .11
+2.2.1Emaranhamento de Formação (E
+oF
+)  .  .  .  .  .  .  .  .  .  .  .  .14
+2.2.2Robustezas do emaranhamento .  .  .  .  .  .  .  .  .  .  .  .  .  .  .22
+2.3Testemunhas de Emaranhamento .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .24
+2.3.1Robustezas (via testemunhas de emaranhamento) .  .  .  .25
+2.3.2SDP (Semi-definite-program)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .27
+3Emaranhamento em Sistemas de Partículas Indistinguíveis29
+3.1O Espaço de Fock  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .29
+3.2Emaranhamento de modos    .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .32
+3.3Emaranhamento de partículas .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .34
+3.4Correlações Quânticas   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .37
+3.4.1Decomposição de Slater  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .38
+3.4.2Entropia de Von Neumann   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .40
+3.4.3Concorrência de Schliemann   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .41
+4Testemunhas de Emaranhamento em Sistemas de Partículas Indis-
+tinguíveis43
+4.1Emaranhamento de Modos, Emaranhamento de Partículas  .  .  .43
+4.2Correlações Quânticas   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .44
+4.3Robusteza Generalizada em Sistemas Fermiônicos  .  .  .  .  .  .  .  .47
+4.3.1Modelo de Hubbard   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .48
+vi
+
+Sumário
+Conclusões e Perspectivas51
+A   Matrizes Complexas Simétricas e Anti-simétricas52
+B   Dualidade e Teoria de Optimização55
+Bibliography57
+vii
+
+Introdução
+A noção de emaranhamento é considerada uma das principais características
+da mecânica quântica, sendo tema de estudos em diversas áreas recentemente.
+Podemos apontar alguns exemplos de sua utilização tais como no teleporte
+quântico, criptografia quântica, computação quântica, e outros, sendo visto
+como um "recurso" para se realizar tarefas antes inconcebíveis classicamente.
+Desta  forma,  é  de  suprema  importância  tanto  seu  melhor  entendimento
+quanto sua quantificação em sistemas quânticos, sendo estes um dos principais
+desafios da teoria quântica moderna.
+Este trabalho consiste então, essencialmente, no tema da quantização do
+emaranhamento, onde realizamos uma análise detalhada dos principais funda-
+mentos, ou postulados, da teoria de medidas de emaranhamento, apontando
+quais propriedades deveríamos esperar que "bons quantificadores" de emaran-
+hamento satisfaçam. Veremos que algumas destas seguem de maneira trivial,
+sendo bastante óbvias ao nosso senso físico, enquanto outras necessitam de
+uma análise mais minunciosa.
+Outro tema importante que será abordado neste trabalho diz respeito ao
+emaranhamento de partículas "indistinguíveis", pois apesar do assunto emaran-
+hamento ser amplamente estudado em sistemas cujas partículas encontram-se
+macroscopicamente  separadas  uma  das  outras,  sendo  desta  forma  distin-
+guíveis, muito pouca atenção foi dada ao caso onde essa separação é muito
+pequena,  tal  que  o  overlap  entre  suas  funções  de  onda  não  mais  seja  de-
+sprezível.   Para  estes  casos  temos  de  levar  em  conta  a  indistinguibilidade
+das partículas, e o estudo do emaranhamento vem sendo um assunto que
+gera bastante controvérsias, possuindo diversas abordagens a seu tratamento.
+Iremos discorrer sobre algumas destas abordagens, analisando suas principais
+características e fundamentações.
+Por fim, apresentaremos nosso método proposto para quantificar o emaran-
+hamento em sistemas de partículas indistinguíveis, o qual baseia-se nas de-
+nominadas  "testemunhas  de  emaranhamento",  que  são  operadores  hermi-
+tianos capazes de indicar, ou "testemunhar", o emaranhamento dos estados
+quânticos, constituindo desta forma em uma ótima ferramenta para o estudo
+do emaranhamento em sistemas quânticos.
+Este trabalho é organizado da seguinte maneira.
+No Capítulo I nós brevemente introduzimos os conceito básicos da teoria
+quântica, assim como o formalismo matemático baseado nas denominadas ma-
+trizes densidade para a descrição dos estados quânticos. Uma boa referência
+para uma leitura mais abrangente dos conceitos tratados neste capítulo pode
+1
+
+Sumário
+ser encontrada no capítulo II do livro "Quantum Computation and Quantum
+Computation", por Nielsen e Chuang[22].
+No Capítulo II introduzimos o conceito de emaranhamento, e discorremos
+sobre  os  postulados  da  teoria  de  medidas  de  emaranhamento.   Apresen-
+tamos  então  alguns  exemplos  de  quantificadores  bastante  conhecidos  na
+literatura, tais como o Emaranhamento de Formação, Concorrência de Wot-
+ters,  Robustezas;  os  quais  nos  serão  úteis  mais  adiante  ao  tratarmos  com
+partículas indistinguíveis. No final do capítulo definimos as testemunhas de
+emaranhamento, mostrando como podem ser utilizadas a fim de quantificar o
+emaranhamento em sistemas quânticos e como os denominados programas
+semidefinidos (SDP) podem auxiliar na determinação destas testemunhas.
+No Capítulo III analisamos as diferentes abordagens em relação ao trata-
+mento do emaranhamento em sistemas de partículas indistinguíveis; e por
+fim,  no Capítulo IV, apresentamos nossa proposta para se quantificar tais
+diferentes abordagens, utilizando as testemunhas de emaranhamento.
+2
+
+CAPÍTULO
+1
+Conceitos Básicos
+Iremos neste capítulo introduzir o formalismo matemático utilizado neste
+trabalho  para  a  descrição  dos  estados  quânticos,  o  qual  baseia-se  nas  de-
+nominadas matrizes densidade. Apresentaremos desta forma os postulados
+fundamentais da mecânica quântica sob tal formalismo, assim como algumas
+propriedades particulares das matrizes densidade que nos serão bastante úteis
+nos capítulos posteriores.
+1.1Formalismo e Fundamentos da Mecânica Quântica
+Um estado puro, na notação de Dirac, é representado por um vetor
+|
+ψ
+〉
+per-
+tencente ao espaço de Hilbert,H.  Se o espaço de Hilbert for de dimensão
+finita ele será simplesmente o espaço vetorialC
+N
+de vetores unitários dota-
+dos com um tipo particular de produto escalar.  Pode-se associar, de forma
+canônica, uma correspondência entre o estado no espaço de Hilbert com seu
+"estado dual", definido sobre o espaço de Hilbert dual. Dado então um espaço
+de Hilbert de dimensão "n",H
+(n)
+, e uma base ortonormal{
+|
+e
+i
+〉
+}
+, o estado
+quântico
+|
+ψ
+〉
+é representados na forma
+|
+ψ
+〉
+=
+n
+∑
+i=1
+c
+i
+ψ
+|
+e
+i
+〉
+;
+n
+∑
+i=1
+|c
+i
+ψ
+|
+2
+=1;(1.1)
+e seu dual
+〈
+ψ
+|
+por,
+〈
+ψ
+|
+=
+n
+∑
+i=1
+c
+∗
+i
+ψ
+〈
+e
+i
+|
+;(1.2)
+onde
+〈
+e
+i
+∣
+∣
+e
+j
+〉
+=δ
+ij
+.
+O produto escalar de dois vetores
+|
+ψ
+〉
+,
+|
+φ
+〉
+neste espaço é dado por,
+〈
+ψ
+|
+φ
+〉
+=
+n
+∑
+i,j=1
+c
+∗
+i
+ψ
+c
+i
+φ
+〈
+e
+i
+∣
+∣
+e
+j
+〉
+(1.3)
+3
+
+1.1.   Formalismo e Fundamentos da Mecânica Quântica
+A normalização do estado advém da interpretação probabilística da mecância
+quântica onde dado
+|
+ψ
+〉
+,  a probabilidade de que o sistema se encontre no
+estado
+|
+e
+i
+〉
+é dada porp(i) =|
+〈
+e
+i
+|
+ψ
+〉
+|
+2
+=|c
+i
+|
+2
+.
+Podemos  definir  desta  notação  operadores  da  forma
+|
+ψ
+〉〈
+φ
+|
+,  os  quais
+podem ser representados por matrizesn x n.  Um estado puro pode desta
+forma ser representado por uma matrizρ, denominada matriz densidade, da
+seguinte maneira,
+ρ=
+|
+ψ
+〉〈
+ψ
+|
+(1.4)
+Tal formulação por matrizes densidade é de extrema utilidade, visto que
+nos permite representar misturas de vários estados puros da forma acima, ou
+seja, estados formados por um determinado ensemble{p
+i
+,
+|
+ψ
+〉
+i
+〈
+ψ
+|
+}. Estados
+deste tipo são denominados estados mistos:
+ρ=
+∑
+p
+i
+|
+ψ
+〉
+i
+〈
+ψ
+|
+(1.5)
+Temos então, de forma geral, que uma matriz densidadeρrepresentando
+um estado puro ou misto, deve sempre satisfazer as seguintes propriedades:
+·normalizadaTr(ρ) =1(1.6)
+·positivaρ≥0(1.7)
+A primeira propriedade segue do fato dos estados puros serem normaliza-
+dos, conforme já dito anteriormente, juntamente com a observação de que os
+estados mistos são dados por uma decomposição convexa de estados puros,
+Tr(ρ) =
+∑
+p
+i
+Tr(
+|
+ψ
+〉
+i
+〈
+ψ
+|
+)
+︸︷︷︸
+1
+=
+∑
+p
+i
+=1(1.8)
+A segunda propriedade segue da condição de que as probabilidades de
+medições dos observáveis, ou "probabilidades de transição" dos estados quân-
+ticos, devem ser números reais não negativos. Seja
+|
+e
+〉
+um estado qualquer do
+espaço de Hilbert,
+〈
+e
+|
+ρ
+|
+e
+〉
+=
+∑
+p
+i
+〈
+e
+|
+ψ
+i
+〉〈
+ψ
+i
+|
+e
+〉
+=
+∑
+p
+i
+|
+〈
+e
+|
+ψ
+i
+〉
+|
+2
+≥0(1.9)
+Podemos agora, definido as matrizes densidade, apresentar os postulados
+fundamentais da mecânica quântica no que diz respeito a representação de
+sistemas físicos, a maneira como evoluem temporalmente e a forma pela qual
+obtemos suas informações.
+Postulado1.(Representação de um sistema físico).Qualquer  sistema
+físico pode ser completamente descrito por uma matriz densidadeρatuando
+sobre o espaço de Hilbert.  Se o sistema é dado pelo ensemble{p
+i
+,ρ
+i
+}, sua
+matriz densidade é dada porρ=
+∑
+p
+i
+ρ
+i
+.
+Postulado2.(Representação de sistemas compostos).O espaço de esta-
+dos de um sistema compostoH
+T
+, é dado pelo produto tensorial do espaço de
+4
+
+1.2.   Teorema da Mistura de Schrödinger
+suas componentesH
+i
+, ou seja,H
+T
+=H
+i
+⊗···⊗H
+N
+.
+Postulado3.(Evolução temporal).Um sistema quântico fechado evolui
+temporalmente  por  transformações  unitárias.    Para  um  estado  puro  sua
+evolução é dada pela equação de Schrödinger,
+ı ̄h
+∂
+∂t
+|
+ψ
+〉
+=H
+|
+ψ
+〉
+,(1.10)
+ondeHé o Hamiltoniano do sistema e  ̄hé a constante de Planck/2π. Para o
+caso geral, incluindo estados mistos, segue então que
+ı ̄h
+∂
+∂t
+ρ= [H,ρ](1.11)
+Se o sistema interage com o meio externo, sua evolução temporal poderá ser
+dada de outras maneiras, incluindo transformações não-unitárias.
+Postulado4.(Medidas seletivas).
+Considere  o  espaço  de  possíveis  re-
+sultados de medida sobre um sistema físico como sendo constituído pork
+elementos, cada qual associado a operadores de medidaM
+k
+, tal que satisfaçam
+a relação de completeza,
+∑
+k
+M
+†
+k
+M
+k
+=I(1.12)
+Dado o estado inicialρ, a probabilidade de se medir o i-ésimo resultado é
+dada por
+p(i) =Tr(M
+i
+ρM
+†
+i
+),(1.13)
+e o sistema após a medição irá colapsar sobre o respectivo estado,
+ρ
+′
+→ρ
+i
+=
+M
+i
+ρM
+†
+i
+Tr(M
+i
+ρM
+†
+i
+)
+(1.14)
+1.2Teorema da Mistura de Schrödinger
+A representação de estados por matrizes densidades nos é de grande utilidade
+principalmente por nos capacitar a descrever estados mistos.  Tais tipos de
+estados possuem no entanto propriedades bastante peculiares,  tal como a
+não unicidade de sua representação, abordada por Schrödinger no seguinte
+teorema:
+Teorema1.1(Teorema da Mistura de Schrödinger).Uma matriz densidadeρ
+possuindo a forma diagonal
+ρ=
+N
+∑
+i=1
+λ
+i
+|
+e
+i
+〉〈
+e
+i
+|
+,(1.15)
+pode ser representada da forma
+ρ=
+M
+∑
+i=1
+p
+i
+|
+ψ
+i
+〉〈
+ψ
+i
+|
+;
+∑
+p
+i
+=1    ;p
+i
+≥0(1.16)
+5
+
+1.3.   Decomposição de Schmidt
+se e somente se existir uma matriz unitária U
+Mx M
+tal que
+|
+ψ
+i
+〉
+=
+1
+√
+p
+i
+N
+∑
+j=1
+U
+ij
+√
+λ
+j
+∣
+∣
+e
+j
+〉
+(1.17)
+Os estados
+|
+ψ
+i
+〉
+são normalizados mas não necessariamente ortogonais.
+Proof.
+A prova que as eq.1.16e1.17implicam1.15segue diretamente. Cabe
+apenas  a  demostração  da  situação  inversa.   A  matriz  unitáriaU
+Mx M
+é  tal
+que suas linhas correspondem ao tamanho do ensemble de estados puros e
+suas colunas a dependência destes com os autoestados da matriz densidade;
+definindo desta forma asNcolunas da unitária por,
+U
+ij
+=
+√
+p
+i
+√
+λ
+j
+〈
+e
+j
+∣
+∣
+ψ
+i
+〉
+;j=1,...,N(1.18)
+vê-se que
+N
+∑
+j=1
+U
+ij
+√
+λ
+j
+∣
+∣
+e
+j
+〉
+=
+√
+p
+i
+∑
+j
+〈
+e
+j
+∣
+∣
+ψ
+i
+〉
+∣
+∣
+e
+j
+〉
+=
+√
+p
+i
+|
+ψ
+i
+〉
+(1.19)
+conforme eq.1.17. AsN−Mcolunas restantes podem ser escolhidas de modo
+a manter a unitariedade da matriz. Para provar que tal matriz é unitária basta
+observar que
+(U
+†
+U)
+ij
+=
+M
+∑
+k=1
+U
+†
+ik
+U
+kj
+=
+∑
+k
+U
+∗
+ki
+U
+kj
+=
+∑
+k
+√
+p
+k
+λ
+i
+〈
+e
+i
+|
+ψ
+k
+〉
+∗
+√
+p
+k
+λ
+j
+〈
+e
+j
+∣
+∣
+ψ
+k
+〉
+=
+1
+√
+λ
+i
+λ
+j
+∑
+p
+k
+(
+〈
+e
+i
+|
+ψ
+k
+〉
+〈
+ψ
+k
+∣
+∣
+e
+j
+〉
+)
+∗
+=
+1
+√
+λ
+i
+λ
+j
+(
+〈
+e
+i
+∣
+∣
+ρ
+∣
+∣
+e
+j
+〉
+)
+∗
+=δ
+ij
+(1.20)
+O teorema nos diz então que se o estadoρfor misto, podemos representá-
+lo por infinitos ensembles distintos{p
+i
+,ρ
+i
+}contanto que estes pertençam à sua
+extensão espacial, ou seja, que os vetores
+|
+ψ
+i
+〉
+sejam linearmente dependentes
+dos autovetores
+|
+e
+〉
+.
+1.3Decomposição de Schmidt
+Uma propriedade surpreendente quando analisamos o caso de estados puros
+bipartites segue do fato de ser sempre possível encontrar uma base "privile-
+giada" sobre o espaço de Hilbert para descrevê-lo (tal base no entanto não é
+única para todos os estados, dependendo do estado em questão). O motivo da
+denominação "privilegiada" pode ser vista através do teorema abaixo, obtido
+originalmente por Schmidt,
+6
+
+1.3.   Decomposição de Schmidt
+Teorema1.2(Teorema de Schmidt).Seja
+|
+ψ
+〉
+um estado puro qualquer perten-
+cente ao espaço de HilbertH
+T
+=H
+(L)
+1
+⊗H
+(K)
+2
+.  Podemos sempre encontrar uma
+decomposição para tal estado da forma,
+|
+ψ
+〉
+=
+N
+∑
+i=1
+√
+λ
+i
+|
+e
+i
+〉
+⊗
+|
+f
+i
+〉
+;N≤min{L,K},(1.21)
+onde{
+|
+e
+i
+〉
+},{
+|
+f
+i
+〉
+}são bases ortonormais dos espaçosH
+(L)
+1
+,H
+(K)
+2
+respectivamente. Tal
+decomposição é denomidada "Decomposição de Schmidt".
+Proof.A forma geral de se escrever um estado puro bipartite é dada por
+|
+ψ
+〉
+=
+L
+∑
+i=1
+K
+∑
+j=1
+c
+ij
+|
+α
+i
+〉
+⊗
+∣
+∣
+β
+j
+〉
+;(1.22)
+onde{
+|
+α
+i
+〉
+},{
+|
+β
+i
+〉
+}são vetores ortogonais pertencentes aos espaçosH
+(L)
+1
+,H
+(K)
+2
+respectivamente.
+Podemos utilizar o método de decomposição em valores singulares sobre a
+matriz complexa formada pelas constantesc
+ij
+, obtendo desta formaC=U DV,
+ondeU,Vsão matrizes unitárias eDé diagonal (tamanhom≤min{L,K}com
+elementos não negativos). O estado pode ser dado então por
+|
+ψ
+〉
+=
+L
+∑
+i=1
+∑
+m
+K
+∑
+j=1
+U
+im
+D
+mm
+V
+mj
+|
+α
+i
+〉
+⊗
+∣
+∣
+β
+j
+〉
+(1.23)
+Definindo
+|
+e
+m
+〉
+=
+L
+∑
+i=1
+U
+im
+|
+α
+i
+〉
+,
+|
+f
+m
+〉
+=
+K
+∑
+j=1
+V
+mj
+∣
+∣
+β
+j
+〉
+eλ
+m
+=D
+mm
+, temos desta
+forma que
+|
+ψ
+〉
+=
+∑
+m
+λ
+m
+|
+e
+m
+〉
+⊗
+|
+f
+m
+〉
+,(1.24)
+e conforme a definição pelas unitárias, os vetores dados acima serão ortogonais
+sobre seus respectivos espaços.
+7
+
+CAPÍTULO
+2
+Emaranhamento Quântico
+A noção de emaranhamento é considerada uma das principais características
+da mecânica quântica, sendo tema de estudos em diversas áreas recentemente.
+Desta  forma,  é  de  suprema  importância  tanto  o  entendimento  quanto  a
+quantificação  do  emaranhamento  em  sistemas  quânticos,  sendo  estes  um
+dos principais desafios da teoria quântica moderna.  Veremos então quais
+propriedades "bons quantificadores" deveriam satisfazer, e apresentaremos
+alguns dos métodos propostos para lidar com o problema da quantificação do
+emaranhamento.
+2.1Introdução ao emaranhamento quântico
+Alguns  dos  fenômenos  mais  intrigantes  e  também  mais  espetaculares  da
+mecânica quântica são aqueles relacionados ao denominado "emaranhamento"
+de um sistema quântico.  Por gerar efeitos tão contrários à nossa intuição
+física revela-se um assunto de difícil interpretação e até mesmo uma definição
+formal concisa sobre o que é o emaranhamento ainda é um problema em
+aberto.  Ao tratarmos do assunto somos levados a rever alguns de nossos
+conceitos básicos da natureza, tal como o sentido de localidade de um sistema
+quântico,  analisando o quanto dois sistemas separados podem ser consid-
+erados independentes um do outro, ou até mesmo o significado do termo
+"existir", questionando sobre as condições necessárias para afirmarmos que
+tal objeto possui uma realidade física. Iremos primeiramente rever alguns dos
+trabalhos pioneiros sobre o emaranhamento e suas principais idéias.
+O assunto foi primeiramente abordado no artigo seminal publicado em
+1935, por Einstein, Podolsky and Rosen [15], o qual deu origem ao famoso
+“paradoxo EPR".  A principal questão posta em prova neste artigo resume-
+se  em:“a  teoria  quântica  é  uma  teoria  completa?"  Ou  seja,  ela  é  capaz  de
+descrever a realidade física?  Como veremos, de acordo com as suposições
+impostas no argumento EPR, a teoria quântica mostra-se falha neste sentido.
+Analisemos então seus argumentos e suposições com mais detalhes.
+8
+
+2.1.   Introdução ao emaranhamento quântico
+O ponto central para a validade(ou completeza) de uma teoria física no
+argumento EPR é a condição de que ela represente o que seus autores de-
+nominam de “elementos de realidade".  Tais elementos de realidade são as
+propriedades  físicas  do  sistema  quântico  em  questão  as  quais  existem  in-
+dependentemente da observação, ou seja, se podemos prever com absoluta
+certeza(probabilidade igual a um) o valor de uma quantidade física de um
+sistema quântico sem pertubá-lo, então existe um elemento de realidade cor-
+respondente a esta quantidade .  Por exemplo, o spin na direção
+→
+v
+de uma
+partícula que se encontra em um dos autoestados do operador
+→
+v
+.
+→
+σ
+, ou o
+momento
+→
+p
+de uma partícula em um dos autoestados do operador
+→
+p
+=−i ̄h
+→
+∇
+,
+são quantidades que podem ser previstas com absoluta certeza possuindo
+desta  forma  um  elemento  de  realidade  física  correspondente.   Apesar  de
+tais considerações serem bastante plausíveis, veremos que tais idéias pare-
+cem não estar presentes na teoria quântica ao analisarmos estados do tipo
+emaranhados.
+Considere o caso de duas partículas que após interagirem mutuamente
+por um determinado tempo são separadas espacialmente. Pode ser que após
+a  separação  espacial  o  estado  global  do  sistema  seja  dado  por  um  estado
+produto, ou seja, um estado da forma
+|
+ψ
+〉
+=
+|
+ψ
+A
+〉
+⊗
+|
+ψ
+B
+〉
+, onde
+|
+ψ
+A
+〉
+∈H
+A
+e
+|
+ψ
+B
+〉
+∈H
+B
+são as representações de estado das partículas (iremos considerar,
+por  simplicidade,  apenas  estados  puros).   Vemos  que  a  representação  de
+estado de uma partícula não é alterada ao realizarmos operações na outra
+partícula (operações do tipoI⊗φ
+B
+ouφ
+A
+⊗I); estados deste tipo são chamados
+separáveis.
+Poderíamos no entanto, após a interação e separação das partículas, gerar-
+mos um estado global o qual não possui a forma de um estado produto como
+no caso anterior.  Um exemplo simples pode ser dado pelo estado singleto,
+considerando partículas com spin 1/2:
+|
+ψ
+〉
+=
+|
+↑↓
+〉
+−
+|
+↓↑
+〉
+√
+2
+(2.1)
+onde{
+|
+↑
+〉
+,
+|
+↓
+〉
+}são autoestados do operador spinσ
+z
+.  Tal estado é também
+conhecido como estado EPR(ou estado de Bell) e representa um estado emaran-
+hado pois, como veremos, possui propriedades bastante peculiares. O ponto
+central  encontra-se  no  fato  de  que  a  representação  de  estado  de  uma  das
+partículas é agora influenciada pelas operações realizadas na outra partícula;
+e este é um fato no mínimo intrigante. No argumento EPR é feito então uma
+forte suposição sobre o assunto, a de que apesar da representação de estado
+ser alterada por operações não-locais, o estado real da partícula deve manter-
+se inalterado,ou melhor dizendo,“ the real factual situation of the systemS
+2
+is
+independent of what is done with the systemS
+1
+, which is spatially separated
+from the former" [14]. Tal suposição é denominada suposição de localidade.
+Vejamos  então  que  consequências  tais  considerações  geram  sobre  a  teoria
+quântica.
+Se medirmos, por exemplo, o observável
+→
+v
+.
+→
+σ
+(onde
+→
+v
+é uma direção
+arbitrária) em uma das partículas e obtivermos o valor+1/2, o estado global
+9
+
+2.1.   Introdução ao emaranhamento quântico
+irá colapsar de forma que o mesmo observável para a outra partícula possui
+o valor, com absoluta certeza, de−1/2. Devido ao fato de podermos prever
+com certeza o resultado destas medidas para uma das partículas, tais quan-
+tidades devem corresponder a elementos de realidade, conforme definidas
+anteriomente (note que estamos considerando para tal afirmação a suposição
+de localidade).
+Sabemos no entanto que utilizando a mecânica quântica estamos limitados
+a calcular apenas as probabilidades das medidas do observávelI⊗
+→
+v
+.
+→
+σ
+,visto
+que o observável não comuta para direções arbitrárias de
+→
+v
+, contradizendo
+desta forma a afirmação de que tais quantidades correspondem a elementos
+de realidade.  Chega-se então a conclusão de que a teoria quântica é uma
+teoria incompleta, não sendo capaz de representar os elementos de realidade
+física. Em suma, o argumento EPR baseia-se em duas suposições principais
+das quais uma teoria completa deve satisfazer:  a suposição de localidade,
+e  a  suposição  de  realismo  (elementos  de  realidade).   Tais  suposições  são
+claramente plausíveis e esperadas considerando nossa intuição física sobre a
+natureza, mas segundo a teoria quântica parecem ser restritivas demais!
+Logo  após  a  publicação  do  EPR,  o  assunto  parece  ter  gerado  também
+interesse a outro grande nome da ciência;  Schrödinger [28,29] discute so-
+bre  a  estrazenha  do  fenômeno,  sendo  historicamente  o  autor  da  palavra
+“emaranhamento". Apesar de considerar desconfortante que a teoria pemitisse
+fenômenos tão fora do comum, considerava-os como a característica principal
+da mecânica quântica: “I would not call thatonebutthecaracteristic trait of
+quantum mechanics; the one that enforces its entire departure from classical
+lines of thought" [28].
+Consideremos  novamente  o  estado  singleto  dado  na  eq.(2.1),  de  onde
+poderemos observar algumas propriedades singulares de estados emaran-
+hados conforme apontadas por Schrödinger. Como sabemos, a representação
+de estado de uma das partículas é dada calculando-se o traço parcial,
+ρ
+A
+=Tr
+B
+(ρ)ρ
+B
+=Tr
+A
+(ρ)(2.2)
+Temos para o caso singleto que
+ρ
+A(B)
+=
+I
+2
+(2.3)
+Ve-se neste exemplo simples a situação peculiar de que apesar de con-
+hecermos o estado global, nosso conhecimento a respeito de suas partes é
+nulo! Novamente parafraseando Schrödinger: “the best possible knowledge
+of awholedoes not necessarily include the best possible knowledge of all its
+parts"[28]. Uma outra característica notável apontada em seus trabalhos diz
+respeito à possibilidade de, realizando-se medidas em apenas uma das partes
+do sistema, ser sempre possível levar a outra parte sobre qualquer estado
+puro que se queira com probabilidade não nula, contanto que este pertença ao
+suporteρ
+A(B)
+[29]. Considerando por exemplo o estado singleto acima, visto
+que o suporteρ
+A(B)
+=I, temos claramente o caso em que podemos levar o
+estado de uma das partículas sobrequalquerestado puro operando apenas
+sobre a outra partícula!
+10
+
+2.2.   Medidas de emaranhamento
+Apesar de suas propriedades extremamente pertubadoras, o assunto per-
+maneceu sem maiores discussões durante vários anos.Mas no entanto uma
+questão ainda pairava no ar: seria a teoria quântica uma teoria incompleta se-
+gundo os argumentos EPR ou a natureza realmente possuiria comportamentos
+tão peculiares? Foi somente na década de1960que a questão novamente gan-
+hou ênfase quando o físico John Bell propôs um teste experimental, conhecido
+como desigualdades de Bell [4], que seria capaz de invalidar os argumentos
+EPR. Testes experimentais foram então realizados anos mais tarde utilizando
+as  desigualdades  de  Bell
+1
+,que  mostravam  afinal  a  impossibilidade  de  se
+atribuir realidade física local a sistemas quânticos, ou seja, a invalidade do
+EPR. Desde então o emaranhamento de sistemas quânticos vem sendo um
+assunto amplamente estudado em várias áreas da física possuindo aplicações
+dos tipos mais diversos.
+Estamos agora, após os comentários realizados sobre algumas das carac-
+terísticas dos estados emaranhados e suas consequências, melhor preparados
+para apresentar uma definição formal sobre estados emaranhados.
+Definição2.1.
+Considere o operador densidadeρ∈H. Dada uma partição do espaço
+em N partes,H=H
+1
+⊗H
+2
+⊗...⊗H
+N
+, diz-se que o estado é separável nesta partição,
+se for possível escrevê-lo por uma decomposição convexa de estados puros produto na
+forma
+ρ=
+∑
+i
+p
+i
+ρ
+i
+1
+⊗ρ
+i
+2
+⊗...⊗ρ
+i
+N
+;
+∑
+i
+p
+i
+=1(2.4)
+ondeρ
+k
+∈H
+k
+. Um estado é considerado emaranhado em uma determinada partição
+se não for separável na mesma.
+Temos que a determinação da separabilidade de um estado quântico ar-
+bitrário é um problema de difícil resolução na maioria dos casos, e sendo
+assim a simples constatação se um estado é emaranhado ou não já constitui
+um grande desafio.  Diversos critérios para se determinar a separabilidade
+foram obtidos, tais como o famoso critério de Peres-Horodecki [24] , dado
+como um caso particular do critério dos mapas positivos [19]. Não iremos
+no entanto nos ater, neste trabalho, ao problema de separabilidade de um
+estado quântico, mas sim a outra importante questão que surge naturalmente
+ao estudarmos estados emaranhados. Visto as diversas utilizações do emaran-
+hamento para teleporte quântico, criptografia quântica e computação quântica,
+o emaranhamento pode ser visto como um “recurso" para se realizar tarefas
+antes  inconcebíveis  classicamente.   Segue  então  que  a  quantificação  deste
+“recurso" é um assunto de extrema importância e será o tema abordado nas
+próximias seções deste capítulo.
+2.2Medidas de emaranhamento
+Certamente existem algumas propriedades que se esperam que um bom quan-
+tificador de emaranhamento deva satisfazer, algumas bastante óbvias tal como
+1
+Uma boa referência atual pode ser dada por A. Aspect [2], onde realiza uma revisão sucinta
+dos principais testes experimentais e sua importância no que diz respeito ao argumento EPR e as
+desigualdades de Bell
+11
+
+2.2.   Medidas de emaranhamento
+se o estado for separável tal quanticador não deve acusar emaranhamento,
+até outras não tão simples relacionadas a não-localidade dos estados emaran-
+hados  ou  ao  limite  assimptótico  de  infinitas  cópias.   Iremos  apresentá-las
+mais cuidadosamente, tentando discorrer da melhor forma sobre os motivos
+principais de sua fundamentação como postulados para medidas de emaran-
+hamento.  Separamo-as em três grupos:  postulados óbvios1,2; postulados
+fundamentias3,4; e os postulados do regime assinptótico5,6. Denotaremos
+E(ρ)uma medida qualquer de emaranhamento para o estadoρ.
+(1) Discriminância:E(ρ) =0⇐⇒ρ∈S(2.5)
+Mesmo sendo tal condição bastante óbvia, existem algumas medidas que
+não a satisfazem.  Um exemplo são as medidas baseadas na destilação do
+estado, pois visto a existência de estados emaranhados presos (estados que
+possuem emaranhamennto mas que não podem ser destilados) o valor da
+medida sobre estes irá acusar emaranhamento nulo. Utiliza-se nestes casos
+uma relaxação do postulado, denominado discriminância fraca:
+(1.a) Discriminância fraca:E(ρ) =0seρ∈S
+(2) Normalização:E(
+∣
+∣
+ψ
+−
+〉〈
+−
+ψ
+∣
+∣
+) =1(2.6)
+Condição facilmente satisfeita sendo necessário apenas um reajuste na
+escala da medida em questão. O postulado de normalização é útil a fins de se
+comparar diferentes medidas de emaranhamento.
+(3)Monotonicidade via LOCC:E(Λ(ρ))≤E(ρ),(2.7)
+ondeΛrepresenta operações locais combinadas com comunicação clássica entre os
+sistemas quânticos.
+Tal postulado realça o caráter não-local dos sistemas emaranhados, en-
+fatizando a necessidade de operações quânticas globais para se produzir o
+emaranhamento. Quaisquer correlações geradas por operações LOCC devem
+ser de natureza clássica apenas.
+(4) Convexidade.E(
+∑
+i
+p
+i
+ρ
+i
+)≤
+∑
+i
+p
+i
+E(ρ
+i
+)(2.8)
+Muitas vezes justificado pela noção de perda de informação, sendo comum
+encontrá-lo  por  outros  autores  como  postulado  da  “monotonicidade  sob
+descarte de informação":  parte-se de uma seleção de estados identificáveis
+{ρ
+i
+}que aparecem com taxas{p
+i
+}respectivamente, para uma mistura destes
+estados da formaρ=
+∑
+i
+p
+i
+ρ
+i
+. Uma maneira de se analisar tal idéia de perda de
+12
+
+2.2.   Medidas de emaranhamento
+informação sob mistura segue observando que, no primeiro caso, de estados
+identificáveis{ρ
+i
+}, podemos descrever o estado por
+ρ=
+∑
+i
+|
+i
+M
+〉〈
+i
+M
+|
+⊗p
+i
+ρ
+i
+(2.9)
+onde{
+|
+i
+M
+〉
+}corresponde a uma base ortonormal denominada de “marcador",
+visto que uma medida nesta base revela o estadoρ
+i
+associado sem pertubá-lo.
+A perda de informação segue ao retirarmos nossos marcadores associados aos
+estados, ou seja, ao realizarmos o traço parcial sobre o marcador, obtendo a
+mistura
+ρ
+′
+=Tr
+M
+(
+∑
+i
+|
+i
+M
+〉〈
+i
+M
+|
+⊗p
+i
+ρ
+i
+) =
+∑
+i
+p
+i
+ρ
+i
+(2.10)
+Sendo a operação anterior uma operação local, temos a partir do postulado
+3que o estado final deve possuir um emaranhamento menor ou igual ao do
+estado inicial, concluindo desta maneira a monotonicidade sob a perda de
+informação. Mediante o raciocínio anterior poderiamos supor erroneamente
+que o postulado de convexidade é apenas um caso especial do postulado3,
+mas note no entanto que o processo dado pela eq.(2.10) não é matematica-
+mente igual a condição de convexidade (eq.2.8). De fato, existem medidas de
+emaranhamento que são monótonas via operações LOCC e não são convexas,
+tal como a negatividade logarítmica [25].
+Sendo assim, a interpretação geralmente adotada do postulado deve ser
+feita com mais cuidado, visto que nem sempre o processo físico de perda de
+informação de um sistema quântico corresponde a condição matemática de
+convexidade da medida de emaranhamento.
+De uma maneira geral, medidas que satifazem os postulados anteriores
+ou suas relaxações são denominadas “monótonos de emaranhamento".
+(5) Aditividade.E(ρ⊗σ) =E(ρ) +E(σ)(2.11)
+A propriedade de aditividade nos diz que se os sistemas quânticos não
+estão emaranhados, ou seja, o estado que os representa encontra-se na forma
+produto,  então a medida de emaranhamento deve considerá-los como sis-
+temas independentes. Tal propriedade no entanto é de difícil demonstração
+em geral, sendo possível na maioria das vezes apenas a demonstração de suas
+relaxações denominadas sub e super-aditividade:
+(5.a) Sub-aditividade.E(ρ⊗σ)≤E(ρ) +E(σ)
+(5.b) Super-aditividade.E(ρ⊗σ)≥E(ρ) +E(σ)
+Muitos autores consideram também uma outra relaxação do postulado,
+denominada extensividade, onde apenas uma matriz densidade arbitrária é
+posta sob análise e a demostração segue com mais facilidade:
+(5.c) Extensividade.E(ρ
+⊗n
+) =nE(ρ)
+A utilização da extensividade como propriedade da medida de emaran-
+hamento  segue  no  contexto  da  analogia  com  a  termodinâmica  [26],  onde
+13
+
+2.2.   Medidas de emaranhamento
+estuda-se o limite assintótico de infinitas cópias,n→∞.  Veremos tal situ-
+ação com mais detalhes ao analisarmos algumas medidas de emaranhamento
+particulares.
+(6) Continuidade.Se
+∥
+∥
+ρ−σ
+∥
+∥
+1
+→0, então
+‖
+E(ρ)−E(σ)
+‖
+→0(2.12)
+Tal postulado exige que estados vizinhos devem possuir emaranhamento
+similares. Assim como no postulado anterior, na maioria das vezes utiliza-se
+de uma relaxação do postulado, analisando seu comportamento apenas no
+limite assinptótico de infinitas cópias:
+(6.a)  Continuidade  no  regime  assinptótico.SejaH
+n
+A
+eH
+n
+B
+sequências de
+espaços  de  Hilbert  (H
+n
+A
+=H
+⊗n
+A
+,H
+n
+B
+=H
+⊗n
+B
+)  e  o  espaço  de  Hilbert  composto
+H
+n
+=H
+n
+A
+⊗H
+n
+B
+.   Para  todas  as  sequências  de  estados{ρ
+n
+,σ
+n
+} ∈ H
+n
+(ρ
+n
+=
+ρ
+⊗n
+,σ
+n
+=σ
+⊗n
+) tal que
+lim
+n→∞
+∥
+∥
+ρ
+n
+−σ
+n
+∥
+∥
+1
+→0,temos quelim
+n→∞
+‖
+E(ρ
+n
+)−E(σ
+n
+)
+‖
+ln(dimH
+n
+)
+→0(2.13)
+Como pode-se notar, são vários os axiomas relacionados a uma medida
+de emaranhamento, e apesar das diversas medidas propostas na literatura
+cada uma delas satisfaz alguns dos axiomas apenas
+2
+. É comum encontrarmos
+também um axioma adicional aos demais, o qual baseia-se mais na utilidade
+prática da medida do que em suposições físicas:
+(7) Computabilidade.
+Existe um método eficiente para calcular a medida de emaranhamento E para
+qualquerρ.
+Iremos neste trabalho abordar algumas das medidas de emaranhamento
+existentes  na  literatura,  analisando  seu  tratamento  sob  diversas  maneiras,
+como veremos nos capítulos posteriores.
+2.2.1Emaranhamento de Formação (E
+oF
+)
+Fisicamente, o emaranhamento de formaçãoE
+oF
+é representado pela quanti-
+dade mínima de singletos necessária para, utilizando-se apenas de operações
+LOCC, construirmos o estado quântico em questão.  Antes de discutirmos
+mais a fundo sobre oE
+oF
+, vale a pena revermos algumas idéias relacionadas à
+“entropia de emaranhamento"E(ρ), dada pela entropia de Von Neumann da
+matriz densidade reduzidaS(ρ
+A
+),
+E(ρ) =S(ρ
+A
+) =−Tr(ρ
+A
+lnρ
+A
+)(2.14)
+Sabe-se, de acordo com Bennet, Bernstein, Popescu and Schumacher [5],
+que é sempre possível obtermos um estado bipartite puro ou misto utilizando
+2
+Um apanhado geral de diversas medidas de emaranhamento é realizado por Zyczkowski
+e Bengtsson [35], onde de uma forma sucinta aponta suas propriedades e constitui uma ótima
+fonte de referência para estudos mais aprofundados
+14
+
+2.2.   Medidas de emaranhamento
+apenas operações LOCC e um suprimento de estados maximamente emaran-
+hados como única fonte de emaranhamento. Foi também demonstrado que
+no limite assintótico de infinitas cópias, a conversão via LOCC denestados
+singletos emmestadosψ, casoψseja um estado bipartite puro, é uma conver-
+são reversível com fidelidade igual a unidade , onde a razãon/mcorresponde
+a entropia de emaranhamentoE(ψ); ou seja,
+lim
+m,n→∞
+n
+m
+=E(ψ)(2.15)
+Devido a esta propriedade de interconvertibilidade no limite assintótico,
+define-se o emaranhamento de formação de estados puros como a entropia
+de emaranhamento,E
+oF
+(ψ) =E(ψ).
+A  extensão  da  medida  para  estados  mistos  é  obtida  pela  construção
+da“convex roof",  ondeE
+oF
+é  dado  como  a  quantidade  mínima  de  emaran-
+hamento de estados puros necessária para se construir o estado,
+E
+oF
+=min
+Ω
+p
+∑
+i
+p
+i
+E(ρ
+i
+)(2.16)
+, a minimização é realizada sobre todas a descomposições convexas possíveis
+do estado
+Ω
+p
+={p
+i
+,
+|
+φ
+i
+〉〈
+φ
+i
+|
+}
+
+
+
+
+
+ρ=
+∑
+i
+p
+i
+|
+φ
+i
+〉〈
+φ
+i
+|
+p
+i
+>0
+∑
+i
+p
+i
+=1
+(2.17)
+O emaranhamento de formação satisfaz por construção as propriedade
+de discriminância, e pode-se provar ser uma função convexa, monótona [6],
+contínua[21] e normalizável
+3
+; quanto à aditividade nenhuma prova ainda foi
+obtida e em relação a sua computabilidade constitui uma medida difícil de
+ser calculada para casos gerais, visto a necessidade de minimização sobre
+todas as decomposições possíveis do estado.  Felizmente para alguns casos
+particulares foi possível encontrar sua forma analítica, sendo talvez o caso
+mais importante dado pela famosa equação de Concorrência de Wooters para
+sistemas de dois qubits.  Iremos agora apresentar tal resultado obtido por
+Wooters [33], o qual é uma extensão de seu trabalho realizado em colaboração
+com S. Hill [17].
+Concorrência de Wooters
+Primeiramente iremos definir o operador inversão temporalD, também con-
+hecido ao considerarmos os graus de liberdade de spin como "transformação
+spin flip",
+D= (σ
+y
+⊗σ
+y
+)K;(2.18)
+ondeσ
+y
+é a matriz de Pauli eKé o operador de conjugação complexa, o qual
+age em um estado geral da formaK
+∑
+ij
+c
+ij
+|
+ij
+〉
+=
+∑
+ij
+c
+∗
+ij
+|
+ij
+〉
+.
+3
+Basta utilizar a quantidade re-escaladaE
+′
+oF
+=
+E
+oF
+ln2
+.
+15
+
+2.2.   Medidas de emaranhamento
+Utilizando tal operador de spin flip, podemos encontrar uma relação entre
+o emaranhamento de formação e uma quantidade denominada concorrência
+do estado.  Analisemos primeiro o caso de estados de qubits puros, o qual
+segue de maneira bem simples.
+Theorem2.1.Dado um estado bipartite puroρ=
+|
+ψ
+〉〈
+ψ
+|
+em um espaço de Hilbert
+de dimensãoH=H
+2
+⊗H
+2
+, define-se uma quantidade denominada concorrência do
+estado quântico,
+C(
+|
+ψ
+〉〈
+ψ
+|
+) =|
+〈
+ψ
+∣
+∣
+ ̃
+ψ
+〉
+|;(2.19)
+onde
+∣
+∣
+ ̃
+ψ
+〉
+=D
+|
+ψ
+〉
+eDé o operador inversão temporal. O emaranhamento de formação
+do estado pode ser representado como função de sua concorrência;
+E
+oF
+(
+|
+ψ
+〉〈
+ψ
+|
+) =H(
+1+
+√
+1−C
+2
+2
+)(2.20)
+onde H(x) =−xlog
+2
+x−(1−x)log
+2
+(1−x)é a entropia binária de Shannon.
+Proof.Um estado bipartite puro pode ser dado na decomposição de Schmidt
+por
+|
+ψ
+〉
+=
+d
+∑
+i=1
+c
+i
+|
+e
+i
+f
+i
+〉
+. Sua matriz densidade reduzida possui a forma,
+ρ
+A
+=
+∑
+i
+c
+i
+|
+e
+i
+〉〈
+e
+i
+|
+e o emaranhamento de formação é dado pela entropia de emaranhamento,
+onde no caso de qubits pode ser dado pela entropia binária de Shannon,
+E
+oF
+(ρ) =S(ρ
+A
+) =H(c
+1
+, 1−c
+1
+)
+Da equação de concorrência do estado, eq.2.19, podemos facilmente obter a
+relação
+C
+2
+=4c
+1
+c
+2
+−→c
+1
+=
+1+
+√
+1−C
+2
+2
+Vê-se que a entropia de formaçãoE
+oF
+é uma função monótona da concor-
+rência para estados puros, e sendo assim podemos considerar a concorrência
+do estado propriamente como sua medida de emaranhamento.
+Conforme veremos, para o caso geral de estados mistos ou puros de qubits
+a demonstração não segue de maneira trivial como a anterior.
+Theorem2.2.
+Dado um estadoρde dois qubits, puro ou misto, define-se sua concor-
+rência por,
+C(ρ) =max(0,λ
+4
+−λ
+3
+−λ
+2
+−λ
+1
+),(2.21)
+ondeλ
+i
+são as raízes quadradas, em ordem decresente, dos valores singulares da matriz
+R=ρ
+ ̃
+ρ. Aqui,
+ ̃
+ρ=DρD
+†
+.
+O emaranhamento de formação do estado pode ser representado como função de
+sua concorrência,
+E
+oF
+(ρ) =E(C(ρ))(2.22)
+ondeE(C)=H(
+1+
+√
+1−C
+2
+2
+), sendo H é a entropia binária de Shannon.
+16
+
+2.2.   Medidas de emaranhamento
+Proof.A fim de deixarmos mais claro os procedimentos envolvidos na demon-
+stração, iremos argumentar um pouco sobre suas motivações.  Vê-se que a
+funçãoEé uma função convexa, e sendo assim podemos obter a seguinte
+relação para o emaranhamento de formação a partir de sua forma dada na
+eq.2.16, e o resultado do teorema2.1:
+E
+oF
+=min
+Ω
+p
+∑
+i
+p
+i
+E(ρ
+i
+)
+=min
+Ω
+p
+∑
+i
+p
+i
+E(C(ρ
+i
+))
+≥min
+Ω
+p
+E(
+∑
+i
+p
+i
+C(ρ
+i
+))
+=min
+Ω
+p
+E(
+〈
+C
+〉
+),
+(2.23)
+onde
+〈
+C
+〉
+é denominada concorrência média.
+Se o estado for emaranhado, iremos mostrar que sempre existe uma de-
+composição em estados puros tal que a concorrência de cada estado individual
+é igual aC(ρ), conforme dado na eq.2.21, seguindo desta forma a igualdade
+na  equação  acima,E
+oF
+=E(C(ρ)).   E  veremos  ainda  que,  para  tal  caso  a
+decomposição é óptima, visto que nenhuma outra possui um valor menor
+para
+〈
+C
+〉
+.
+Se no entanto o estado for separável, mostraremos ser sempre possível
+obter uma decomposição em estados separáveis.
+A  fim  de  encontrarmos  tais  decomposições  desejadas,  utilizaremos  do
+teorema da mistura de Schrödinger (Teorema.1.1).
+ρ=
+r
+∑
+i
+|
+ν
+i
+〉〈
+ν
+i
+|
+︸
+︷︷︸
+dec. diagonal
+Teor.mistura
+︷︸︸︷
+−→ρ=
+m≥r
+∑
+i
+|
+w
+i
+〉〈
+w
+i
+|
+︸︷︷︸
+dec. estados puros
+(2.24)
+,onde
+
+
+
+r=rank do estado
+|
+w
+i
+〉
+=
+∑
+j
+U
+∗
+ij
+∣
+∣
+ν
+j
+〉
+|
+ν
+i
+〉
+=
+√
+c
+i
+|
+e
+i
+〉
+Os vetores são ditos "sub-normalizados", no sentido que a norma
+〈
+ν
+i
+|
+ν
+i
+〉
+corresponde ao i’ésimo autovalorc
+i
+do estado, e
+〈
+w
+i
+|
+w
+i
+〉
+à probabilidadep
+i
+de
+|
+w
+i
+〉
+na decomposição.
+Decomposição1.
+A primeira decomposição é obtida a partir da matriz unitária que diago-
+naliza uma determinada matriz W, definida porW
+ij
+≡
+〈
+w
+i
+∣
+∣
+ ̃
+w
+j
+〉
+. Essa matriz
+possui algumas características principais:
+·W é simétrica
+:
+17
+
+2.2.   Medidas de emaranhamento
+Proof.
+W
+ji
+=
+〈
+w
+j
+∣
+∣
+ ̃
+w
+i
+〉
+=
+〈
+w
+j
+∣
+∣
+D
+|
+w
+i
+〉
+=  (
+〈
+w
+i
+|
+D
+†
+∣
+∣
+w
+j
+〉
+)
+∗
+=  [
+〈
+w
+i
+|
+K
+†
+(σ
+y
+⊗σ
+y
+)
+∣
+∣
+w
+j
+〉
+]
+∗
+=
+〈
+∗
+w
+i
+∣
+∣
+ ̃
+w
+j
+∗
+〉
+∗
+=
+〈
+w
+i
+∣
+∣
+ ̃
+w
+j
+〉
+=W
+ij
+·W possui autovalores generalizados (valores singulares) reais não-negativos:
+Proof.Esta é uma propriedade geral de matrizes complexas simétricas. Dado
+uma  matriz  complexa  simétrica  A,  seus  valores  singulares  correspondem
+a  raiz  quadrada  dos  autovalores  da  matriz  hermitianaA A
+†
+.   Seja  então
+A A
+†
+|
+x
+〉
+=a
+|
+x
+〉
+, então
+〈
+x
+|
+a
+|
+x
+〉
+=a
+〈
+x
+|
+x
+〉
+=
+〈
+x
+|
+A A
+†
+|
+x
+〉
+= (A
+∗
+|
+x
+〉
+)
+∗
+(A
+∗
+|
+x
+〉
+),(2.25)
+e visto que
+〈
+x
+|
+x
+〉
+≥0,∀
+|
+x
+〉
+∈C
+n
+, conclue-se que
+a=
+(A
+∗
+|
+x
+〉
+)
+∗
+(A
+∗
+|
+x
+〉
+)
+〈
+x
+|
+x
+〉
+≥0(2.26)
+·O espectro deWW
+∗
+eρ
+ ̃
+ρcoincidem:
+Proof.Vejamos primeiro a relação entre os elementos das duas matrizes:
+(ρ
+ ̃
+ρ)
+ij
+=
+1
+√
+c
+i
+√
+c
+j
+〈
+w
+i
+|
+ρ
+ ̃
+ρ
+∣
+∣
+w
+j
+〉
+=
+1
+√
+c
+i
+c
+j
+〈
+w
+i
+|
+(
+∑
+k
+|
+w
+k
+〉〈
+w
+k
+|
+)(
+∑
+l
+|
+ ̃
+w
+l
+〉〈
+ ̃
+w
+l
+|
+)
+∣
+∣
+w
+j
+〉
+=
+c
+i
+√
+c
+i
+c
+j
+〈
+w
+i
+|
+(
+∑
+l
+|
+ ̃
+w
+l
+〉
+〈
+ ̃
+w
+l
+∣
+∣
+w
+j
+〉
+)
+=
+√
+c
+i
+c
+j
+∑
+l
+〈
+w
+i
+|
+ ̃
+w
+l
+〉
+〈
+w
+j
+∣
+∣
+ ̃
+w
+l
+〉
+∗
+=
+√
+c
+i
+c
+j
+∑
+l
+W
+il
+W
+∗
+jl
+=
+√
+c
+i
+c
+j
+(WW
+∗
+)
+ij
+Vemos que as duas matrizes são proporcionais a menos de um fator
+√
+c
+i
+c
+j
+sobre
+seus elementos. Falta agora mostrar que as duas matrizes possuem os mesmo
+autovalores. Considere então
+→
+a
+i
+= (a
+i1
+,a
+i2
+,...,a
+id
+)
+T
+,i=1,2,...,d,d=dimensão do
+espaço de Hilbert, como sendo os autovetores deρ
+ ̃
+ρ. Temos desta forma que
+(ρ
+ ̃
+ρ)
+→
+a
+i
+=γ
+i
+→
+a
+i
+,para=1,2,...,d(2.27)
+18
+
+2.2.   Medidas de emaranhamento
+ou seja, para qualquer um de seus autovetores as seguintes igualdades são
+satisfeitas,
+∑
+k
+(ρ
+ ̃
+ρ)
+jk
+a
+ik
+=γ
+i
+a
+ij
+;j=1,2,...,d(2.28)
+Da equação acima e a relação entre as matrizes obtemos
+∑
+k
+(ρ
+ ̃
+ρ)
+jk
+a
+ik
+=
+∑
+k
+(WW
+∗
+)
+jk
+√
+c
+j
+c
+k
+a
+ik
+=γ
+i
+a
+ij
+∑
+k
+(WW
+∗
+)
+jk
+a
+ik
+√
+c
+k
+=γ
+i
+a
+ij
+√
+c
+j
+,sejaa
+′
+mn
+=
+a
+mn
+√
+c
+n
+, então
+∑
+k
+(WW
+∗
+)
+jk
+a
+′
+ik
+=γ
+i
+a
+′
+ij
+,paraj=1,2,...,d
+A equação acima nos mostra que a matrizWW
+∗
+possui os mesmo autoval-
+ores que(ρ
+ ̃
+ρ), apenas com autovetores diferentes:
+(WW
+∗
+)
+→
+a
+′
+i
+=γ
+i
+→
+a
+′
+i
+;
+
+
+
+parai=1,2,...,d
+a
+′
+ij
+=
+a
+ij
+√
+c
+j
+(2.29)
+·Obs:Vê-se aqui, diretamente da eq.2.29, que os autovalores generalizados
+(valores singulares)λ
+i
+de W são iguais a raiz quadrada dos autovalores deρ
+ ̃
+ρ.
+Tendo em vista as propriedades da matriz W apontadas acima, utilizamos
+a unitária que a diagonaliza para construirmos o estados{
+|
+x
+i
+〉
+}na decom-
+posição deρ.
+ρ=
+4
+∑
+i=1
+|
+x
+i
+〉〈
+x
+i
+|
+,
+|
+x
+i
+〉
+=
+r
+∑
+j=1
+U
+∗
+ij
+∣
+∣
+w
+j
+〉
+(2.30)
+Vê-se
+〈
+x
+i
+∣
+∣
+ ̃
+x
+j
+〉
+= (UWU
+T
+)
+ij
+=λ
+i
+δ
+ij
+, onde a matriz U pode ser ajustada de
+modo aosλ
+′
+i
+sencontrarem-se em ordem decrescente.
+Dividiremos nossa demonstração agora em dois casos:λ
+4
+−λ
+3
+−λ
+2
+−λ
+1
+>
+0 eλ
+4
+−λ
+3
+−λ
+2
+−λ
+1
+≤0
+Caso1.λ
+4
+−λ
+3
+−λ
+2
+−λ
+1
+>0
+Decomposição2.
+Nossa segunda decomposição{
+|
+y
+i
+〉
+}utiliza-se da primeira na forma
+ρ=
+4
+∑
+i=1
+|
+y
+i
+〉〈
+y
+i
+|
+(2.31)
+|
+y
+1
+〉
+=
+|
+x
+1
+〉
+,
+∣
+∣
+y
+j
+〉
+=i
+∣
+∣
+x
+j
+〉
+(2.32)
+19
+
+2.2.   Medidas de emaranhamento
+Considerando a matriz simétricaY
+ij
+≡
+〈
+y
+i
+|
+ ̃
+y
+j
+, temos que
+Tr(Y) =λ
+4
+−λ
+3
+−λ
+2
+−λ
+1
+=C(ρ)(2.33)
+Decomposição3.
+Nossa terceira e última decomposição será aquela desejada, onde todos
+os estados possuem a mesma concorrência. Definimos então a decomposição
+{
+|
+z
+i
+〉
+},
+|
+z
+i
+〉
+=
+r
+∑
+j
+V
+∗
+ij
+∣
+∣
+y
+j
+〉
+,(2.34)
+e a matriz simétricaZ
+ij
+≡
+〈
+z
+i
+∣
+∣
+ ̃
+z
+j
+〉
+. Temos agora que
+Tr(Z)  =
+∑
+i
+〈
+z
+i
+|
+ ̃
+z
+i
+〉
+=
+∑
+i
+〈
+z
+i
+|
+z
+i
+〉
+〈
+z
+i
+|
+ ̃
+z
+i
+〉
+〈
+z
+i
+|
+z
+i
+〉
+=
+∑
+i
+p
+z
+i
+c(z
+i
+)
+=Tr(VYV
+T
+),
+(2.35)
+ondec(z
+i
+)é definida como a pré-concorrência do estado. Vê-se da equação
+acima que se utilizarmos matrizes V ortogonais, nossa transformação para
+o  novo  ensemble  preserva  o  traço  da  matriz  Y  (eq.2.33),  e  sendo  assim  a
+média sobre as pré-concorrências dos estados. Como tal média é preservada,
+podemos claramente obter um ensemble onde os estados possuam o mesmo
+valor de pré-concorrência. Vejamos como tal afirmação é sempre possível.
+Do ensemble da decomposição2, selecionamos os estados com maior e
+menor valor de pré-concorrência,
+|
+y
+1
+〉
+e
+|
+y
+4
+〉
+respectivamente. Utilizando agora
+transformações ortogonais que agem apenas nestes dois estados, construímos
+|
+z
+a
+〉
+e
+|
+z
+b
+〉
+, deixando os outros estados
+|
+y
+i
+〉
+inalterados.  Poderíamos supor,
+como exemplo, a transformação da forma
+V=a I+bP;P=
+
+
+
+
+00    01
+01    00
+00    10
+−1    0    0    0
+
+
+
+
+(2.36)
+onde I é a identidade e P é a matriz permutação entre os dois estados ex-
+tremais.
+Utilizando tais transformações estaremos tanto combinando os estados
+extremais assim como suas pré-concorrência. Por continuidade da transfor-
+mação, podemos então construir
+|
+z
+a
+〉
+de tal forma que sua pré-concorrência
+seja  igual  aC(ρ).    Repetindo  o  procedimento  para  os  outros  elementos
+restantes  do  ensemble  vê-se  claramente  a  possibilidade  de  construir  um
+conjunto de estados{
+|
+z
+i
+〉
+}com valores iguais dec(z
+i
+) =C(ρ).
+Temos desta forma, lembrando que os estados são sub-normalizados
+|
+z
+i
+〉
+=
+〈
+z
+i
+|
+z
+i
+〉|
+φ
+i
+〉
+,  a  decomposição  final  em  estados  puros{
+|
+φ
+i
+〉
+}
+ondeC(
+|
+φ
+i
+〉
+) =
+C(ρ).
+4
+4
+Veja quec(z
+i
+) =
+〈
+z
+i
+|
+ ̃
+z
+i
+〉
+〈
+z
+i
+|
+z
+i
+〉
+=
+〈
+φ
+i
+∣
+∣
+ ̃
+φ
+i
+〉
+=C(ρ)−→C(
+|
+φ
+i
+〉
+) =C(ρ).
+20
+
+2.2.   Medidas de emaranhamento
+Para provarmos agora que tal decomposição é óptima, basta mostrarmos
+que nenhuma outra possue um valor menor para a concorrência média
+〈
+C
+〉
+,
+conforme a dicussão realizada no início da demostração do teorema sobre a
+convexidade da funçãoE(eq.2.23).
+A concorrência média de uma decomposição geral pode ser dada por uma
+equação similar a eq.2.35, mas com o valor absoluto,
+〈
+C
+〉
+=
+∑
+i
+∣
+∣
+∣
+(VYV
+T
+)
+ii
+∣
+∣
+∣
+(2.37)
+onde V é uma matriz unitáriam X r, sendo m a quantidade de estados puros
+na decomposição e r o ranque do estado. Podemos reescrever a equação acima
+em termos das componente de V e Y,
+〈
+C
+〉
+=
+m
+∑
+i=1
+∣
+∣
+∣
+∣
+∣
+r
+∑
+k,l=1
+V
+ik
+Y
+kl
+V
+T
+li
+∣
+∣
+∣
+∣
+∣
+=
+m
+∑
+i=1
+∣
+∣
+∣
+∣
+∣
+r
+∑
+k,l=1
+V
+ik
+V
+il
+Y
+kl
+∣
+∣
+∣
+∣
+∣
+.(2.38)
+Lembrando que a matriz Y é diagonal obtemos,
+〈
+C
+〉
+=
+∑
+i
+∣
+∣
+∣
+∣
+∣
+∑
+j
+(V
+ij
+)
+2
+Y
+jj
+∣
+∣
+∣
+∣
+∣
+(2.39)
+O limite inferior é obtido observando que
+∑
+i
+∣
+∣
+(V
+ij
+)
+2
+∣
+∣
+=1
+, pois a matriz é
+unitária. Definindo entãoα
+ij
+=V
+2
+ij
+, temos que
+〈
+C
+〉
+=
+∑
+i
+∣
+∣
+∣
+∣
+∣
+∑
+j
+(α
+ij
+)Y
+jj
+∣
+∣
+∣
+∣
+∣
+≥
+∣
+∣
+∣
+∣
+∣
+∑
+ij
+α
+ij
+Y
+jj
+∣
+∣
+∣
+∣
+∣
+=
+∣
+∣
+∣
+∣
+∣
+Y
+11
+∑
+i
+α
+i1
++
+r
+∑
+j=2
+(
+∑
+i
+α
+ij
+)Y
+jj
+∣
+∣
+∣
+∣
+∣
+=
+∣
+∣
+∣
+∣
+∣
+λ
+1
+−
+r
+∑
+j=2
+(
+∑
+i
+α
+ij
+)λ
+j
+∣
+∣
+∣
+∣
+∣
+5
+≥λ
+4
+−λ
+3
+−λ
+2
+−λ
+1
+=C(ρ)
+(2.40)
+Fica  então  demontrado  que  para  o  casoλ
+4
+−λ
+3
+−λ
+2
+−λ
+1
+>0,  é  sem-
+pre  possível  encontrar  uma  decomposição  de  estados  com  valores  iguais
+de  concorrênciaC(ρ),  a  qual  corresponde  à  decomposição  óptima  para  o
+emaranhamento de formação.
+Caso2.λ
+4
+−λ
+3
+−λ
+2
+−λ
+1
+<0
+Para tal caso é sempre possível encontrar quatro fasesη
+i
+tal que
+4
+∑
+j=1
+e
+2iη
+j
+λ
+j
+=0(2.41)
+21
+
+2.2.   Medidas de emaranhamento
+Proof.Note que
+4
+∑
+j=1
+e
+2iη
+j
+λ
+j
+=0⇐⇒λ
+1
+e
+2iη
+1
+=−
+4
+∑
+j=2
+λ
+j
+e
+2iη
+j
+⇐⇒
+∣
+∣
+∣
+λ
+1
+e
+2iη
+1
+∣
+∣
+∣
+=
+∣
+∣
+∣
+∣
+∣
+−
+4
+∑
+j=2
+λ
+j
+e
+2iη
+j
+∣
+∣
+∣
+∣
+∣
+⇐⇒λ
+1
+=
+∣
+∣
+∣
+∣
+∣
+4
+∑
+j=2
+λ
+j
+e
+2iη
+j
+∣
+∣
+∣
+∣
+∣
+≥
+4
+∑
+j=2
+∣
+∣
+∣
+λ
+j
+e
+2iη
+j
+∣
+∣
+∣
+=
+4
+∑
+j=2
+λ
+j
+⇐⇒λ
+1
+−
+4
+∑
+j=2
+λ
+j
+≥0
+Considerandoλ
+′
+i
+scomo vetores, seria o mesmo que afirmar ser sempre pos-
+sível, utilizando tais vetores, construirmos um polígono fechado.
+Construímos agora, a partir dos estados obtidos na Decomposição1, a
+seguinte decomposição{
+|
+k
+i
+〉
+}:
+|
+k
+1
+〉
+=
+1
+2
+(e
+iη
+1
+|
+x
+1
+〉
++e
+iη
+2
+|
+x
+2
+〉
++e
+iη
+3
+|
+x
+3
+〉
++e
+iη
+4
+|
+x
+4
+〉
+)
+|
+k
+2
+〉
+=
+1
+2
+(e
+iη
+1
+|
+x
+1
+〉
++e
+iη
+2
+|
+x
+2
+〉
+−e
+iη
+3
+|
+x
+3
+〉
+−e
+iη
+4
+|
+x
+4
+〉
+)
+|
+k
+3
+〉
+=
+1
+2
+(e
+iη
+1
+|
+x
+1
+〉
+−e
+iη
+2
+|
+x
+2
+〉
++e
+iη
+3
+|
+x
+3
+〉
+−e
+iη
+4
+|
+x
+4
+〉
+)
+|
+k
+3
+〉
+=
+1
+2
+(e
+iη
+1
+|
+x
+1
+〉
+−e
+iη
+2
+|
+x
+2
+〉
+−e
+iη
+3
+|
+x
+3
+〉
++e
+iη
+4
+|
+x
+4
+〉
+)
+Temos para estes estados que
+C(
+|
+k
+i
+〉
+) =
+1
+4
+∣
+∣
+∣
+∣
+∣
+4
+∑
+j=1
+e
+−2iη
+j
+λ
+j
+∣
+∣
+∣
+∣
+∣
+=0,(2.42)
+Vê-se então que tal decomposição consiste de estados puros com concorrência
+nula, sendo desta forma um estado separável.
+2.2.2Robustezas do emaranhamento
+Nesta seção iremos abordar uma medida de emaranhamento denominada
+robusteza, e que conforme veremos possui uma definição e interpretação física
+bem simples. A robusteza é baseada na idéia de resistência do emaranhamento
+sob misturas; mais precisamente, dado um estado emaranhadoρ, o quanto é
+necessário misturá-lo a outro estadoρ
+M
+tal que o emaranhamento final seja
+nulo. Uma definição matemática mais formal pode ser dada na forma:
+Definition2.2.Dado um estadoρ∈ H
+T
+eρ
+M
+∈ X, define-se a robustezaR(ρ)
+como a quantidade mínima "s" necessária para que a misturaρ
++
+=
+1
+1+s
+(ρ+sρ
+M
+)
+22
+
+2.2.   Medidas de emaranhamento
+seja separável.
+R(ρ) =min
+ρ
+M
+∈X
+(
+min
+s≥0
+s
+:
+ρ
++
+=
+1
+1+s
+(ρ+sρ
+M
+)∈S
+)
+(2.43)
+Vê-se que a minimização é realizada tanto sobre a constante”s”quanto
+aos estadosρ
+M
+, sendo desta forma difícil sua determinação para casos gerais.
+Foram propostos então diferentes tipos de robustezas, cada qual associado
+a um tipo de mistura específica, ou seja, ao espaço de estados”X”. Do ponto
+de vista matemático poderíamos apresentá-las aqui meramente especificando
+seus respectivos espaços de mistura; mas apesar desta sutil diferença, suas
+interpretações e motivações devem ser melhor analisadas do ponto de vista
+físico.  São três os tipos distintos encontrados na literatura, denominados :
+robusteza aleatória, generalizada e robusteza do emaranhamento [31,30].
+·Robusteza do Emaranhamento,R(ρ)−→X ∈S.
+Aqui as misturas são preparadas localmente,  podendo-se interpretar a
+medida de robusteza como a quantificação de uma interferência "inteligente",
+segundo Vidal e Tarrach[31], que é realizada sobre o estado. O que denom-
+inamos  "inteligente"  é  visto  como,  dado  que  as  partes  locais  conhecam  o
+estado emaranhado, elas podem da melhor maneira possível moldar uma
+interferência de forma que um mínimo desta seja suficiente para destruir o
+emaranhamento da mistura.
+·Robusteza Aleatória,R
+a
+(ρ)−→X ≡I.
+Este é um caso particular da Robusteza do Emaranhamento dada acima,
+onde agora nossa interferência é interpretada como o ruído branco.
+·Robusteza Generalizada,R
+g
+(ρ)−→X ∈H
+T
+.
+Nos casos anteriores nossa mistura era restrita somente a estados sepa-
+ráveis.  Mas nós poderíamos no entanto considerar a possibilidade onde o
+estado não somente pode interagir com um estado separável, mas também
+com estados emaranhados. Sabe-se em geral que existem casos em que mis-
+turas de estados emaranhados resultam em um estado separável. A Robusteza
+Generalizada engloba então tanto estes casos quanto os anteriores, onde per-
+mite que a mistura possa ser realizada sobre qualquer estado do espaço de
+Hilbert-Schmidt.
+Algumas propriedades particulares entre as robustezas podem ser apon-
+tadas, tais como:
+·claramente, vê-se que a robusteza generalizada deve ser sempre menor
+ou igual as outras robustezas;
+R
+g
+(ρ)≤R(ρ),R
+a
+(ρ)(2.44)
+·
+foi demonstrado por Steiner [30] que para estados emaranhados puros as
+robusteza de emaranhamento e a generalizada possuem o mesmo valor.
+R
+g
+(ρ) =R
+a
+(ρ), seρfor um estado puro(2.45)
+23
+
+2.3.   Testemunhas de Emaranhamento
+Tal resultado é surpreendente, visto que o volume do espaço de estados para
+altas dimensões torna-se dominado por estados emaranhados, e a propabil-
+idade de se encontrar um estado separável decai exponencialmente com o
+tamanho do espaço de Hilbert; sendo assim esperava-se que a robusteza gener-
+alizadaR
+g
+(ρ)possuísse valores menores que a robusteza de emaranhamento
+R(ρ).
+·
+a mistura óptimaρ
+M
+para a robusteza generalizada de estados puros não
+é única; existem infinitas misturas óptimas dadas por estados emaranhados
+ou separáveis.
+·As medidas de robusteza satisfazem as propriedades de discriminância,
+monotonicidade via LOCC e convexidade apenas.
+2.3Testemunhas de Emaranhamento
+Testemunhas de emaranhamento são operadores hermitianos (observáveis)
+cujo valor esperado contém informações acerca do emaranhamento de estado
+quântico em questão, constituindo desta forma em uma ótima ferramenta para
+o estudo do emaranhamento de sistemas quânticos. Central a uma definição
+formal destes operadores encontra-se o importante teorema de Hahn-Banach,
+do qual iremos apresentar aqui apenas uma versão limitada a nossa situação,
+denominada teorema de separação de Hahn-Banach.
+Definição2.3.Teorema de separação de Hahn-Banach.SejaSum conjunto
+convexo compacto em um espaço de Banach
+6
+de dimensão finita eρum ponto que não
+pertença a ele; então podemos sempre encontrar um hiperplanoWque separeρdeS.
+Uma ilustração esquemática do teorema pode ser dada pela figura2.1.
+Identificando  agora  o  conjuntoScom  o  espaço  de  estados  separáveis,
+vemos que é sempre possível encontrar um hiperplano que separe um estado
+emaranhado dos estados separáveis, indicando desta forma o caráter emaran-
+hado do estado; tais hiperplanos são o que denominamos testemunhas de
+emaranhamento. Podemos analisar tal fato sob o ponto de vista de distâncias
+(ou valores esperados), i.e,Tr(Wρ), levando-nos a seguinte definição para os
+operadores testemunha:
+Definição2.4.
+Um operador hermitianoWé chamado testemunha de emaranhamento
+para um dado estado emaranhadoρseTr(Wρ)<0eTr(Wσ)≥0para todos os
+estados separáveisσ.
+Ao trabalharmos com testemunhas de emaranhamento muitas vezes es-
+tamos interessados em um grupo específico destes operadores, as chamadas
+testemunhas de emaranhamento óptimas,  OEW. Existem no entanto duas
+definições de OEW; a primeira, introduzida por Lewenstein [20], baseia-se na
+quantidade de estados detectados, ou seja, uma testemunha W é óptima se o
+conjuntoρde estados detectados é maximizado. A segunda definição, a qual
+6
+espaço de Hilbert de operadores limitados.
+24
+
+2.3.   Testemunhas de Emaranhamento
+Figure2.1: Ilustração esquemática do teorema de separação de Hans-Banach,
+assim como a OEW segundo a definição dada pela eq.2.46.
+utilizaremos no decorrer deste trabalho, refere-se a um estado quântico em
+particular:W
+o pt
+é testemunha óptima em relação ao estadoρse
+Tr(W
+o pt
+ρ) =min
+W∈M
+Tr(Wρ)(2.46)
+,ondeMrepresenta  um  subconjunto  compacto  do  conjunto  das  testemunhas  de
+emaranhamentoW.
+A  escolha  do  conjuntoMdetermina  diferentes  medidas  de  emaran-
+hamento  importantes  [8],  mostrando  como  as  OEW  podem  ser  utilizadas
+como ferramenta não só para detecção, mas também como quantificadores de
+emaranhamento. A definição destes quantificadores é dada por:
+E(ρ) =max(0,−min
+W∈M
+Tr(Wρ))(2.47)
+Analisaremos o caso específico da utilização destes quantificadores para a
+medida das robustezas de um estado quântico.
+2.3.1Robustezas (via testemunhas de emaranhamento)
+Conforme definida anteriormente, a medida de robusteza generalizada do
+emaranhamento de um estado quântico,R
+g
+(ρ), correponde a mistura mínima
+necessária para tornar o estado separável; mais precisamente, o valor mínimo
+destal que
+ρ+sφ
+1+s
+,(2.48)
+seja um estado separável, ondeφé um estado qualquer. Sabe-se no entanto
+que é possível calculá-la utilizando testemunhas de emaranhamento a partir
+da equação2.47, ondeM={W∈W|W≤I}[8].
+25
+
+2.3.   Testemunhas de Emaranhamento
+Para mostrar que tal abordagem é possível, iremos utilizar dos conceitos de
+dualidade Lagrageana da teoria de optimização convexa
+7
+, analisando desta
+forma o problema sob duas abordagens distintas, denominadas problemas
+primal e dual. O problema primal consiste na abordagem sob testemunhas de
+emaranhamento, ou seja,
+minimizeTr(Wρ)
+sob os vínculosW≤I(2.49)
+Tr(Wσ)≥0 ,∀σ∈S
+O Lagrangeano deste problema é dado por
+L(W,X,h(σ)) =Tr(Wρ) +Tr[X(W−I)]−
+∫
+σ∈S
+h(σ)Tr(Wσ)dσ(2.50)
+A  partir  do  Lagrangeano  podemos  obter  a  função  dual  de  Lagrange
+g(X,h(σ)), dada pelo ínfimo sob o domínioW∈M. Vê-se que,
+g(X,h(σ))  =inf
+W∈M
+L(W,X,h(σ))
+=
+{
+−Tr(X),seTr W(ρ+X−
+∫
+σ∈S
+h(σ)σdσ) =0
+−∞,caso contrário
+A função dual é finita somente se a condição sobre o traço dada acima for
+satisfeita.  Sendo assim o problema dual , o qual consiste em maximizar a
+função dual sob seus vínculos, é dado por
+minimizeTr(X)
+sob os vínculosh(σ)≥0
+X≥0(2.51)
+ρ+X=
+∫
+σ∈S
+h(σ)σdσ
+DenominandoX=sρ
+M
+, ondeρ
+M
+é um estado qualquer es>0, vemos
+que o problema dual é equivalente a robusteza generalizada do estado dada
+por2.48.
+O mesmo procedimento pode também ser realizado nos casos da robusteza
+do emaranhamento e robusteza aleatória. Iremos nos contentar desta forma
+apenas em apresentar os resultados.
+A medida da robusteza aleatória de um estado quântico via testemunhas
+de emaranhamento é então dada por
+R
+a
+(ρ) =max(0,−min
+Tr(W)=1
+Tr(Wρ)),(2.52)
+e a robusteza do emaranhamento pode ser dada na forma
+R(ρ) =max(0,−min
+Tr(Wσ)≤1,∀σ∈S
+Tr(Wρ)),(2.53)
+7
+No apêndice B encontram-se as idéia principais sobre dualidade Lagrangeana e teoria de
+optimização convexa utilizadas neste capítulo. Um leitor mais interessado pode também consultar
+[7], sendo uma ótima referência do assunto.
+26
+
+2.3.   Testemunhas de Emaranhamento
+2.3.2SDP (Semi-definite-program)
+Apesar das testemunhas de emaranhamento constituírem uma ótima ferra-
+menta no estudo do emaranhamento quântico, existe no entanto uma grande
+dificuldade em determiná-las. Para isso utilizamos de métodos de optimiza-
+ção para classes de problemas conhecidos como programas semidefinidos
+SDP: problemas de optimização de um funcional linear sob vínculos convexos.
+Mais precisamente, dadoc,x,F
+i
+∈C
+m
+, a classe de problemas SDP consiste em:
+minimização dec
+†
+xsujeita a
+F
+†
+i
+x≥0 ,i=1,...,k(2.54)
+,onde o vetorcdetermina a função a ser minimizada,xé o vetor de variáveis
+de optimização e osF
+i
+representam os "k" vínculos convexos associados às
+variáveis.   Vale  ressaltar  aqui  que  a  solução  do  SDP,  por  tratar-se  de  um
+problema  de  optimização  convexa,  é  única,  ou  seja,  representa  o  mínimo
+global sobre a função a ser minimizada.
+Ve-se  desde  já  como  os  métodos  de  solução  de  um  SDP  pode  auxiliar
+na  obtenção  da  OEW,  visto  a  linearidade  da  função  a  ser  minimizada  na
+Eq.(2.47) juntamente com seus vínculos. A obtenção das OEW e das medidas
+de emaranhamento por testemunhas utilizando SDPs foram abordadas de
+diversas formas diferentes na literatura cientíca[10,9,12,11,16]; neste trabalho
+nos concentraremos no método proposto por Brandao e Vianna[10].
+A idéia central a este método pode ser dada da seguinte forma:
+Teorema2.5.
+Um estadoρ∈(H
+1
+⊗···⊗H
+n
+)é emaranhado se e somente se o
+valor óptimo do seguinte problema for negativo:
+minimize Tr(Wρ)sujeito a
+d
+n−1
+∑
+i
+n−1
+=1
+···
+d
+1
+∑
+i
+1
+=1
+d
+1
+∑
+j
+1
+=1
+···
+d
+n−1
+∑
+j
+n−1
+=1
+(a
+∗
+i
+n−1
+···a
+∗
+i
+1
+a
+j
+1
+···a
+j
+n−1
+)W
+i
+n−1
+···i
+1
+j
+1
+···j
+n−1
+≥0,
+∀a
+i
+k
+∈C,1≤k≤(n−1),(2.55)
+onded
+k
+é a dimensão deH
+k
+,W
+i
+n−1
+···i
+1
+j
+1
+···j
+n−1
+=
+n−1
+〈
+i
+|
+⊗···⊗
+1
+〈
+i
+|
+W
+|
+j
+〉
+1
+⊗···⊗
+|
+j
+〉
+n−1
+∈HS(H
+n
+)
+e
+|
+j
+〉
+k
+é uma base ortonormal no espaçoH
+k
+. Seρfor emaranhado,
+a matriz W que minimiza o problema corresponde a OEW deρ.
+Proof.Sabe-se  que  um  estado  é  emaranhado  se  e  somente  se  existir  um
+operador testemunhaWtal queTr(Wρ)<0eTr(Wσ)>0para todos os
+separáveis. Seja um estado separável geralσ
+1,···,n
+∈(H
+1
+⊗···⊗H
+n
+)dado na
+forma
+σ
+1,···,n
+=
+∑
+i
+p
+i
+|
+φ
+i
+〉
+1
+〈
+φ
+i
+|
+⊗···⊗
+|
+φ
+i
+〉
+n
+〈
+φ
+i
+|
+,(2.56)
+27
+
+2.3.   Testemunhas de Emaranhamento
+então a condição de positividade da testemunha sobre os separáveis pode ser
+escrita da forma
+n
+〈
+φ
+|
+⊗
+n−1
+〈
+φ
+|
+⊗···⊗
+1
+〈
+φ
+|
+W
+|
+j
+〉
+1
+⊗···⊗
+|
+φ
+〉
+n−1
+︸
+︷︷︸
+Funcional∈HS(H
+n
+)
+⊗
+|
+φ
+〉
+n
+≥0,∀
+|
+φ
+〉
+k
+∈H
+k
+(2.57)
+Note  no  entanto  que  a  positividade  do  funcional  assinalado  acima  é
+suficiente para satisfazer a desigualdade. Considerando
+|
+φ
+〉
+k
+=
+∑
+j
+a
+j
+k
+|
+j
+〉
+k
+, onde
+|
+j
+〉
+k
+é uma base ortonormal do espaçoH
+k
+, segue diretamente que a matrizW
+solução do problema corresponde a uma testemunha de emaranhamento, e
+sua optimização corresponde a OEW deρ.
+O problema de optimização dado pelo teorema acima é de difícil resolução
+devido  à  imposição  dos  infinitos  vínculos,  sendo  computacionalmente  in-
+tratável. Problemas de optimização convexa deste tipo são conhecidos como
+programas semidefinidos robustos, RSDP. Sabe-se no entanto que é possível
+realizar uma relaxação deste aproximando-o em termos de um SDP, o qual
+pode ser solucionado de forma eficiente.
+Uma possível relaxação é a denominada relaxação probabilística, onde
+os  infinitos  vínculos  são  trocados  por  um  número  finito  deles  (amostras),
+escolhidos de acordo com alguma distribuição de probabilidadeP.  Desta
+forma, nosso operador testemunha obtido é tal que satisfaz a maioria dos
+vínculos dados pela eq.2.55, a menos de uma probabilidadeede violação,
+ou seja, de queTr(Wσ)<0.  Esta probabilidade de violação será tão menor
+quanto maior for o número de amostras fornecidas.
+28
+
+CAPÍTULO
+3
+Emaranhamento em Sistemas
+de Partículas Indistinguíveis
+A quantificação e a busca por uma melhor compreensão acerca do emaran-
+hamento em sistemas quânticos compostos apresenta-se como um dos grandes
+desafios da teoria quântica moderna. Apesar de ser um assunto amplamente
+estudado em sistemas cujas partículas estão macroscopicamente separadas
+uma das outras, sendo desta forma distinguíveis, muito pouca atenção foi
+dada ao caso onde essa separação é muito pequena, tal que o overlap entre
+suas funções de onda não mais seja desprezível.  Para estes casos temos en-
+tão de levar em conta a indistinguibilidade das partículas, sendo o espaço
+de estados quânticos restrito ao subspaços simétricos ou anti-simétricos do
+espaço de Hilbert, dependendo de sua natureza bosônica ou fermiônica.  O
+estudo  do  emaranhamento  em  sistemas  de  partículas  indistinguíveis  vem
+sendo, no entanto, um assunto de grandes controvérsias, gerando diferentes
+abordagens em relação a seu tratamento.  Dentre as mais mencionadas (e
+talvez as mais bem fundamentadas) temos: emaranhamento de modos [34],
+emaranhamento  de  partículas  [32]  e  as  correlações  quânticas  [13].  Iremos
+então, neste capítulo, analisar tais medidas tentando apresentar de forma clara
+suas principais caracteristicas e fundamentações.
+3.1O Espaço de Fock
+Quando lidamos com sistemas de partículas indistinguíveis é conveniente
+utilizarmos  um  formalismo  matemático  diferente  do  usual,  denominado
+formalismo  de  "segunda  quantização",  no  qual  é  introduzido  uma  nova
+álgebra de operadores (operadores de criação e aniquilação) e seu respectivo
+espaço de estados (espaço de Fock). Vejamos melhor como tais conceitos são
+definidos.
+29
+
+3.1.   O Espaço de Fock
+O espaço de estados de N partículas cada qual com dimensão da base igual
+aKé dado pelo espaço de HilbertH
+T
+=H
+(K)
+1
+⊗···⊗H
+(K)
+N
+. Para todo espaço
+de Hilbert da forma anterior, existem corespondentes subspaços simétricos
+ou  anti-simétricos  sob  permutação  de  suas  partículas;  mais  precisamente,
+definindo os operadores de simetrização "S" e anti-simetrização "A" por,
+S=
+1
+N!
+(I+P),(3.1)
+A=
+1
+N!
+(I−P),(3.2)
+ondeNcorresponde ao número de partículas,Ié o operador identidade eP
+o operador permutação; temos que os subspaços representam a projeção do
+espaço de Hilbert sob a aplicação de tais operadores.  Desta forma, estados
+simétricos e anti-simétricos sob permutação de suas partículas são tais que
+SρS
+†
+=ρeAρA
+†
+=ρ, respectivamente.
+Sabemos no entanto que, ao lidarmos com partículas indistinguíveis, nosso
+espaço de estados são restritos ao subspaços conforme definidos acima, de-
+pendendo apenas da natureza bosônica ou fermiônica das partículas. Sendo
+assim,  o  formalismo  de  segunda  quantização  constitui  essencialmente  na
+representação destes subspaços, os quais são denominados espaços de Fock
+(F
+K
+N
+), introduzindo-se uma álgebra de operadores com as seguintes relações
+de (anti-)comutação:
+{f
+i
+,f
+j
+}={f
+†
+i
+,f
+†
+j
+}=0,{f
+i
+,f
+†
+j
+}=δ
+ij
+;(3.3)
+[
+b
+i
+,b
+j
+]
+=
+[
+b
+†
+i
+,b
+†
+j
+]
+=0,
+[
+b
+i
+,b
+†
+j
+]
+=δ
+ij
+;(3.4)
+ondef
+†
+i
+(f
+i
+)eb
+†
+i
+(b
+i
+)são os operadores de criação (aniquilação) fermiônicos e
+bosônicos, respectivamente, de forma que sua atuação sobre o estado vácuo,
+|
+0
+〉
+, cria (aniquila) uma partícula no estado "i". O estado vácuo é definido de
+forma quef
+i
+|
+0
+〉
+=0 oub
+i
+|
+0
+〉
+=0.
+Veremos um exemplo simples de um sistema de partículas indistinguíveis
+fermiônicas  a  fim  de  ilustrar  o  formalismo  de  segunda  quantização,  mas
+que nos será também bastante útil nas próximas seções, ao analisarmos as
+consequências da indistinguibilidade sobre as medidas de emaranhamento.
+Considere  então  o  caso  de  dois  elétrons  localizados  em  dois  poços  de
+potencial, onde denominaremos por
+|
+↑
+〉
+,
+|
+↓
+〉
+os autoestados do operador de
+spinσ
+z
+, e
+|
+χ
+〉
+e
+|
+φ
+〉
+representam funções de onda espaciais localizadas nos
+poços  de  potencial  da  esquerda  e  direita,  respectivamente.   Seja  o  estado
+inicial em que cada poço contém apenas um elétron e os poços estão demasi-
+adamente separados, ou a barreira de potencial encontra-se suficientemente
+alta, de forma que o overlap entre as funções de onda espaciais
+〈
+χ
+|
+φ
+〉
+seja
+desprezível.  Neste caso podemos claramente tratar os elétrons como duas
+partículas distinguíveis. Considere então que as partículas foram preparadas
+independentemente uma da outra, de forma que o estado inicial seja dado por
+um estado quântico puro separável,
+|
+ψ
+I N IC I AL
+〉
+=
+|
+χ
+〉|
+↑
+〉
+A
+⊗
+|
+φ
+〉|
+↓
+〉
+B
+, ondeAe
+30
+
+3.1.   O Espaço de Fock
+Figure3.1: O estado inicial
+|
+ψ
+I N IC I AL
+〉
+=
+|
+χ
+〉|
+↑
+〉
+A
+⊗
+|
+φ
+〉|
+↓
+〉
+B
+, onde as partículas
+A e B são distinguíveis uma da outra,  ou seja,  o overlap
+〈
+χ
+|
+φ
+〉
+entre suas
+funções de onda espaciais é desprezível.
+Bindicam as partículas da esquerda e da direita, respectivamente. A situação
+é ilustrada na fig.3.1
+Se diminuirmos a barreira de potencial, ou aproximarmos os poços de
+potencial, as partículas indicadas porAeBpoderão tunelar entre os poços
+e existe uma probabilidade de encontrar qualquer uma delas em qualquer
+um dos poços, ou seja, o overlap entre as funções de onda espaciais
+〈
+χ
+|
+φ
+〉
+não mais é desprezível;  neste caso, devemos levar em conta as estatísticas
+fermiônicas devido a indistinguibilidade das partículas,  sendo seu estado
+antissimetrizado dado por
+|
+ψ)(t
+1
+)
+〉
+=
+1
+√
+2
+(
+|
+χ
+〉|
+↑
+〉
+1
+⊗
+|
+φ
+〉|
+↓
+〉
+2
+−
+|
+φ
+〉|
+↓
+〉
+1
+⊗
+|
+χ
+〉|
+↑
+〉
+2
+)
+,(3.5)
+onde os índicesAeBagora foram trocados pelos índices "1" e "2" para reforçar
+que a enumeração de partículas individuais não mais possui significado físico,
+desde  que  elas  não  são  mais  acessíveis  independentemente.   Utilizando  o
+formalismo de segunda quantização, a representação do estado é dada por
+|
+ψ(t
+1
+)
+〉
+=f
+†
+χ↑
+f
+†
+φ↓
+|
+0
+〉
+; estados desta forma são denominados estados com único
+determinante de Slater. A situação é ilustrada na fig.3.2.
+Figure3.2:  O estado
+|
+ψ(t
+1
+)
+〉
+=f
+†
+χ↑
+f
+†
+φ↓
+|
+0
+〉
+, após a diminuição da barreira de
+potencial,  onde devemos levar em conta agora o caráter indistinguível da
+partículas.
+Poderíamos  no  entanto  aplicar  um  pulso  de  tunelamento  no  sistema,
+aumentando  e  diminuindo  exponencialmente  a  barreira  de  potencial,  de
+forma a criar um acoplamento dependente do tempoJ(t)entre os spins das
+partículas.  Em [27] Schliemann et al.  mostram que é possível realizar tal
+operação de forma que os spins sofram um
+√
+SWAPapós o pulso, sendo seu
+31
+
+3.2.   Emaranhamento de modos
+estado final dado por (a situação é ilustrada na fig.3.3),
+|
+ψ(t
+2
+)
+〉
+=
+1
+√
+2
+(
+f
+†
+χ↑
+f
+†
+φ↓
++f
+†
+χ↓
+f
+†
+φ↑
+)
+|
+0
+〉
+(3.6)
+Figure3.3:  O  estado
+|
+ψ(t
+2
+)
+〉
+=
+1
+√
+2
+(
+f
+†
+χ↑
+f
+†
+φ↓
++f
+†
+χ↓
+f
+†
+φ↑
+)
+|
+0
+〉
+,  após  a  operação
+√
+SWAP.
+O  estado  acima  é  um  estado  descrito  por  dois  deteminantes  de  Slater,
+visto que não existe uma base de operadores fermiônicos tal que o descreva
+utilizando apenas um único determinate de Slater; mais precisamente, não
+existe uma base{a
+†
+i
+}de operadores fermiônicos tal que o estado possa ser
+descrito na forma
+|
+ψ
+〉
+=a
+†
+i
+a
+†
+j
+|
+0
+〉
+.
+3.2Emaranhamento de modos
+Analisaremos primeiro a abordagem sobre emaranhamento em sistemas de
+partículas indistinguíveis realizada por Zanardi [34], a qual baseia-se essencial-
+mente na representação dos estados quânticos sobre seus modos de ocupação,
+daí a denominação emaranhamento de modos.
+Consideraremos novamente o caso anterior dos poços de potencial a fim
+de exemplificar tal abordagem, tornando assim mais clara sua definição para o
+caso geral. Vejamos o exemplo do estado após realizada a operação
+√
+SWAP,
+dado pela eq.3.6,
+|
+ψ
+〉
+=
+1
+√
+2
+(f
+†
+χ↑
+f
+†
+φ↓
++f
+†
+χ↓
+f
+†
+φ↑
+);
+poderíamos, no entanto, representá-lo por uma base de número de ocupação
+de seus modos, definida da seguinte forma
+{
+∣
+∣
+n
+χ↑
+,n
+χ↓
+,n
+φ↑
+,n
+φ↓
+〉
+,
+∑
+n
+iσ
+=N
+}
+,
+onden
+iσ
+representa o número de partículas nos modos. O estado então teria
+a forma
+|
+ψ
+〉
+=
+|
+1,0,0,1
+〉
++
+|
+0,1,1,0
+〉
+√
+2
+.
+32
+
+3.2.   Emaranhamento de modos
+O ponto central da análise segue agora da observação de que, os estados
+como dados por esta representação, claramente nos induz a uma associação
+com sistemas de q-bits, mas onde os q-bits representam na verdade os "modos"
+do sistema fermiônico. O estado associado seria então dado por,
+|
+ψ
+〉
+=
+(
+|
+1
+〉
+⊗
+|
+0
+〉
+⊗
+|
+0
+〉
+⊗
+|
+1
+〉
+) + (
+|
+0
+〉
+⊗
+|
+1
+〉
+⊗
+|
+1
+〉
+⊗
+|
+0
+〉
+)
+√
+2
+,
+e seu emaranhamento obtido por qualquer medida de emaranhamento para
+sistemas de q-bits, Vale lembrar que, devido a assoociação realizada entre
+os sistemas, o emaranhamento resultante dos q-bits correspondem na ver-
+dade  ao  emaranhamento  entre  os  modos  do  sistema.   Vê-se  também  que
+este  emaranhamento  é  completamente  correlacionado  a  forma  pela  qual
+representamos seus modos, onde poderíamos, por exemplo, representá-los
+desprezando o spin das partículas, sendo a base de número de ocupação dada
+por
+{
+∣
+∣
+∣
+n
+χ↑/χ↓
+,n
+φ↑/φ↓
+〉
+,
+∑
+n
+iσ
+=N
+}
+,  e o estado possuiria a forma de q-bits
+separável
+|
+ψ
+〉
+=
+|
+1
+〉
+⊗
+|
+1
+〉
+.
+No caso geral, um estado fermiônico ou bosônico arbitrário pertencente
+ao espaço de Fock comNpartículas e dimensão da base de partícula única
+igual aK(F
+K
+N
+) pode ser representado por uma base de números de ocupação
+da seguinte forma,
+|
+ψ
+〉
+=
+∑
+~
+n
+i
+c
+~
+n
+i
+|
+~
+n
+i
+〉
+,(3.7)
+|
+n
+1
+,···,n
+K
+〉
+=
+K
+∏
+l=1
+(c
+†
+l
+)
+n
+l
+|
+0
+〉
+.(3.8)
+onde
+~
+n= (n
+1
+,···,n
+K
+)
+é  o  conjunto  de  números  de  ocupação  para  osK
+modos do sistema (no caso de férmions os números são restritos a0,1devido
+ao princípio de exclusao de Pauli) ec
+†
+l
+são seus respectivos operadores de
+criação. O mapeamento do espaço de Fock sobre o espaço deKq-dits segue
+diretamente,
+Λ
+:
+F
+K
+N
+7−→(C
+(d)
+)
+⊗K
+(3.9)
+K
+∏
+l=1
+(c
+†
+l
+)
+n
+l
+|
+0
+〉
+7−→
+K
+⊗
+l=1
+|
+n
+l
+〉
+(3.10)
+onded=2 para partículas fermiônicas ed=Npara o caso bosônico.
+Vê-se ,no entanto, que o mapa como dado acima não é bijetivo, visto que
+existem estados no espaço deKq-dits os quais não possuem correspondentes
+sobre o espaço de Fock, i.e, tais espaços não são isomorfos. O isomorfismo dos
+espaços pode ser realizado ao considerarmos espaços de Fock com número
+de partículas variáveis, ou seja, considerando o mapa fermiônico da forma,
+33
+
+3.3.   Emaranhamento de partículas
+Λ
+f
+:
+(K)
+⊕
+n=0
+F
+K
+n
+7−→(C
+(2)
+)
+⊗K
+(3.11)
+K
+∏
+l=1
+(c
+†
+l
+)
+n
+l
+|
+0
+〉
+7−→
+K
+⊗
+l=1
+|
+n
+l
+〉
+,    ,n
+l
+=0,1;(3.12)
+e bosônico
+Λ
+b
+:
+(N)
+K
+⊕
+n=0
+F
+K
+n
+7−→(C
+(N)
+)
+⊗K
+(3.13)
+K
+∏
+l=1
+(c
+†
+l
+)
+n
+l
+|
+0
+〉
+7−→
+K
+⊗
+l=1
+|
+n
+l
+〉
+,    ,n
+l
+=0,...,N;(3.14)
+Por meio então deste isomorfismo podemos estudar o emaranhamento
+de  sistemas  de  partículas  indistinguíveis  estudando  o  emaranhamento  de
+sistemas de q-dits, lembrando que o emaranhamento posto desta forma está
+completamente correlacionado à representação dos modos utilizada.
+3.3Emaranhamento de partículas
+Uma  outra  abordagem  ao  problema  é  realizada  por  Wisemann  e  Vaccaro
+[32], onde quantificam o emaranhamento entre duas partes que compartilham
+um sistema de partículas indistinguíveis. Sua abordagem consiste essencial-
+mente no conceito de emaranhamento dos modos, conforme definido na seção
+anterior, mas ressaltando que tal medida não consiste verdadeiramente no
+emaranhamento disponível do sistema quântico, visto que, a fim de utilizá-lo
+por inteiro, deveríamos ser capazes de realizar operações arbitrárias sobre
+os modos do sistema, e no entanto tais operações são proibidas devido às
+regras de superseleção (SSR) para o número de partículas do sistema. Vejamos
+então quais os efeitos da imposição de SSR ao emaranhamento de um sis-
+tema quântico, apresentando o teorema geral obtido por Bartllet e Wisemann
+[3], e obtendo desta forma, como um caso particular, a medida de emaran-
+hamento proposta por Wisemann e Vaccaro, denominada "emaranhamento
+de partículas".
+Regras de Superseleção - SSR’s.O entendimento das SSR é geralmente
+expresso como a existência de determinadas "restrições sobre a natureza".
+Operacionalmente, uma regra de superseleção é dada pela restrição sobre as
+operações físicas permitidas sobre o sistema, sejam elas a preparação, evolução
+(fechada ou aberta), medida, etc. Formalmente, sua definição pode ser dada
+como segue.
+Considere{ε}
+CP
+como sendo o conjunto de operações físicas que atuam
+sobre o sistema quânticoH
+T
+, formado pelo grupo de mapas completamente
+positivos "trace-preserving". Representemos agora um determinado grupoG
+de transformações físicas agindo no sistema pelas unitáriasT. Define-se desta
+forma as operaçõesO ∈{ε}
+CP
+como sendoG-covariantcaso
+O[T(g)ρT
+†
+(g)] =T(g)O[ρ]T
+†
+(g),∀g∈G,∀ρ∈H
+T
+.(3.15)
+34
+
+3.3.   Emaranhamento de partículas
+A  regra  de  superseleção  associada  com  o  grupo  G,  ouG-SSR,  é  então
+determinada  pela  restrição  sobre  as  operações  físicas  permitidas  sobre  o
+sistema por aquelas que sejamG-covariant. Vejamos um exemplo simples de
+uma regra de superseleção.
+Exemplo:  SSR - Número de Partículas:
+1
+SejaGo  grupo  de  Lie  uni-
+dimensionalU(1)gerado  pelo  operador  hermitiano
+ˆ
+N,  i.e,  o  grupo  cuja
+representação  unitária  possui  a  formaT(φ) =e
+iφ
+ˆ
+N
+.   Se
+ˆ
+N
+for  o  operador
+número de partículas então aU(1)-SSRé usualmente conhecida por SSR para
+o número de partículas. Vê-se desta forma, como uma das consequências da
+SSR, que a restrição sobre as operações físicas permitidas como sendo apenas
+aquelasG-covariantimpossibilitam a geração, ou mesmo a medição da fase
+relativa, de superposições coerentes de estados com diferentes número de
+partículas (autoestados do operador
+ˆ
+N).
+Não é dificil de perceber, assim como mostra o exemplo acima, que as
+restrição  impostas  pelas  SSR  nos  incapacitará  de  distinguir  determinados
+estados. De forma geral, dadoG-SSR, o estadoρserá indistinguível do estado
+T(g)ρT
+†
+(g),∀g∈G. Sendo assim, definimos o estado invariante ao grupo G,
+ouG-invariant, por
+G[ρ] =
+∫
+G
+T(g)ρT
+†
+(g)dg,(3.16)
+ondedgé a medida de grupo invariante (medida de Haar).
+Vejamos novamente o exemplo da SSR para o número de partículas. Con-
+sidere um sistema quântico possuindo um único modo; seja então o estado
+|
+ψ
+〉
+dado por uma superposição coerente dos autoestados de
+ˆ
+N, da seguinte
+forma,
+|
+ψ
+〉
+=
+∞
+∑
+n=0
+c
+n
+|
+n
+〉
+;
+∞
+∑
+n=0
+|
+c
+n
+|
+2
+=1.(3.17)
+O correspondente estadoG-invarianté dado por,
+1
+Partículas são aqui definidas como entidades físicas discretas as quais são indistinguíveis de
+outras partículas do mesmo tipo.
+35
+
+3.3.   Emaranhamento de partículas
+G[ρ]  =
+2π
+∫
+0
+dφ
+2π
+e
+iφ
+ˆ
+N
+ρe
+−iφ
+ˆ
+N
+(3.18)
+=
+2π
+∫
+0
+dφ
+2π
+∑
+i,j
+e
+iφn
+i
+P
+n
+i
+ρP
+†
+n
+j
+e
+−iφn
+j
+;(P
+n
+i
+=
+|
+n
+i
+〉〈
+n
+i
+|
+);(3.19)
+=
+∑
+i,j
+P
+n
+i
+ρP
+†
+n
+j
+
+
+2π
+∫
+0
+dφ
+2π
+e
+iφ(n
+i
+−n
+j
+)
+
+
+︸
+︷︷︸
+δ
+n
+i
+,n
+j
+(3.20)
+=
+∑
+i
+P
+i
+ρP
+†
+i
+.(3.21)
+Vemos desta forma que, na presença de SSR, a superposição dos autoesta-
+dos de
+ˆ
+Né operacionalemente equivalente a uma mistura destes autoestados.
+Voltemos agora a questão de como o emaranhamento deve ser reavaliado
+em vista da imposição de SSR ao sistema quântico. Apresentaremos a análise
+realizada para sistemas bipartites.
+Considere  a  imposição  de  uma  SSR  a  um  sistema  bipartite  (A,B)  :  as
+operações físicaslocaissão desta forma restritas pela relação de covariância
+(eq.3.15).   O  estadoG-invarianté  agora  dado  porG[ρ
+AB
+] = (G
+A
+⊗G
+B
+)[ρ].
+Suponha  que,  em  adição  ao  sistema  quântico,  as  partesAeBcada  uma
+possua um registrador quântico com espaço de Hilbert de dimensão maior
+ou igual a seus respectivos subsistemas (os registradores quânticos podem
+ser realizados, por exemplo, por q-dits sobre os quais as partes possuam um
+completo controle).  Considere também que os registradores encontram-se
+inicialmente  em  um  estado  separável  e  as  operações  sobre  eles  não  estão
+sujeitas as SSR. A quantificação do emaranhamento para o estadoρ
+AB
+é então
+definida como a quantidade máxima de emaranhamento que as partes podem
+produzir  entre  seus  registradores  quânticos  utilizando  LOCC;  e  podendo
+esta última ser quantificada utilizando qualquer medida de emaranhamento
+padrão.
+Definido o emaranhamento da forma acima, eis então o importante teo-
+rema obtido por Bartllet e Wisemann[3] para a sua quantificação.
+Teorema3.1.O emaranhamentoE
+G−SSR
+(ρ
+AB
+)que as partesAeBpodem produzir
+entre seus registradores quânticos a partir do estadoρ
+AB
+, utilizando LOCC restritas
+por uma G-SSR, é dado pelo emaranhamentoE(G[ρ
+AB
+])que eles podem produzir
+entre seus registradores quânticos a partir do estadoG[ρ
+AB
+], utilizando LOCC (sem
+restrições). A medida E é uma medida de emaranhamento padrão.
+A abordagem do emaranhamento em sistemas de partículas indistinguíveis
+realizada por Wiseman e Vacaro segue diretamente das idéias apresentadas
+acima. Em seu trabalho alertam que o emaranhamento de modos (E
+M
+) não
+leva em conta a SSR para o número de partículas pois, para que realmente
+possamos utilizá-lo, as partesAeBdeveriam ser capazes de realizar operações
+36
+
+3.4.   Correlações Quânticas
+locais arbitrárias. Desta forma, o emaranhamento dos modos superestima o
+verdadeiro emaranhamento disponível do sistema, o qual denominam por
+"emaranhamento de partículas" (E
+p
+).
+Utilizando do teorema3.1, podemos facilmente obterE
+P
+como um caso
+particular. De modo análogo ao caso exemplificado anteriormente (eq.3.21),
+teremos agora que o estadoG-invariantcorrespondende a uma mistura de
+estados com número de partículaslocaisfixas.  E sendo assim, a medida de
+emaranhamento será dada por,
+E
+P
+(ρ
+AB
+) =
+N
+∑
+n
+A
+=0
+E
+M
+(
+P
+n
+A
+,n
+B
+ρ
+AB
+P
+†
+n
+A
+,n
+B
+)
+(3.22)
+ondeP
+n
+A
+,n
+B
+corresponde ao projetor sobre o subspaço com número de partícu-
+las locaisn
+A
+en
+B
+= (N−n
+A
+).
+3.4Correlações Quânticas
+As abordagens anteriores foram realizadas basicamente sobre o espaço de
+modos do sistema. Ao tentarmos ,no entanto, analisar o emaranhamento pela
+maneira convencional, utilizando a estrutura tensorial do espaço onde suas
+partições correspondem aos espaços das partículas individualmente, vemos
+desde  já  sua  impossibilidade  para  sistemas  de  partículas  indistinguíveis.
+Visto  que  o  espaço  de  estados  agora  é  restrito  apenas  aos  subspaços  anti-
+simétrico ou simétrico do espaço de Hilbert, ou seja, ao espaços de Fock, tais
+espaços não possuem uma partição em produtos tensorial associada a suas
+partículas (assim como era de se esperar, visto que lidamos com partículas
+"indistinguíveis"). Grosseiramente, temos a seguinte distinção,
+·Partículas Distinguíveis:H
+T
+=H
+d
+1
+⊗···⊗H
+d
+N
+(3.23)
+·Partículas Indistinguíveis:F
+d
+N
+6=F
+d
+1
+⊗···⊗F
+d
+1
+(3.24)
+Para analisarmos então o emaranhamento das partículas nestes espaços de
+Fock, os quais como se vê possuem estruturas singulares, iremos utilizar o
+conceito de "correlações quânticas", introduzido por Schliemann et.al.[13]. Tal
+conceito baseia-se essencialmente no preceito de que a mera (anti-)simetrização
+do estado devido a indistinguibilidade de suas partículas não deve ser con-
+siderada uma operação geradora de emaranhamento, ou seja, as correlações
+geradas entre as partículas por tais operações não devem ser interpretadas
+verdadeiramente como o emaranhamento.
+Considere,  por  exemplo,  o  caso  simples  de  estados  de  dois  férmions
+descritos por um único determinante de Slater,
+|
+ψ
+〉
+=
+1
+√
+2
+(
+|
+φ
+〉
+⊗
+|
+χ
+〉
+−
+|
+χ
+〉
+⊗
+|
+φ
+〉
+),(3.25)
+onde
+|
+φ
+〉
+e
+|
+χ
+〉
+correspondem a funções de onda ortonormais. É fácil perceber
+neste  caso  que  a  anti-simetrização  das  coordenadas  certamente  irá  gerar
+37
+
+3.4.   Correlações Quânticas
+correlações entre os férmions; tais correlações, segundo a teoria de Hartree-
+Fock são denominadas de "contribuições de troca". Ao considerarmos estados
+descritos por mais de um determinante de Slater, claramente outras correlações
+adicionais irão surgir no sistema.  Serão então tais correlações adicionais as
+interpretadas como o análogo do emaranhamento quântico em sistemas de
+partículas distinguíveis, denominadas agora por "correlações quânticas".
+Lembrando do exemplo dado no início do capítulo, dos poços de potencial,
+podemos  ter  uma  idéia  mais  clara  das  possíveis  motivações  para  a  inter-
+pretação destas "correlações quânticas" como análogas ao emaranhamento
+quântico.  Vimos que o estado após o processo de
+√
+SWAP(eq.3.6) passa a
+ser descrito por dois determinantes de Slater e, de acordo com a definição
+então, corresponde a um estado emaranhado. As correlações adicionais destes
+estados podem, no entanto, serem vistas como "correlações úteis" desde que,
+se localizarmos as partículas novamente, seja aumentando a barreira de poten-
+cial ou separando os poços, de modo que o overlap entre as funções espaciais
+〈
+χ
+|
+φ
+〉
+seja desprezível, teremos duas partições X e Y do espaço de Hilbert
+correspondendo as partículas individualmente. As partições serão formadas
+por
+X={
+|
+χ
+〉|
+↑
+〉
+,
+|
+χ
+〉|
+↓
+〉
+},Y={
+|
+φ
+〉|
+↑
+〉
+,
+|
+φ
+〉|
+↓
+〉
+}.
+E o estado final será dado por,
+|
+ψ
+F I N AL
+〉
+=
+1
+√
+2
+(
+|
+χ
+〉|
+↑
+〉
+X
+⊗
+|
+φ
+〉|
+↓
+〉
+Y
++
+|
+χ
+〉|
+↓
+〉
+X
+⊗
+|
+φ
+〉|
+↑
+〉
+Y
+)
+(3.26)
+o qual corresponde a um estado de dois q-bitsmaximamente emaranhado, ou
+melhor, ao estado de Bell
+|
+ψ
++
+〉
+.
+Apresentaremos agora alguns dos métodos propostos a fim de se carac-
+terizar e quantificar as correlações quânticas.
+3.4.1Decomposição de Slater
+Assim como no caso de partículas distinguíveis, onde apresentamos a De-
+composição de Schmidt para estados puros bipartites arbitrários, é também
+possível realizar uma decomposição análoga para sistemas de partículas indis-
+tinguíveis. Tal decomposição é denominada Decomposição de Slater, e pode
+ser utilizada a fim de se caracterizar as correlações quânticas em tais sistemas.
+Vejamos os casos fermiônico e bosônico separadamente.
+·Caso Fermiônico
+Um  estado  arbitrário  de  um  sistema  de  dois  férmions  indistinguíveis,
+pertencente ao espaço de FockF
+d
+2
+, pode ser dado na forma,
+|
+ψ
+〉
+=
+d
+∑
+i,j
+w
+ij
+f
+†
+i
+f
+†
+j
+|
+0
+〉
+;(3.27)
+ondeWé uma matriz anti-simétrica ef
+†
+i
+são os operadores de criação fer-
+miônicos. A normalização do estado é dada porTr(W
+†
+W) =
+1
+2
+.
+38
+
+3.4.   Correlações Quânticas
+Utilizando as propriedades de matrizes anti-simétricas, conforme dadas
+no apêndice A (teorema.A.3), vê-se ser sempre possível encontrar uma base
+de operadores fermiônicos de forma que a matriz seja diagonal em blocos.
+Mais precisamente, existe uma base de operadores de criação{a
+†
+i
+},
+a
+†
+i
+=
+d
+∑
+j=1
+U
+ji
+f
+†
+j
+,(3.28)
+sendoUuma matriz unitária, de forma queW
+′
+=UWU
+T
+possui a forma
+diagonal em blocos, ou seja,
+W
+′
+=diag[Z
+1
+,...,Z
+r
+,Z
+0
+],Z
+i
+=
+(
+0z
+i
+−z
+i
+0
+)
+,(3.29)
+ondez
+i
+∈C, "r" é o rank da matriz eZ
+0
+é a matriz nula de tamanho(d−2r).
+Sendo assim, nesta base o estado possui a forma,
+|
+ψ
+〉
+=2
+r
+∑
+i
+z
+i
+a
+†
+(2i−1)
+a
+†
+2i
+|
+0
+〉
+,(3.30)
+onde a normalização do estado é dada por
+∑
+i
+|
+z
+i
+|
+2
+=
+1
+4
+.
+Vê-se que nesta base cada blocoZ
+i
+corresponde a um determinante de
+Slater elementar, sendo desta maneira os análogos de estados produto em
+sistemas de partículas distinguíveis. Temos ainda que tal decomposição do
+estado é tal que possui um número mínimo "r" de termos.  Um estado será
+então dito separável somente se o rank "r=1".
+A generalização da idéia para estados mistos segue definindo o "número
+de Slater" (análogo ao número de Schmidt).
+Definition3.2.Considere a matriz densidadeρe todas sua possíveis decomposições
+convexas em estados puros,ρ=
+∑
+i
+p
+i
+ρ
+r
+i
+, onde "r" representa o rank do estado puro.
+O número de Slater "k" é definido pork=min{r
+max
+}, onder
+max
+é o rank máximo
+da decomposição, e o mínimo é realizado sobre todas as possíveis decomposições.
+Em suma, o número de Slater de um estado misto corresponde ao rank
+mínimo necessário a fim de construí-lo.
+·Caso Bosônico
+O  mesmo  raciocínio  pode  ser  aplicado  ao  caso  bosônico.   Um  estado
+arbitrário de um sistema de dois bósons indistinguíveis, pertencente ao espaço
+de FockF
+d
+2
+, pode ser dado na forma,
+|
+ψ
+〉
+=
+d
+∑
+i,j
+v
+ij
+b
+†
+i
+b
+†
+j
+|
+0
+〉
+;(3.31)
+ondeVé uma matriz simétrica eb
+†
+i
+são os operadores de criação bosônicos.
+Utilizando agora as propriedades de matrizes simétricas, conforme dadas
+no apêndice A (teorema.A.3), vê-se ser sempre possível encontrar uma base de
+39
+
+3.4.   Correlações Quânticas
+operadores bosônicos de forma que a matriz seja diagonal. Mais precisamente,
+existe uma base de operadores de criação{c
+†
+i
+},
+c
+†
+i
+=
+d
+∑
+j=1
+U
+ji
+b
+†
+j
+,(3.32)
+sendoUuma  matriz  unitária,  de  forma  queV
+′
+=UVU
+T
+possui  a  forma
+diagonal, ou seja,
+W
+′
+=diag[z
+1
+,...,z
+r
+,0,...,0](3.33)
+ondez
+i
+∈Ce "r" é o rank da matriz. Sendo assim, nesta base o estado possui
+a forma,
+|
+ψ
+〉
+=
+√
+2
+r
+∑
+i
+z
+i
+c
+†
+i
+c
+†
+i
+|
+0
+〉
+,(3.34)
+e a normalização do estado é dada por
+∑
+i
+|
+z
+i
+|
+2
+=
+1
+2
+.
+Nesta base o estado é uma combinação de "permanentes de Slater" repre-
+sentando estados bosônicos duplamente ocupados.  Temos também que tal
+decomposição do estado é tal que possui um número mínimo "r" de termos.
+Um estado será então dito separável somente se o rank "r=1".
+A generalização para estados mistos dá-se da mesma forma que o caso
+fermiônico, ou seja, a partir da definição3.2para seu número de Slater.
+3.4.2Entropia de Von Neumann
+A partir da Decomposição de Slater podemos mostrar que a entropia de Von
+Neumann  da  matriz  densidade  reduzida  permanece  uma  boa  medida  de
+emaranhamento, mesmo ao tratarmos agora de sistemas de duas partículas
+indistinguíveis[23]. Analisemos novamente os casos fermiônico e bosônicos
+separadamente.
+·Caso Fermiônico
+A matriz densidade reduzidaρ
+r
+(não normalizada) é dada por,
+(ρ
+r
+)
+μν
+=
+〈
+0
+|
+f
+ν
+(
+d
+∑
+i=1
+f
+i
+ρf
+†
+i
+)
+f
+†
+ν
+|
+0
+〉
+(3.35)
+=
+d
+∑
+i=1
+〈
+0
+|
+f
+ν
+f
+i
+|
+ψ
+〉〈
+ψ
+|
+f
+†
+i
+f
+†
+ν
+|
+0
+〉
+=
+∑
+i
+〈
+0
+|
+τw
+μi
+|
+0
+〉〈
+0
+|
+w
+∗
+νi
+τ
+|
+0
+〉
+,(τ=±1)
+=τ
+2
+∑
+i
+w
+μi
+w
+∗
+νi
+=
+∑
+i
+w
+μi
+w
+∗
+iν
+=  (WW
+†
+)
+μν
+(3.36)
+40
+
+3.4.   Correlações Quânticas
+Sua normalização é obtida simplesmente porρ
+r
+7→2ρ
+r
+.
+#
+Utilizando agora
+a base diagonal da matrizW, segundo a Decomposição de Slater, temos que,
+ρ
+r
+=diag[Z
+1
+,...,Z
+r
+,Z
+0
+]×diag[Z
+†
+1
+,...,−Z
+†
+r
+,Z
+0
+]
+=diag(D
+1
+,...,D
+r
+,Z
+0
+),D
+i
+=
+(
+|
+z
+i
+|
+2
+0
+0
+|
+z
+i
+|
+2
+)
+.(3.37)
+A entropia de Von Neumann da matriz densidade reduzida é dada desta
+forma por,
+S(ρ
+r
+)  =−Tr(ρ
+r
+lnρ
+r
+)(3.38)
+=−
+r
+∑
+i=1
+4[
+|
+z
+i
+|
+2
+(ln 2+ln
+|
+z
+i
+|
+2
+)]
+=−4 ln 2
+∑
+i
+|
+z
+i
+|
+2
+︸︷︷︸
+1
+4
+−4
+∑
+i
+|
+z
+i
+|
+2
+ln
+|
+z
+i
+|
+2
+=−ln 2−4
+r
+∑
+i=1
+|
+z
+i
+|
+2
+ln
+|
+z
+i
+|
+2
+Vê-se então a dependência direta da medida com os determinantes de
+Slater  elementares  do  estado,  variando  deS=ln 2para  estados  sem  cor-
+relações quânticas aS=lnd
+E
+para estados maximamente correlacionados,
+onded
+E
+=doud−1caso  a  dimensão  das  partículas  seja  par  ou  ímpar,
+respectivamente.
+·Caso Bosônico
+A mesma análise vale para sistemas de dois bósons indistinguíveis, onde
+partindo de sua Decomposição de Slater pode-se encontrar a seguinte relação,
+S(ρ
+r
+) =−
+r
+∑
+i=1
+2
+|
+z
+i
+|
+2
+ln(2
+|
+z
+i
+|
+2
+)(3.39)
+Vê-se agora que a medida de entropia varia deS=0para estados não
+correlacionados aS=lndpara estados maximamente correlacionados.
+3.4.3Concorrência de Schliemann
+Medidas analíticas de correlação quântica foram também propostas em [13]
+como uma generalização da concorrência de Wotters [33] a qual, conforme
+apresentamos,  é  válida  para  sistemas  de  q-bits  distinguíveis.   Tal  medida
+proposta,  denominada  concorrência  de  Schliemann,  é  válida  nos  espaços
+fermiônicos e bosônicos de duas partículas de menor dimensão onde existam
+1
+# Vê-se da eq.3.36queTr(ρ
+r
+) =Tr(WW
+†
+) =
+1
+2
+, e sendo assim o estado normalizado é dado
+simplesmente por(ρ
+′
+r
+) =
+ρ
+r
+Tr(ρ
+r
+)
+=2ρ
+r
+.
+41
+
+3.4.   Correlações Quânticas
+estados emaranhados, ou seja, no espaço fermiônicoF
+4
+2
+=A(H
+(4)
+⊗H
+(4)
+)
+e
+no espaço bosônicoF
+2
+2
+=S(H
+(2)
+⊗H
+(2)
+).
+Sua obtenção segue de maneira similar ao raciocínio utilizado por Wooters,
+o  qual  já  fora  exaustivamente  demonstrado  no  capítulo  II  deste  trabalho.
+Sendo assim, nos absteremos das demontrações matemáticas concentrando-
+nos apenas na apresentação das definições fundamentais relacionados à me-
+dida.
+Vejamos primeiro o caso de sistemas fermiônicos. Define-seU
+ph
+como o
+operador de transformação partícula-buraco,
+U
+ph
+f
+†
+i
+U
+†
+ph
+=f
+i
+,U
+ph
+|
+0
+〉
+=
+d
+∏
+i=1
+f
+†
+i
+|
+0
+〉
+,(3.40)
+onde d=dimensão de partícula única,
+|
+0
+〉
+é o estado vácuo ef
+i
+,f
+†
+i
+são os
+operadores de aniquilação e criação fermiônicos, respectivamente. SejaKo
+operador anti-linear de conjugação complexa, o qual age da forma
+Kf
+†
+i
+K=f
+†
+i
+,Kf
+i
+K=f
+i
+,K
+|
+0
+〉
+=
+|
+0
+〉
+(3.41)
+Podemos então obter o operadorD=U
+ph
+K, denominado operador de
+dualização, o qual age de forma similar ao operador inversão temporal (ou
+"spin-flip", conforme eq.2.18). Sendo o estados dual
+ ̃
+ρ=DρD
+−1
+, temos que a
+concorrência de Schliemann para estadosρ∈A(H
+(4)
+⊗H
+(4)
+)é dada por
+C
+F
+(ρ) =max(0,λ
+6
+−λ
+5
+−λ
+4
+−λ
+3
+−λ
+2
+−λ
+1
+)(3.42)
+ondeλ
+′
+i
+ssão, em ordem decrescente, as raízes quadradas do valores singulares
+da matrizR=ρ
+ ̃
+ρ.
+Da mesma forma podemos obter a medida para o caso bosônico, onde o
+operador dualização é agora definido porD=RK, e o operadorRage da
+forma,
+Rb
+†
+i
+R
+†
+=
+2
+∑
+j=1
+σ
+y
+ji
+b
+†
+j
+(3.43)
+Sendo  então  o  estado  dual
+ ̃
+ρ=DρD
+−1
+,  temos  que  a  concorrência  de
+Schliemann para estadosρ∈S(H
+(2)
+⊗H
+(2)
+)é dada por
+C
+B
+(ρ) =max(0,λ
+4
+−λ
+3
+−λ
+2
+−λ
+1
+)(3.44)
+ondeλ
+′
+i
+s
+são, em ordem decrescente, as raízes quadradas do valores singulares
+da matrizR=ρ
+ ̃
+ρ.
+42
+
+CAPÍTULO
+4
+Testemunhas de
+Emaranhamento em Sistemas
+de Partículas Indistinguíveis
+Apresentaremos nesta seção maneiras de se quantificar as diferentes aborda-
+gens de emaranhamento em sistemas de partículas indistinguíveis descritas
+no capítulo anterior utilizando testemunhas de emaranhamento.  Veremos
+que no caso das medidas de Emaranhamento de Modos e Emaranhamento
+de  Partículas  a  utilização  dos  operadores  testemunha  para  quantificá-los
+segue de maneira trivial.  Já no caso das Correlações Quânticas o problema
+é mais delicado, onde obtemos resultados viáveis apenas para sistemas fer-
+miônicos, apresentando medidas com interpretações análogas as Robustezas.
+Analisando então o caso particular da Robusteza Generalizada, obtivemos
+resultados experimentais que nos mostraram a notável relação de equivalência
+entre tal medida e a Concorrência de Schliemann, as quais são iguais para
+estados puros, e no caso de estados mistos a Concorrência de Schliemann
+apresenta-se como um limite superior para a Robusteza Generalizada.
+Vejamos como são realizadas tais análises.
+4.1Emaranhamento de Modos, Emaranhamento de
+Partículas
+Conforme vimos, o Emaranhamento de Modos (E
+M
+) de um estado quântico
+é obtido através do mapa do espaço de Fock sobre o espaço de q-dits, dado
+pelas equações3.12,3.14. Sendo assim, sua determinação via operadores teste-
+munha pode ser dada utilizando qualquer método baseado em testemunhas
+de  emaranhamento  para  partículas  distinguíveis,  tais  como  as  robustezas
+exemplificadas no capítulo II.
+43
+
+4.2.   Correlações Quânticas
+Visto  que  o  Emaranhamento  de  Partículas  (E
+P
+)  está  inteiramente  rela-
+cionado aoE
+M
+, conforme a eq.3.22, seu cálculo por testemunhas de emaran-
+hamento segue da mesma forma.
+4.2Correlações Quânticas
+Conforme dito no capítulo II, o espaçoMdas testemunhas de emaranhamento
+são determinantes sobre a medida de emaranhamento (eq.2.47). Baseando-se
+nesta idéia iremos, nesta seção, obter uma estrutura particular a fim de quan-
+tificarmos as correlações quânticas em sistemas de partículas indistinguíveis
+fermiônicas.
+Ao lidarmos com sistemas de partículas fermiônicas, sabemos que o es-
+paço de estados corresponde ao espaço anti-simétricoA(H
+T
+). Nossa análise
+seguirá então da assimilação de que, assim como o espaço de estados possui
+tal  forma  singular,  o  espaçoMde  testemunhas  de  emaranhamento  deve
+também estar a par desta informação. Nosso vínculo será dado impondo que
+Mcorresponda ao espaço de testemunhas anti-simétricas. Vejamos que conse-
+quências tal restrição tem sobre as medidas de emaranhamento, considerando
+o caso particular da robusteza generalizada (eq.2.48).
+O espaço de testemunhas anti-simétricas é definido por,
+M
+A
+={W∈W|W≤I,W=AWA
+†
+}(4.1)
+A medida de emaranhamento calculada utilizando deste espaço de teste-
+munhas possui uma interpretação análoga à robusteza generalizada, conforme
+veremos; sendo assim a denominaremos porR
+A
+g
+.
+R
+A
+g
+=max(0,−min
+W∈M
+A
+Tr(Wρ))(4.2)
+Em  um  raciocínio  análogo  ao  realizado  na  seção2.3.1,  iremos  aplicar
+os conceitos de Lagrange duality da teoria de optimização convexa, a fim
+de  analisar  o  problema  dado  acima  (eq.4.1e4.2)  sob  suas  abordagens  de
+problemas primal e dual. O problema primal consiste em
+minimizeTr(Wρ)(4.3)
+sob os vínculosW≤I(4.4)
+Tr(Wσ)≥0 ,∀σ∈S(4.5)
+(4.6)
+O Lagrangeano deste problema é dado por
+L(W,X,h(σ)) =Tr(Wρ) +Tr[X(W−I)]−
+∫
+σ∈S
+h(σ)Tr(Wσ)dσ(4.7)
+44
+
+4.2.   Correlações Quânticas
+A  partir  do  Lagrangeano  podemos  obter  a  função  dual  de  Lagrange
+g(X,h(σ)), dada pelo ínfimo sob o domínioW∈M
+A
+. Vê-se que,
+g(X,h(σ))  =inf
+W∈M
+A
+L(W,X,h(σ))
+=
+{
+−Tr(X),seTr W(ρ+X−
+∫
+σ∈S
+h(σ)σdσ) =0
+−∞,caso contrário
+A  função  dual  é  desta  forma  finita  somente  se  a  condição  sobre  o  traço
+dada acima for satisfeita. Sendo assim o problema dual , o qual consiste em
+maximizar a função dual sob seus vínculos, é dado por
+minimizeTr(X)(4.8)
+sob os vínculosh(σ)≥0(4.9)
+X≥0(4.10)
+ρ
+A
++X
+A
+=
+∫
+σ∈S
+h(σ)σ
+A
+dσ(4.11)
+ondeρ
+A
+é o estado antisimetrizado (condição já satisfeita visto que estamos
+tratando de partículas fermiônicas),X
+A
+é um estado qualquer pertencente
+ao  espaço  anti-simétrico  eσ
+A
+corresponde  a  estados  dados  por  um  único
+determinante de Slater.  Desde queh(σ)≥0, a integral no lado direito da
+eq.4.11corresponde a um estado misto cujos estados puros possuem único
+determinante  de  Slater.   A  analogia  com  a  robusteza  generalizada  é  clara,
+onde temos agora que a mistura mínima é realizada sobre estados fermiônicos
+tal que resulte em um estado com número de Slaterk=1, o qual possue
+correlação quântica nula.
+Outras  medidas  também  podem  ser  diretamente  obtidas  pelo  mesmo
+procedimento,  levando  a  interpretações  similares,  tais  como  a  robusteza
+aleatória ou robustez do emaranhamento.
+Correlações Quânticas ("formalismo de segunda quantização")
+Podemos também tratar o problema sob uma outra abordagem muito mais
+elegante  e  computacionalmente  mais  barata.   Utilizando  o  formalismo  de
+segunda quantização iremos nos focar diretamente sobre o espaço de Fock
+F
+d
+n
+e seu correspondente espaço de testemunhas de emaranhamento, dado
+porW(F
+d
+n
+).  Utilizaremos então uma definição geral de estados separáveis
+(estados sem correlações quânticas) a qual irá se mostrar bastante útil em
+dois aspectos principais:  permite-nos obter um a generalizaçao do método
+proposto em [10], assim como nos capacitará definir "partições de partículas"
+no formalismo de segunda quantização.
+Considere o espaço de FockF
+d
+n
+como o espaço denférmions indistin-
+guíveis compartilhando um espaço de partícula única d-dimensional, temos
+então a seguinte definição:
+45
+
+4.2.   Correlações Quânticas
+Definição4.1.Um estadoσ∈F
+d
+N
+é separável com respeito a uma dada partição de
+suas partículasα= [α
+1
+,α
+2
+,...,α
+ν
+],
+∑
+i
+α
+i
+=N,se ele puder ser decomposto como
+σ=
+∑
+i
+p
+i
+a
+i
+†
+α
+1
+···a
+i
+†
+α
+ν
+|
+0
+〉〈
+0
+|
+a
+i
+α
+ν
+···a
+i
+α
+1
+,(4.12)
+ondea
+†
+α
+k
+=
+d
+α
+k
+∑
+l=1
+c
+α
+k
+l
+f
+†
+l
+α
+k
+, e{f
+†
+l
+α
+k
+}é uma base ortonormal de operadores fermiônicos de
+criação para o espaçoF
+d
+α
+k
+.
+Vê-se  que  para  o  caso  particular  das  partições  conterem  apenas  uma
+partícula (α
+i
+=1,i=1,...,N), o estado é dito separável somente se este possuir
+número de Slaterk=1, conforme a definição3.2.
+A generalização do Teorema2.5segue então da forma,
+Teorema4.2.Um  estadoρ∈ F
+d
+N
+é  emaranhado  em  relação  a  partiçãoα=
+[α
+1
+,α
+2
+,...,α
+ν
+],
+∑
+i
+α
+i
+=N,
+se e somente se o valor óptimo do seguinte problema for
+negativo:
+minimize Tr(Wρ)sujeito a
+d
+α
+ν−1
+∑
+i
+α
+ν−1
+=1
+···
+d
+α
+1
+∑
+i
+α
+1
+=1
+d
+α
+1
+∑
+j
+α
+1
+=1
+···
+d
+α
+ν−1
+∑
+j
+α
+ν−1
+=1
+(c
+∗
+i
+α
+ν−1
+···c
+∗
+i
+α
+1
+c
+j
+α
+1
+···c
+j
+α
+ν−1
+)W
+i
+α
+ν−1
+···i
+α
+1
+j
+α
+1
+···j
+α
+ν−1
+≥0,
+∀c
+i
+α
+k
+∈C,1≤k≤(ν−1),(4.13)
+onde d é dimensão da base de partícula única, W
+i
+α
+ν−1
+···i
+α
+1
+j
+α
+1
+···j
+α
+ν−1
+=f
+i
+α
+ν−1
+···f
+i
+α
+1
+...W f
+†
+j
+α
+1
+···f
+†
+j
+α
+ν−1
+∈ W(F
+d
+α
+ν
+)
+e{f
+†
+l
+α
+k
+}
+é  uma  base  ortonormal  de  operadores  de
+criação fermiônicos para o espaçoF
+d
+α
+k
+. Seρfor emaranhado, a matrizWque minimiza
+o problema corresponde a OEW deρ.
+Proof.Sabe-se  que  um  estado  é  emaranhado  se  e  somente  se  existir  um
+operador testemunhaWtal queTr(Wρ)<0eTr(Wσ)>0para todos os
+separáveis.  Seja um estado separável geral na partiçãoαcomo dado pela
+eq.4.12. A condição de positividade da testemunha sobre os separáveis pode
+então ser escrita na forma,
+〈
+0
+|
+a
+α
+ν
+a
+α
+ν−1
+···a
+α
+1
+W a
+†
+α
+1
+···a
+†
+α
+ν−1
+︸︷︷︸
+Funcional∈W(F
+d
+α
+ν
+)
+a
+†
+α
+ν
+|
+0
+〉
+≥0,∀a
+†
+α
+k
+∈F
+d
+α
+k
+(4.14)
+Note  no  entanto  que  a  positividade  do  funcional  assinalado  acima  é
+suficiente para satisfazer a desigualdade. Segue diretamente que a matrizW
+que satisfaz a desigualdade dada no problema (eq.4.13) corresponde a uma
+testemunha de emaranhamento, e sua optimização corresponde a OEW de
+ρ.
+46
+
+4.3.   Robusteza Generalizada em Sistemas Fermiônicos
+O problema de optimização dado pelo teorema acima pode ser resolvido as-
+sim como feito em [10], sendo possível uma relaxação probabilística aproximando-
+o em termos de um SDP.
+A medida de robusteza generalizadaR
+A
+g
+obtida deste formalismo será
+dada  utilizando  o  método  de  relaxação  descrito  acima  juntamente  com  o
+vínculo adicionalM={W∈W(F
+d
+n
+)|W≤I}.
+Obs:
+Note que os resultado obtidos acima são válidos apenas para sistemas
+de partículas indistinguíveisfermiônicas. Poderíamos ser tentados a supor que
+o mesmo raciocínio possa ser utilizado ao caso bosônico, mas é fácil de se
+perceber que tal analogia é falsa.  Ao considerarmos as testemunhas como
+sendo simétricas, vê-se que o estadoσ
+S
+=SσS
+†
+pode representar também
+estados  com  correlações  quânticas,  tal  como  o  estadoσ
+S
+=
+|
+ψ
++
+〉〈
+ψ
++
+|
+,  e  a
+interpretação da medida como robustez é desta forma inconcebível.
+4.3Robusteza Generalizada em Sistemas Fermiônicos
+Nesta seção iremos analisar a medida de emaranhamentoR
+A
+g
+apresentada
+nas seção anterior. Para o caso mais simples onde existe emaranhamento em
+sistemas fermiônicos,A(H
+(4)
+⊗H
+(4)
+), podemos comparar nossa medida com
+a concorrência de Schliemann "C
+S
+" apresentada anteriormente. Analisando a
+relação entre as duas medidas vemos um resultado notável, onde as medidas
+se igualam para estados puros (fig.4.1a), e no caso de estados mistos a concor-
+rência de Schliemann se apresenta como um limite superior para a Robusteza
+Generalizada (fig.4.1b).  A notabilidade de tal fato é dada pela semelhança
+com os resultados conhecidos para sistemas de partículas distinguíveis, onde
+a mesma relação é encontrada entre a Concorrência de Wooters e a Robusteza
+de Emaranhamento.
+Vejamos  agora  alguns  exempos  simples  da  medidaR
+A
+g
+para  sistemas
+bipartites de dimensões variadas. Construímos famílias de estados fermiônicos
+que ao variarmos seu parâmetro caminhamos sobre estados puros separáveis,
+maximamente emaranhados e o estado maximamente misto:
+ρ=f(0)σ+f(1/2)ρ
+max
++f(1)I,f(x) =Ae
+−(p−x)
+2
+∆
+2
+,(4.15)
+ondeσ=f
+†
+i
+f
+†
+j
+|
+0
+〉
+,i6=j,  é um estado puro com apenas um determinante
+de Slater;ρ
+max
+é estado puro maximamente emaranhado do tipo singleto ,
+i.e, se considerarmos os graus de liberdade pelo spin das partículas, corre-
+sponde ao estado com números quânticosS=S
+z
+=0;  eIé a identidade
+do  espaço  de  estados  anti-simétrico  (dada  uma  base{
+|
+w
+i
+〉
+}
+neste  espaço,
+I=
+1
+dim
+∑
+k
+∣
+∣
+w
+i
+〉〈
+w
+j
+∣
+∣
+).
+Vê-se da fig.4.2o comportamento da medida sobre a família de estados,
+com valor máximo sobre os estados singeto e nula sobre os estados extremais,
+os quais sabe-se possuírem correlação quântica nula.
+47
+
+4.3.   Robusteza Generalizada em Sistemas Fermiônicos
+(a)
+(b)
+Figure4.1:  Medidas  da  robusteza  generalizadaR
+A
+g
+em  função  da  concor-
+rência de SchliemannC
+S
+, para estados fermiônicos gerados aleatoriamente
+utilizando o programaMatLab. Foram analisados estados puros (a) e mistos
+(b) separadamente.
+4.3.1Modelo de Hubbard
+O Hamiltoniano de Hubbard é um modelo bastante utilizado na descrição
+de sólidos, descrevendo desde elétrons interagentes em bandas de energia
+até  problemas  diversos  relacionados  a  supercondutividade  em  altas  tem-
+peraturas,  transições  de  fase  isolante-condutor,  e  outros.   Consideraremos
+aqui  seu  caso  unidimensional,  utilizado  para  modelar  diversos  materiais
+"quasi-unidimensionais". O Hamiltoniano conta um termot
+h
+de acoplamento,
+caracterizando  o  tunelamento  (hopping)  dos  elétrons  entre  os  sites,  e  um
+termo U da interação em um mesmo site (on-site interaction).  Sua forma é
+dada por
+H=−t
+h
+L
+∑
+j=1;σ=↑,↓
+(f
+†
+j,σ
+f
+j+1,σ
++f
+†
+j+1,σ
+f
+j,σ
+) +U
+L
+∑
+j=1
+n
+j↑
+n
+j↓
+,(4.16)
+onden
+jσ
+corresponde ao operador número de partículas no sitejcom spinσ.
+Na ausência do termo U retornamos ao modelo de elétrons livres.
+48
+
+4.3.   Robusteza Generalizada em Sistemas Fermiônicos
+Figure4.2: Medida da Robusteza GeneralizadaR
+A
+g
+para famílias de estados
+bipartites, eq.(4.15), em espaços de Hilbert anti-simétricosA(H
+(2L)
+⊗H
+(2L)
+).
+O desvio médio da função gaussianaf(x)é dado por∆≈0,16, e a constante
+A ajustada de modo a normalizar o estado.
+Analisaremos o caso N=2elétrons e L=2sites, no qual para determinados
+valores de seus parâmetros pode ser utilizado como modelo de uma molécula
+deH
+2
+[1]. Vejamos dois casos limites de seus parâmetros:U/t
+h
+→0, o modelo
+corresponde  a  um  sistema  de  elétrons  livres  não  interagentes,  claramente
+não condizente como modelo de uma molécula deH
+2
+, assim como o caso
+U/th→∞,  correspondendo a um sistema onde ou os sites encontram-se
+demasiadamente separados (t
+h
+→0) ou os sites encontram-se unicamente
+ocupados (U→∞). Se analisarmos a probabilidade de dupla ocupação de um
+mesmo site (fig.4.3b) vemos para qual faixa de valoresU/t
+h
+(aproximadamente
+entre1e4) o sistema está fora dos casos limites descritos acima, representando
+desta forma dois sites vizinhos com elétrons interagentes.  Para tal região o
+sistema pode ser interpretado como modelo para uma molécula deH
+2
+.
+Calculamos entãoR
+A
+g
+para o estado térmico do ensemble-canônico (fig.4.3a)
+dado por:
+ρ=
+e
+−
+H
+k
+b
+T
+Z
+,(4.17)
+ondeZé a função partição. Vemos que a temperatura é um fator crucial para
+a existência de emaranhamento no sistema, como era de se esperar, visto que
+é um fator de decoerência dos estados quânticos. Interessante notar na figura
+que, ao aumentarmos o parâmetroU/t
+h
+, observa-se até certo ponto (≈4) um
+aumento correspondente do emaranhamento do sistema. Tendo em mente a
+molécula deH
+2
+vemos que essa região corresponde ao limite do modelo, ou
+49
+
+4.3.   Robusteza Generalizada em Sistemas Fermiônicos
+(a)
+(b)
+Figure4.3:  (a)  Medida  de  Robusteza  GeneralizadaR
+A
+g
+no  estado  térmico
+do ensemble-canônico do modelo de Hubbard, para N=2e L=2, em função
+dos  parâmetrosk
+b
+T/t
+h
+eU/t
+h
+.   (b)  Probabilidade”p
+d
+”de  encontrar  sites
+duplamente ocupados.
+seja, o ponto de quebra da ligação (bond-breaking) entre os átomos.
+50
+
+Conclusões e Perspectivas
+Neste trabalho abordamos essencialmente o tema da quantificação de emaran-
+hamento  em  sistemas  quânticos,  realizando  uma  análise  detalhada  desde
+seus princípios fundamentais, ou seja, dos postulados da teoria de medidas
+de emaranhamento e justificando desta forma as propriedades esperadas de
+"bons quantificadores" de emaranhamento. Apresentamos alguns exemplos
+de medidas de emaranhamento para partículas distinguíveis, e abordamos
+por fim o caso em que as partículas são indistinguíveis uma das outras. Vimos
+então que neste caso a quantificação do emaranhamento é um assunto de
+grandes controvérsias com diferentes propostas para sua abordagem, cada
+qual com sua interpretação singular. Após discorrermos sobre tais abordagens,
+analisando suas principais características e fundamentações, apresentamos
+nosso método proposto para quantificá-las com base na utilização das teste-
+munhas de emaranhamento.
+Vimos que para o caso das medidas de Emaranhamento de Modos (E
+M
+)
+e  Emaranhamento  de  Partículas  (E
+P
+)  a  utilização  das  testemunhas  para
+quantificá-las  segue  de  maneira  trivial.   Já  no  caso  das  Correlações  Quân-
+ticas a situação é mais delicada, onde obtivemos resultados viáveis apenas
+para sistemas fermiônicos, apresentando medidas de Correlações Quânticas
+com interpretações análogas as Robustezas. Analisando então o caso particu-
+lar da Robusteza Generalizada, obtivemos resultados experimentais que nos
+mostraram a notável relação de equivalência entre tal medida e a Concor-
+rência de Schliemann, as quais são iguais para estados puros, e no caso de
+estados mistos a Concorrência de Schliemann apresentou-se como um limite
+superior para a Robusteza Generalizada.  A notabilidade de tal fato é dada
+pela semelhança com os resultados conhecidos para sistemas de partículas
+distinguíveis, onde a mesma relação é encontrada entre a Concorrência de
+Wooters e a Robusteza de Emaranhamento.
+Vemos por fim que são várias as possíveis direções para trabalhos futuros,
+tais  como  a  obtenção  de  uma  demontração  analítica  da  relação  de  equiv-
+alência entre as medidas apontadas acima; a análise das diferentes medidas
+de emaranhamento em sistemas de várias partículas indistinguíveis e seus
+modelos de Hamiltoniano utilizados para descrição de sólidos, estudando por
+exemplo as correlações quânticas entre férmions em fenômenos singulares
+tais como supercondutividade, transições de fase quântica, e outros; ou até
+mesmo um estudo mais aprofundado das correlações quânticas entre difer-
+entes partições de partículas conforme definidas no último capítulo (definição
+4.12).
+51
+
+APPENDIXA
+Matrizes Complexas
+Simétricas e Anti-simétricas
+Definimos  o  espaço  de  matrizesnxncomplexas  ou  reais  porM
+n
+(C)e
+M
+n
+(R),  respectivamente.   Iremos  apresentar  aqui  algumas  propriedades
+particulares sobre as matrizes simétricas (A=A
+T
+) e anti-simétricas (A=
+−A
+T
+), que nos serão úteis neste trabalho.
+Theorem A.1.SejaA∈ M
+n
+(R).  Então A é normal ([A,A
+†
+] =0) se e somente
+existe uma matriz real ortogonal Q∈M
+n
+(R)tal que
+A=QΛQ
+T
+, ondeΛ=
+
+
+
+
+
+A
+1
+0
+A
+2
+.
+.
+.
+0A
+k
+
+
+
+
+
+Cada A
+i
+são números reais ou matrizes reais2X2da forma
+A
+i
+=
+(
+α
+i
+β
+i
+−β
+i
+α
+i
+)
+(A.1)
+A  demonstração  deste  teorema,  apesar  de  simples,  é  demasiadamente
+extensa. Um leitor mais interessado pode encontrá-la de uma forma bastante
+clara em [18] ou em outros livros de análise matricial de sua preferência.
+Segue diretamente do teorema acima os casos:
+Corolary A.1.Seja A∈M
+n
+(R), então
+·Se A for simétrica−→A
+i
+∈R, sendoΛuma matriz diagonal.
+·
+Se A for anti-simétrica−→A
+i
+∈M
+2
+(R)da forma
+(
+0β
+i
+−β
+i
+0
+)
+, sendoΛuma
+matriz diagonal em blocos.
+Podemos obter resultados análogos considerando também matrizes com-
+plexas. A extensão se dá na forma:
+52
+
+Theorem A.2.SejaA∈M
+n
+(C). Então A é (anti)simétrica e normal se e somente
+se existe uma matriz ortogonal realQ∈ M
+n
+(R)tal queA=QΛQ
+T
+, ondeΛé
+uma matriz diagonal da formaΛ=diag(A
+1
+,A
+2
+,...,0):
+·A
+i
+∈C,se a matriz for simétrica.
+·A
+i
+=
+(
+0β
+i
+−β
+i
+0
+)
+,β
+i
+∈C,se a matriz for anti-simétrica.
+Proof.
+Iremos demonstrar somente para matrizes simétricas, visto que o caso
+anti-simétrico segue o mesmo raciocínio.
+Se existe tal matriz ortogonalQ, temos queA=QΛQ
+T
+, e ainda
+·Aé simétrica :A
+T
+= (QΛQ
+T
+)
+T
+=Q
+T
+T
+Λ
+T
+Q
+T
+=QΛQ
+T
+=A
+·Aé normal:
+{
+A A
+†
+= (QΛQ
+T
+)(Q
+T
+†
+Λ
+†
+Q
+†
+) =QΛQ
+T
+QΛQ
+T
+=QΛQ
+T
+A
+†
+A= (Q
+T
+†
+Λ
+†
+Q
+†
+)(QΛQ
+T
+) =QΛQ
+T
+QΛQ
+T
+=QΛQ
+T
+Para se provar o inverso utiliza-se o seguinte raciocínio: dado A simétrica
+e  normal,  podemos  representá-la  da  formaA=B+iC,  ondeBeCsão
+simétricas e reais.  Vê-se no entanto que elas comutam,[B,C] =0, e sendo
+assim existe uma matriz ortogonalQque as diagonaliza simultaneamente na
+forma dada pelo corolário A.1. Por fim, temos que
+Q AQ
+T
+=Q(B+iC)Q
+T
+=QBQ
+T
++i QCQ
+T
+=D
+B
++iD
+C
+=diag(A
+1
+,A
+2
+,...,0);A
+i
+∈C
+O último teorema aqui apresentado constitui um caso ainda mais geral que
+os anteriores, considerando o conjunto de matrizes (anti)simétricas complexas
+sem quaiquer outras restrições.
+Theorem A.3.
+SejaA∈M
+n
+(C). Então A é (anti)simétrica se e somente se existe
+uma matriz unitáriaU∈M
+n
+tal queA=UΛU
+T
+, ondeΛé uma matriz diagonal
+da formaΛ=diag(A
+1
+,A
+2
+,...,0):
+·A
+i
+∈C,se a matriz for simétrica.
+·A
+i
+=
+(
+0β
+i
+−β
+i
+0
+)
+,β
+i
+∈C,se a matriz for anti-simétrica.
+Proof.Novamente, demonstraremos somente para matrizes simétricas, visto
+que o raciocínio é análogo no caso anti-simétrico.
+Se existe tal unitária, temos queA=UΛU
+T
+, e ainda
+·Aé simétrica :A
+T
+= (UΛU
+T
+)
+T
+=U
+T
+T
+Λ
+T
+U
+T
+=UΛU
+T
+=A
+O inverso é dado partindo de que, dadoAsimétrica, constrói-se primeira-
+mente a matrizB=A A
+†
+hermitiana, a qual pode ser diagonalizada,B=
+V D
+B
+C
+†
+. A partir desta unitária pode-se construir a matrizC=V
+†
+AV
+∗
+, a qual
+é simétrica e normal. Utilizando agora do teorema A.2, sabe-se queCpode
+ser diagonalizada por uma matriz ortogonalQda formaC=QΛQ
+T
+. Por fim,
+53
+
+temos que
+C=V
+†
+AV
+∗
+=QΛQ
+T
+A= (V Q)Λ(V Q)
+T
+=UΛU
+T
+,U=V Q
+54
+
+APPENDIX
+B
+Dualidade e Teoria de
+Optimização
+Em teoria de optimização frequentemente podemos converter nosso prob-
+lema original, denominado problema primal, em uma formulação alternativa,
+denominado problema dual.  Para isso utiliza-se do chamado Lagrangeano
+associado ao problema.
+Considere o problema de optimização (primal) dado na seguinte forma:
+minimizef
+0
+(x)
+sob os vínculosf
+i
+(x)≤0 ,i=1,...,m(B.1)
+h
+i
+(x) =0 ,i=1,...,n
+comx∈D. Denote o valor óptimo do problema porp
+∗
+, ou seja,f(x
+o pt
+) =p
+∗
+.
+Podemos no entanto criar uma única função que englobe todas as infor-
+mações do problema; tal função é denominada Lagrangeana "L", sendo dada
+pela função objetiva a ser minimizada juntamente com a soma pesada de seus
+vínculos.
+L(x,λ,μ) =f
+0
+(x) +
+m
+∑
+i=1
+λ
+i
+f
+i
+(x) +
+n
+∑
+i=1
+μ
+i
+h
+i
+(x),(B.2)
+ondeλ
+i
+,μ
+i
+são  os  multiplicadores  de  Lagrange.   A  minimização  deste  La-
+grangeano sobre o domínio das variáveis primaisxirá nos fornecer o que
+chamamos de função dual de Lagrange,g(λ,μ),
+g(λ,μ) =inf
+x∈D
+(f
+0
+(x) +
+m
+∑
+i=1
+λ
+i
+f
+i
+(x) +
+n
+∑
+i=1
+μ
+i
+h
+i
+(x))(B.3)
+Uma propriedade central da função dual encontra-se no fato de que, para
+qualquerλ0 eμ, ela fornece um limite inferior sobre o valor óptimop
+∗
+:
+g(λ,μ)≤p
+∗
+(B.4)
+55
+
+Proof.Suponha
+ ̃
+x
+um ponto possível do problema, i.e ,f
+i
+(
+ ̃
+x)≤0eh
+i
+(
+ ̃
+x) =0,
+e sejaλ0.  Temos desta forma que o LagrangeanoL(
+ ̃
+x,λ,μ)será limitado
+pela função objetivaf
+0
+sobre tal ponto,
+L(
+ ̃
+x,λ,μ) =f
+0
+(
+ ̃
+x) +
+m
+∑
+i=1
+λ
+i
+f
+i
+(
+ ̃
+x) +
+n
+∑
+i=1
+μ
+i
+h
+i
+(
+ ̃
+x)≤f
+0
+(
+ ̃
+x)(B.5)
+Vê-se então que
+g(λ,μ) =inf
+x∈D
+L(x,λ,μ)≤L(
+ ̃
+x,λ,μ)≤f
+0
+(
+ ̃
+x)(B.6)
+Desde que tal desigualdade vale para todos os pontos possíveis do prob-
+lema, a prova da eq.B.4segue direto.
+Convém  agora  nos  perguntar  para  quais  casos  pode ́riamos  obter  uma
+igualdade sobre este limite inferior? Pois sendo assim, teríamos duas formu-
+lações equivalentes do mesmo problema: problema primal dado pela eq.B.2,
+ou,
+maximizeg(λ,μ)
+sob o vínculoλ0(B.7)
+Essa formulação alternativa é a denominada problema dual.
+Em geral a igualdade na eq.B.4não é válida. Pode-se no entanto mostrar
+sua validade para um caso específico que nos será bastante útil neste trabalho;
+casos em que os problemas sejam convexos, i.e,
+minimizef
+0
+(x)
+sob os vínculosf
+i
+(x)≤0 ,i=1,...,m(B.8)
+Ax=B,
+ondef
+0
+,...,f
+m
+são convexos, juntamente com a condição adicional da existência
+de um ponto "strictly feasible" (condição de Slater,  conforme a literatura),
+ou seja,  existência de um pontox∈relintDque satisfaça os vínculos do
+problema convexo. Para tais casos temos que
+solução problema dual;d
+∗
+=p
+∗
+; solução problema primal(B.9)
+56
+
+Bibliography
+[1]Neil W. Ashcroft and N. David Mermin.Solid State Physics. Saunders
+College, Philadelphia,1976.
+[2]A. Aspect. “Bell’s inequality test: more ideal than ever”. In:Nature, Vol.
+398,189(1999).
+[3]
+Stephen D. Bartlett and H. M. Wiseman. “Entanglement Constrained by
+Superselection Rules”. In:Physical Review Letters91.097903(2003).url:
+http://link.aps.org/doi/10.1103/PhysRevLett.91.097903.
+[4]J. S. Bell. “On the Einstein-Poldolsky-Rosen paradox”. In:Physics(1964).
+[5]C. H. Bennett et al. “Concentrating partial entanglement by local opera-
+tions”. In:Phys. Rev. A53,2046(1996).
+[6]Charles H. Bennett et al. “Mixed-state entanglement and quantum error
+correction”. In:Physical Review A54.3824(1996).
+[7]Stephen  Boyd  and  Lieven  Vandenberghe.Convex Optimization.  Cam-
+bridge University Press,2004.
+[8]F. G. S. L. Brandão. “Quantifying entanglement with witness operators”.
+In:Phys. Rev. A72.2(Aug.2005).doi:10.1103/PhysRevA.72.022310.
+arXiv:quant-ph/0503152.
+[9]
+Fernando G. S. L. Brandão and Reinaldo O. Vianna. “Robust semidefinite
+programming approach to the separability problem”. In:Physical Review
+A70,062309(2004).
+[10]Fernando G. S. L. Brandão and Reinaldo O. Vianna. “Separable Multipar-
+tite Mixed States: Operational Asymptotically Necessary and Sufficient
+Conditions”. In:Phys. Rev. Lett.93,220503(2004).
+[11]A. C. Doherty, Pablo A. Parrilo, and Federico M. Spedalieri. “Distin-
+guishing Separable and Entangled States”. In:Phys. Rev. Lett.88,187904
+(2002).
+[12]    Andrew C. Doherty, Pablo A. Parrilo, and Federico M. Spedalieri. “De-
+tecting  multipartite  entanglement”.  In:Phys.  Rev.  A,  Vol.71,032333
+(2005).
+[13]
+K. Eckert et al. “Quantum Correlations in Systems of Indistinguishable
+Particles”. In:Annals of Physics299,88-127(2002).
+[14]A. Einstein.Albert Einstein : Philosopher-Scientist. Cambridge University
+Press,1949.
+57
+
+Bibliography
+[15]A.  Einstein,  B.  Podolsky,  and  N.  Rosen.  “Can  Quantum-Mechanical
+Description of Physical Reality be Considered Complete?” In:Physical
+Review,47:77(1935).
+[16]
+Jens Eisert et al. “Complete hierarchies of efficient approximations to
+problems in entanglement theory”. In:Phys. Rev. A70,062317(2004).
+[17]S. Hill and W. K. Wootters. “Entanglement of a Pair of Quantum Bits”.
+In:Phys. Rev. Lett.78,5022(1997).
+[18]    Roger A. Horn.Matrix Analysis. Cambridge University Press,1985.
+[19]M. Horodecki, P. Horodecki, and R. Horodecki. “Separability of mixed
+states: necessary and sufficient conditions”. In:Phys. Lett. A223(Feb.
+1996), pp.1–8.doi:10.1016/S0375-9601(96)00706-2. arXiv:quant-ph/
+9605038.
+[20]M. Lewentein.Quantum Information Theory Wintersemester2000/2001.url:
+www.quantware.ups-tlse.fr/IHP2006/lectures/lewenstein2.pdf.
+[21]
+M. A. Nielsen. “Continuity bounds for entanglement”. In:Physical Re-
+view A61,064301(2000).
+[22]Michael Nielsen and Isaac Chuang.Quantum Computation and Quantum
+Information. Cambridge University Press,2000.
+[23]R. Paskauskas and L. You. “Quantum correlations in two-boson wave
+functions”. In:Phys. Rev. A64.042310(2001).
+[24]
+A. Peres. “Separability Criterion for Density Matrices”. In:Phys. Rev.
+Lett.77(Aug.1996), pp.1413–1415.doi:10.1103/PhysRevLett.77.1413.
+arXiv:quant-ph/9604005.
+[25]
+M. B. Plenio. “Logarithmic Negativity: A Full Entanglement Monotone
+That is not Convex”. In:Phys. Rev. Lett.,95,090503(2005).
+[26]Sandu Popescu and Daniel Rohrlich. “Thermodynamics and the mea-
+sure of entanglement”. In:Phys. Rev. A,56, R3319(1997).
+[27]John  Schliemann  et  al.  “Double-occupancy  errors,  adiabaticity,  and
+entanglement of spin qubits in quantum dots”. In:Physical Review B63,
+085311(2001).
+[28]E. Schrodinger. “Discussion of probability relations between separated
+systems”. In:Proc. Camb. Phil. Soc.31:555.(1935).
+[29]E. Schrodinger. “Probability relations between separated systems”. In:
+Proc. Camb. Phil. Soc.32:446(1936).
+[30]Michael Steiner. “Generalized robustness of entanglement”. In:Physical
+Review A67.054305(2003).url:http://link.aps.org/doi/10.110
+3/PhysRevA.59.141.
+[31]Guifré Vidal and Rolf Tarrach. “Robustness of entanglement”. In:Physi-
+cal Review A59.1(1999).
+[32]
+H. M. Wiseman and John A. Vaccaro. “Entanglement of Indistinguish-
+able Particles Shared between Two Parties”. In:Physical Review Letters
+91.097902(2003).
+58
+
+Bibliography
+[33]William K. Wootters. “Entanglement of Formation of an Arbitrary State
+of Two Qubits”. In:Phys. Rev. Lett.80,2245(1998).
+[34]
+Paolo Zanardi. “Quantum entanglement in fermionic lattices”. In:Physi-
+cal Review A65.042101(2002).
+[35]Karol
+ ̇
+Zyczkowski and Ingmar Bengtsson.Geometry of Quantum States.
+Cambridge University Press,2006.
+59

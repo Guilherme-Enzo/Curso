@@ -1,0 +1,125 @@
+AUTO ELETRICA  -  INJECAO ELETRONICA
+Material de estudo - apostila do modulo
+MODULO 02
+Sistema de Ignição
+Como a centelha nasce: bobina, cabo e vela, driver de ignição, tipos de bobinas, o gráfico padrão no 
+osciloscópio e as falhas de ignição.
+Conteudo deste modulo:
+  2.1 - Introdução ao Sistema de Ignição
+  2.2 - Bobina de Ignição
+  2.3 - Cabo de Ignição
+  2.4 - Vela de Ignição
+  2.5 - Driver de Ignição
+  2.6 - Tipos de Bobinas
+  2.7 - Gráfico Padrão no Osciloscópio
+  2.8 - Falhas de Ignição
+2.1  Introdução ao Sistema de Ignição
+O sistema de ignição é responsável por fornecer a fonte de calor, ou seja, a centelha formada na 
+vela de ignição dentro da câmara de combustão — um dos pilares do Triplo C.
+Os componentes que possibilitam a chegada da centelha são a bobina de ignição, o cabo de vela 
+(se houver) e a vela; o ar sofre ruptura dielétrica em torno de 3kV por 1mm e, num motor com taxa 
+de compressão de 10:1, teoricamente seriam necessários cerca de 30kV.
+O sistema transforma baixas tensões, como 12,6V, em até 30, 40 ou 50kV, e uma falha de ignição 
+pode gerar falsa mistura pobre na sonda lambda, aumentando o consumo.
+
+
+
+
+
+2.2  Bobina de Ignição
+A bobina de ignição funciona como um elevador de tensão, multiplicando em milhares de vezes a 
+tensão da bateria por princípios eletromagnéticos.
+Ela possui dois circuitos no mesmo núcleo de ferro: o primário, com baixa tensão, alta corrente e 
+número reduzido de espiras, e o secundário, com alta tensão e número muito superior de espiras.
+Quando a central corta a alimentação, surgem picos de 300V no primário; o tempo de carga é o 
+dwell  time,  e  o  centelhamento  ocorre  em  4  etapas:  alimentação,  desalimentação,  descarga  do  
+arco e residual da bobina.
+
+2.3  Cabo de Ignição
+Os  cabos  de  ignição,  ou  cabos  de  vela,  conduzem  a  alta  tensão  gerada  pelo  secundário  da  
+bobina  até  as  velas,  sendo  compostos  por  um  núcleo  condutor  e  um  isolamento  externo  que  
+suporta altas temperaturas e altíssimas tensões elétricas.
+Por  serem  dispositivos  de  alta  tensão,  emitem  ruído  eletromagnético  (EMI),  suprimido  com  
+resistência no núcleo, ponteiras resistivas ou malhas de blindagem.
+Com o tempo podem surgir má vedação entre a vela e o terminal, causando fuga de corrente, e 
+
+aumento da resistência do cabo, que limita a corrente da centelha e gera combustão ineficiente.
+2.4  Vela de Ignição
+A vela de ignição possui duas funções: ser o terminal de alta tensão onde ocorre o centelhamento 
+e dissipar calor.
+Parâmetros controlados são a folga entre eletrodos (GAP), em que quanto maior o GAP maior a 
+tensão necessária, o índice térmico e o material/forma do eletrodo; velas com grau térmico maior 
+são quentes (dissipam pouco) e com grau menor são frias (dissipam mais), o que é definido pela 
+profundidade do isolador cerâmico.
+A  vela  trabalha  entre  400  e  800  graus  e,  se  aplicada  errada,  pode  causar  pré-ignição  e  até  
+danificar o pistão do motor.
+
+
+
+2.5  Driver de Ignição
+O driver de ignição é um transistor de potência que funciona como um relé totalmente eletrônico, 
+necessário pelas altas tensões geradas no primário, de 300 a 400V.
+Existe um transistor para cada canal de ignição, com três pinos: alimentação negativa (linha 31), 
+pino de saída para a bobina e pino de alimentação do transistor (5V).
+A  central  chaveia  o  transistor  com  baixíssima  corrente  a  partir  de  um  pulso  de  5V  em  onda  
+quadrada, substituindo o platinado; o driver pode ficar dentro da central, num módulo externo ou 
+embutido na própria bobina.
+
+2.6  Tipos de Bobinas
+Antigamente   uma   única   bobina   gerava   centelha   para   todos   os   cilindros,   distribuída   pelo   
+distribuidor; depois vieram bobinas com 4 saídas e 4 cabos e, em seguida, bobinas individuais por 
+cilindro, dispensando os cabos.
+Bobinas simples com 2 pinos dão acesso ao primário e as de 3 pinos possuem driver interno; o 
+modelo DIS, conhecido como centelha perdida, tem 4 saídas e funcionamento semissequencial, 
+fornecendo centelha a 2 cilindros gêmeos ao mesmo tempo, aproveitada pelo cilindro que está em 
+compressão.
+Uma bobina DIS com 3 pinos não possui driver interno, permitindo diagnóstico pelo primário ou 
+secundário; o primário pode gerar 300V, exigindo atenção à entrada do osciloscópio.
+
+2.7  Gráfico Padrão no Osciloscópio
+O  diagnóstico  da  ignição  pode  ser  feito  pela  onda  gráfica  no  osciloscópio  ou  analisador  de  
+motores, capturada no secundário com pinça indutiva no cabo de vela.
+As características padrão analisadas: tempo de carga da bobina (dwell time), tensão de disparo 
+da centelha, tempo de queima e residual de potência da bobina.
+A  tensão  de  disparo  é  influenciada  por  desgaste  da  vela,  resistência  do  sistema,  pressão  e  
+temperatura do cilindro e mistura; por padrão, o tempo mínimo de queima é de 1ms e o residual 
+deve apresentar pelo menos 3 ondinhas.
+
+2.8  Falhas de Ignição
+No caso de falha, a tensão de disparo ocorre e o tempo de queima começa, mas a combustão é 
+interrompida e não há residual de bobina, o que aponta a substituição da bobina.
+O encurtamento na centelha indica fuga de corrente, por cabos, vela com cerâmica trincada ou 
+bobina trincada, o que representa perigo ao osciloscópio.
+Com  alta  resistência,  a  tensão  de  disparo  fica  alta  e  o  tempo  de  queima  curto,  como  621  
+microssegundos  (0,62ms),  com  solução  na  substituição  do  cabo  e  da  vela;  o  livro  compara  o  
+conjunto a uma corda com roldana, em que maior tensão de disparo encolhe o tempo de queima.
+
+
+
+
+
+Pagina 1 de 13
+
+Pagina 2 de 13
+
+Pagina 3 de 13
+
+Pagina 4 de 13
+
+Pagina 5 de 13
+
+Pagina 6 de 13
+
+Pagina 7 de 13
+
+Pagina 8 de 13
+
+Pagina 9 de 13
+
+Pagina 10 de 13
+
+Pagina 11 de 13
+
+Pagina 12 de 13
+
+Pagina 13 de 13

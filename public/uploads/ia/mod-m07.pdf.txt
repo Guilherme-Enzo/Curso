@@ -1,0 +1,78 @@
+AUTO ELETRICA  -  INJECAO ELETRONICA
+Material de estudo - apostila do modulo
+MODULO 07
+Drive By Wire
+Corpo de borboleta eletrônico (TBI), sensores de dupla pista, atuador, limpeza e aprendizado, e o 
+pedal de acelerador.
+Conteudo deste modulo:
+  7.1 - Corpo de Borboleta
+  7.2 - Sensor e Sinal
+  7.3 - Atuador e Chaveamento
+  7.4 - Limpeza e Aprendizado
+  7.5 - Pedal de Acelerador
+7.1  Corpo de Borboleta
+O  corpo  de  borboleta  (TBI)  é  o  principal  componente  do  sistema  de  acelerador  eletrônico  e  
+funciona ao mesmo tempo como atuador e sensor, ficando sempre exposto às altas temperaturas 
+do motor.
+Na  parte  sensorial/elétrica  está  o  sensor  de  posição  do  acelerador,  muito  similar  ao  TPS,  que  
+recebe o movimento do eixo e o transforma em sinal elétrico para a UCE; na parte inferior fica o 
+motor elétrico ligado ao eixo da borboleta por uma engrenagem.
+A UCE recebe a posição exata da borboleta pela parte sensorial e comanda a abertura por PWM 
+conforme o pedal, dispensando o atuador de marcha lenta externo.
+7.2  Sensor e Sinal
+A  parte  de  sinal/sensor  da  TBI  informa  a  posição  do  eixo  à  UCE,  confirmando  que  a  borboleta  
+abriu o suficiente, e é muito similar ao TPS comum, com a diferença de possuir um sinal duplo: 
+são 2 pistas de posição de borboleta, por segurança e precisão, pois se uma falhar a outra ainda 
+informa a UCE, que opera em estratégia de falha com redução de potência.
+As duas pistas trabalham uma oposta à outra: uma vai de 0V a 5V e a outra de 5V a 0V, e a soma 
+
+das  duas  deve  sempre  fechar  a  tensão  de  alimentação  do  sinal,  com  cerca  de  2,5V  no  ponto  
+médio.
+O  desgaste  costuma  aparecer  na  faixa  de  aceleração  mais  baixa,  e  picos  ou  quedas  exigem  
+novos testes, pois a TBI fica perto do sistema de ignição, que pode causar interferência.
+7.3  Atuador e Chaveamento
+O atuador da TBI usa 2 dos 6 pinos do conector, responsáveis pelo motor elétrico com o qual a 
+UCE abre ou fecha a borboleta.
+O  motor  é  acionado  por  PWM,  e  alguns  sistemas  trabalham  com  alimentação  positiva  direta  e  
+PWM  negativo,  enquanto  outros  trabalham  ao  contrário,  exigindo  a  medição  das  alimentações  
+para saber qual processo usar.
+Como  a  polaridade  para  abrir  a  borboleta  é  diferente  da  de  fechar,  recomenda-se  começar  as  
+medições  na  marcha  lenta;  no  Mercedes  CLA  200,  a  TBI  recebia  um  positivo  constante  e  um  
+negativo via PWM.
+
+7.4  Limpeza e Aprendizado
+A sujidade e a carbonização entre a borboleta e a carcaça alteram o ponto mínimo de repouso; a 
+injeção se ajusta até certo limite e, após isso, pode trabalhar de forma irregular, com a borboleta 
+ficando mais aberta que o convencional.
+A   limpeza   deve   ser   feita   fora   do   carro,   acionando   a   borboleta   manualmente   e   usando   
+descarbonizante, sem submergir a TBI em produtos agressivos, que podem danificar as vedações 
+e a parte interna.
+Depois,  é  preciso  o  aprendizado  via  scanner  para  a  UCE  reconhecer  os  novos  mínimos  e  
+máximos;  sem  isso,  ela  pode  manter  a  informação  antiga  e  deixar  o  veículo  acelerado,  e  ainda  
+deve-se conferir a vedação TBI/coletor para não entrar ar falso.
+
+7.5  Pedal de Acelerador
+O pedal de acelerador é a outra parte do sistema drive by wire: seu sensor, muito similar ao TPS, 
+transforma o movimento mecânico do pedal em sinal elétrico que a UCE interpreta como posição 
+do pedal de acelerador, e em muitos casos o sensor é o próprio pedal.
+Ele possui duas pistas para segurança e precisão do sinal, porém com padrão diferente da TBI: 
+cada  pista  tem  sua  própria  alimentação  5V  e  negativo,  com  a  pista  1  variando  de  0V  a  5V  e  a  
+pista 2 de 0V a 2,5V, sempre a metade da pista 1, na maioria dos pedais de 6 pinos.
+Sensores  com  regulagem  de  fim  de  curso  mal  ajustada  fazem  a  UCE  entender  aceleração  
+indevida e impedir o recurso de marcha lenta.
+
+
+
+
+
+Pagina 1 de 6
+
+Pagina 2 de 6
+
+Pagina 3 de 6
+
+Pagina 4 de 6
+
+Pagina 5 de 6
+
+Pagina 6 de 6

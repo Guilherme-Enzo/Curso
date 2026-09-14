@@ -1,0 +1,91 @@
+AUTO ELETRICA  -  INJECAO ELETRONICA
+Material de estudo - apostila do modulo
+MODULO 09
+Estratégias de Injeção
+Auto adaptação, marcha lenta, cut-off, abertura de AF, malha aberta e fechada, dashpot, luz de 
+anomalia e modo alternativo.
+Conteudo deste modulo:
+  9.1 - Parâmetros Auto Adaptativos
+  9.2 - Controle de Marcha Lenta
+  9.3 - Cut-Off
+  9.4 - Abertura de AF
+  9.5 - Malha Aberta e Malha Fechada (Open/Closed Loop)
+  9.6 - DashPot
+  9.7 - Luz de Anomalia
+  9.8 - Modo Alternativo
+9.1  Parâmetros Auto Adaptativos
+Os  parâmetros  auto  adaptativos  permitem  que  a  UCE  se  ajuste  a  variáveis  que  mudam  com  o  
+tempo, como a pressão atmosférica, que varia de lugar para lugar. Incluem parâmetros de partida 
+como tempo de injeção, ângulo de avanço de ignição e enriquecimento pós partida. Centrais de 
+injeção  sequencial  mais  modernas  podem  até  compensar  individualmente  a  baixa  eficiência  de  
+um bico injetor em um cilindro.
+Através do scanner é possível resetar esses parâmetros; após revisão completa de velas, cabos e 
+limpezas, é viável resetá-los para que a UCE se adapte novamente.
+
+9.2  Controle de Marcha Lenta
+Para habilitar a marcha lenta a UCE exige condições como posição do pedal ou TPS abaixo de 
+um percentual, por exemplo 8%, e rotação do motor abaixo de determinado valor. Há mapas de 
+correção  por  temperatura,  com  o  sistema  mais  acelerado  a  frio  e  baixando  a  lenta  até  a  
+temperatura  normal  de  trabalho.  Os  atuadores  de  marcha  lenta  também  possuem  parâmetros  
+auto adaptativos, exigindo às vezes reset ou aprendizado forçado.
+A entrada de ar falso no coletor de admissão eleva a rotação até ativar o cut-off, fechando o ciclo 
+conhecido como lenta oscilando.
+
+9.3  Cut-Off
+O cut-off corta a alimentação de combustível, injetando zero combustível, quando o veículo está 
+acima de 2000 RPM (alguns usam 2500 ou 1800) e o pedal ou TPS está em posição de marcha 
+lenta. Ao baixar a rotação ou acelerar, a UCE retoma a injeção; no scanner o tempo de injeção 
+marca 0ms e os bicos não trabalham até chegar na rotação de alimentação.
+Por  isso,  engatado  descendo  uma  lomba  ou  parando  no  semáforo  é  mais  econômico  que  
+desengatado, além de poupar freio pelo freio motor.
+
+9.4  Abertura de AF
+A UCE está sempre buscando a estequiometria, alterando o tempo de injeção para compensar o 
+combustível utilizado. Quando desligamos o veículo com um quarto de tanque e, ao ligar, a UCE 
+detecta meio ou três quartos, ela entende que houve abastecimento e habilita a abertura rápida 
+de  AF  para  corrigir  a  mistura;  se  a  diferença  for  muito  grande,  passa  a  trabalhar  o  fator  ar/  
+combustível.
+Por isso o sensor de nível deve estar funcionando corretamente e o abastecimento deve ser feito 
+com a chave desligada, caso contrário alguns sistemas não habilitam o aprendizado.
+9.5  Malha Aberta e Malha Fechada (Open/Closed Loop)
+Malha  aberta,  ou  open  loop,  é  quando  a  UCE  ignora  o  sinal  da  sonda  lambda  e  atua  somente  
+pelos  mapas  de  injeção.  Ocorre  na  primeira  partida,  quando  a  rotação  está  abaixo  do  valor  
+predeterminado, na fase de aquecimento, em carga máxima com aceleração forte e, em alguns 
+veículos, quando é detectada falha, enriquecendo toda a mistura.
+Malha fechada, ou closed loop, usa o sinal da sonda lambda para controlar a mistura em tempo 
+real,  alterando  tempo  de  injeção  e  parâmetros;  é  utilizada  quando  a  sonda  e  o  motor  estão  
+aquecidos e sem falhas (DTC).
+9.6  DashPot
+O  dashpot  é  uma  estratégia  usada  em  desacelerações  para  suavizar  a  variação  de  torque,  
+tornando o freio motor mais suave. Quando a UCE nota a diminuição do ângulo da borboleta e 
+rotação  elevada,  age  sobre  o  atuador  de  marcha  lenta  ou  a  borboleta  eletrônica  reduzindo  
+gradualmente  a  entrada  de  ar.  Usa  parâmetros  como  temperatura  da  água  (ECT),  posição  da  
+borboleta ou pedal, velocidade do veículo e rotação.
+Ao parar no semáforo, abaixo da rotação de cut-off, a estratégia controla a injeção e a quantidade 
+de ar na marcha lenta de forma mais sutil.
+9.7  Luz de Anomalia
+A luz de anomalia, ou luz de injeção, é considerada um atuador, pois a UCE a utiliza para indicar 
+ao  condutor  quando  uma  DTC  é  gerada.  A  UCE  reconhece  como  DTC  falhas  em  estratégias,  
+sinais incoerentes e componentes com circuito aberto.
+A lâmpada pode apagar mesmo sem o scanner caso o erro seja resolvido; por isso, em defeitos 
+intermitentes a luz pode estar apagada com erros ainda gravados na memória.
+9.8  Modo Alternativo
+O modo alternativo é ativado quando um sensor falha ou o funcionamento do motor está irregular. 
+Em  circuito  aberto  no  sensor  de  temperatura  da  água,  a  maioria  assume  um  valor  padrão  de  
+-40°C,  deixando  o  veículo  com  excesso  de  combustível,  e  muitos  sistemas  usam  um  mapa  de  
+ignição  fixo  por  segurança.  Se  o  MAP  falhar,  a  maioria  utiliza  o  TPS  como  mapa  principal  de  
+combustível, mantém a mistura enriquecida e usa curva de ignição fixa de segurança.
+Com  falha  no  sensor  da  borboleta  eletrônica  a  abertura  é  limitada;  falha  na  motorização  faz  a  
+mola de retorno manter uma marcha lenta acelerada de emergência, e falha no sensor do pedal 
+
+mantém a marcha lenta constantemente elevada.
+
+Pagina 1 de 5
+
+Pagina 2 de 5
+
+Pagina 3 de 5
+
+Pagina 4 de 5
+
+Pagina 5 de 5

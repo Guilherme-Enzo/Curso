@@ -1,0 +1,110 @@
+AUTO ELETRICA  -  INJECAO ELETRONICA
+Material de estudo - apostila do modulo
+MODULO 06
+Atuadores
+Bomba de combustível, eletroinjetor, atuadores de marcha lenta, válvula canister e EGR: como a 
+central comanda cada atuador na prática.
+Conteudo deste modulo:
+  6.1 - Bomba de Combustível
+  6.2 - Eletroinjetor
+  6.3 - Atuador de Marcha Lenta (Tipo Solenoide)
+  6.4 - Atuador de Marcha Lenta (Motor de Passo)
+  6.5 - Válvula Canister
+  6.6 - Válvula EGR
+6.1  Bomba de Combustível
+A bomba de combustível é um atuador comandado pela UCE, que ao ligar a chave a temporiza 
+para  pressurizar  a  linha  e  facilitar  a  partida,  usando  relé  ou,  nos  sistemas  mais  modernos,  um  
+módulo de controle PWM.
+O  ponto  crítico  é  a  corrente  de  consumo,  que  não  pode  ser  muito  alta:  conector  derretido  no  
+flange,  comum  em  Renault,  indica  consumo  elevado  por  sujeira  no  tanque,  filtro  entupido  ou  
+mangueira obstruída.
+Para veículos convencionais o ideal é ficar em até 6A, e valores como 6,57A já são considerados 
+demasiadamente altos.
+Meça com garra amperimétrica DC, de preferência com osciloscópio, e dá para calcular a rotação 
+pela fórmula RPM = 60000 dividido pelo tempo de um ciclo; com 8,70 ms o resultado é 6896 RPM.
+
+6.2  Eletroinjetor
+O  eletroinjetor  injeta  e  pulveriza  o  combustível;  é  uma  válvula  com  agulha  mantida  fechada  por  
+mola, envolvida por uma bobina solenoide que recebe 12V positivo, enquanto a UCE comanda a 
+abertura com pulsos negativos.
+A duração desse pulso é o tempo de injeção, e os furos calibrados na parte inferior pulverizam o 
+combustível.
+Como é uma bobina, ele tem resistência mensurável; injetores de baixa impedância têm menor 
+resistência e exigem mais corrente.
+No osciloscópio aparece 12V no início, a queda negativa durante o tempo de injeção, um pico de 
+tensão que pode chegar a 70V, exigindo atenuador, e a curva de desalimentação por causa do 
+atraso mecânico de fechamento.
+Compare a amplitude dos 4 injetores: agulha suja, mola defeituosa ou bobina alterada mudam o 
+fechamento.
+
+
+
+6.3  Atuador de Marcha Lenta (Tipo Solenoide)
+O atuador de marcha lenta tipo solenoide regula a marcha lenta com a borboleta fechada, criando 
+um desvio extra de ar para o coletor, e não existe em sistemas Drive By Wire.
+Possui internamente um êmbolo e uma mola que mantém a passagem fechada em repouso, além 
+de uma bobina alimentada por 12V e por um PWM negativo vindo da UCE.
+A UCE varia a abertura de 0% a 100% pelo duty cycle do pulso, ou seja, pela porcentagem de 
+tempo em que o sinal fica negativo.
+Em  10%  de  duty  o  atuador  tem  pequena  vazão;  em  35%,  vazão  intermediária;  e  em  99%,  fica  
+praticamente em plena potência.
+Medindo  com  multímetro  nesse  último  caso  quase  se  lê  a  tensão  da  bateria,  pois  o  PWM  fica  
+quase integralmente negativo.
+
+6.4  Atuador de Marcha Lenta (Motor de Passo)
+O atuador de marcha lenta por motor de passo pode ser acoplado à TBI ou usar um desviador de 
+fluxo, com uma haste de ponta específica que limita a passagem de ar no by-pass.
+Ele  tem  um  estator  com  duas  bobinas  fixas  de  dois  terminais  cada  e  um  rotor  com  ímã  
+permanente e rosca sem fim: a haste não gira por ser guiada pela carcaça, então o giro do motor 
+vira deslocamento axial de avanço ou retração.
+O  giro  é  escalonado,  por  passos,  e  a  polaridade  das  bobinas  define  o  sentido  horário  ou  anti-  
+horário, com precisão que pode chegar a 0,04 mm por passo.
+A UCE calcula a marcha lenta usando ECT, IAT, CKP e TPS, e ao ligar ou desligar a chave faz 
+aprendizado de mínimo e máximo até o fim de curso.
+Teste com caneta de polaridade nos 4 pinos, que devem pulsar ao ligar a chave e ao acelerar.
+
+
+
+6.5  Válvula Canister
+A válvula canister controla a purga dos vapores de combustível do tanque, que são poluentes e 
+passam antes por um filtro de carvão vegetal ativo que retém hidrocarbonetos e libera só ar.
+Os gases são direcionados ao coletor para serem queimados somente quando a UCE determina, 
+e a válvula pode ser alimentada com 12V permanente ou por PWM.
+O  teste  elétrico  é  medir  a  resistência  da  bobina,  e  o  mecânico  é  verificar  a  estanqueidade:  
+desligada, ela não pode permitir passagem de ar, pois travada aberta causa mistura rica.
+Abastecer até além do primeiro estralo pode levar gasolina ao canister e danificar filtro e válvula.
+Na maioria dos veículos a abertura começa só após 65C e, em 95% dos sistemas, ela nunca abre 
+na partida ou no freio motor.
+
+6.6  Válvula EGR
+A  válvula  EGR  recircula  parte  dos  gases  de  escapamento  para  a  admissão,  diminuindo  a  
+temperatura da câmara de combustão e, com isso, a formação de NOx.
+Ela  pode  ser  mecânica,  com  acionamento  pneumático  por  vácuo  controlado  por  eletroválvulas  
+chaveadas pela UCE, ou eletromagnética.
+No  modelo  eletromagnético  o  funcionamento  é  parecido  com  o  atuador  de  marcha  lenta  por  
+solenoide:  uma  mola  mantém  o  êmbolo  fechado  e  a  solenoide  o  puxa  para  liberar  o  fluxo,  
+dispensando  o  acionamento  pneumático,  e  muitas  trazem  internamente  um  sensor  de  posição  
+para a UCE fazer o aprendizado e verificar o acionamento.
+Por  interligar  escapamento  e  admissão,  é  comum  travar  com  sujeira  e  carbonização  e  ficar  
+ineficiente, com contaminação ainda maior nos veículos diesel.
+Muitas válvulas EGR têm duas ligações de vácuo controladas por eletroválvulas.
+
+
+
+Pagina 1 de 9
+
+Pagina 2 de 9
+
+Pagina 3 de 9
+
+Pagina 4 de 9
+
+Pagina 5 de 9
+
+Pagina 6 de 9
+
+Pagina 7 de 9
+
+Pagina 8 de 9
+
+Pagina 9 de 9

@@ -1,0 +1,56 @@
+&ý Combustível
+Módulo 03 — Auto Elétrica
+Octanagem, gasolina e variações, etanol, a relação ar/combustível (AF) e o fator lambda — 
+os conceitos que a central usa para calcular a mistura.
+1. Octanagem
+Octanagem, ou índice de octanas, é o índice de resistência do combustível à detonação e à
+pré-ignição em motores de combustão interna.
+Pré-ignição é o fenômeno em que a mistura ar/combustível alcança a temperatura de ignição antes de
+receber a centelha, popularmente conhecido como batida de pino, detonação ou motor grilando.
+Quanto maior a compressão (taxa de compressão ou sobrealimentação), maior a temperatura interna
+e maior a octanagem exigida; como a gasolina tem menor octanagem que o álcool, adiciona-se álcool
+à gasolina para elevá-la; uma vela aplicada de forma errada também pode levar a mistura à
+pré-ignição.
+2. Gasolina, Gasolina Aditivada e Adulterada
+A gasolina é um combustível à base de petróleo formado por hidrocarbonetos e, em menor
+quantidade, por produtos oxigenados; a gasolina básica compõe-se de 8 átomos de carbono e 18 de
+hidrogênio, podendo receber aditivos como inibidores de corrosão, detergentes e corantes.
+A gasolina comum vendida no Brasil é a E-23, com cerca de 23% de álcool, e exige octanagem
+mínima de 87 IAD; a aditivada limpa e mantém limpos tanque, bomba, tubulação, bicos, válvulas,
+câmara e cabeçote, exige 89 IAD e não pode usar os corantes azul (reservado à aviação) e rosa
+(mistura MEG).
+A gasolina adulterada recebe solventes ou compostos não especificados, como aguarrás e benzina,
+que reduzem a octanagem, aumentam o consumo, agridem borrachas e vedações e formam
+carbonização que pode causar pré-ignição.
+
+3. Álcool Etílico (Etanol)
+O etanol (álcool etílico) é derivado de cereais e vegetais; no Brasil, a matéria-prima é
+principalmente a cana-de-açúcar, e o álcool comercializado é hidratado, com 5% a 6% de água.
+Por conter oxigênio em sua composição (2 átomos de carbono, 6 de hidrogênio e 1 de oxigênio), seu
+poder de queima é menor que o da gasolina, o que explica o maior consumo.
+O etanol tem alta resistência à detonação (equivalente a 110 octanas), combustão mais lenta e maior
+avanço de ignição, permitindo taxas de compressão mais elevadas; motores a etanol geram maior
+potência e torque com tempo de injeção superior, emitem menos poluentes e, por serem hidratados,
+trabalham com temperaturas internas menores na câmara.
+4. Relação Ar/Combustível (AF)
+A relação ar/combustível (AF, do inglês air-fuel) é a proporção entre comburente e combustível; a
+mistura estequiométrica é a quantidade ideal entre um e outro, sem que sobre nenhum reagente após
+a combustão.
+Com excesso de combustível sobra combustível após a queima (mistura rica); com excesso de
+oxigênio sobra oxigênio (mistura pobre), e o excedente de alguns produtos pode ainda formar novos
+produtos na reação química.
+Para uma noção das proporções reais, mil litros de ar correspondem a aproximadamente 1,2 kg; para
+queimar 1 kg de gasolina comum (13,2:1) são necessários cerca de 11 mil litros de ar, o equivalente
+a 11 caixas de água.
+Como a mistura perfeita quase nunca ocorre, existe a mistura estequiométrica (a desejada) e a
+mistura real (a obtida); a relação entre elas é o fator lambda.
+5. Fator Lambda
+Sempre comparada à relação estequiométrica, a mistura rica tem excesso de combustível (ou pouco
+ar) e a pobre tem falta de combustível (ou excesso de ar).
+O fator lambda (;²’’&VÆ~6òVçG&RÖ—7GWa que temos e a estequiométrica, calculada como a
+quantidade de ar real dividida pela quantidade de ar estequiométrica, o que torna a comunicação
+independente do tipo de combustível.
+Com ;²ÒÖ—7GWa é estequiométrica, com ;²ÖVæ÷"VR’ica e com ;²Ö–÷"VR’ö'&S na
+gasolina, a relação estequiométrica é de 14,7:1.
+Exemplos do livro: mistura pobre de 17,5:1 gera ;²FRÃ’ƒrÃRóBÃr’ÂÖ—7GWa rica de 13:1 gera ;
+de 0,88, e um motor a etanol lendo 8:1, com estequiométrica de 9:1, resulta em ;²FRÃƒ‚

@@ -1,0 +1,160 @@
+AUTO ELETRICA  -  INJECAO ELETRONICA
+Material de estudo - apostila do modulo
+MODULO 05
+Sensores
+ECT, IAT, TPS, MAP, CKP, CMP, detonação, sonda lambda, VSS e MAF: o que cada sinal diz e como 
+testar com multímetro e osciloscópio.
+Conteudo deste modulo:
+  5.1 - Sensor de Temperatura da Água (ECT)
+  5.2 - Sensor de Temperatura do Ar (IAT)
+  5.3 - Sensor de Posição da Borboleta (TPS)
+  5.4 - Sensor de Pressão Absoluta (MAP)
+  5.5 - Sensor de Rotação e PMS (CKP): Indutivo e Efeito Hall
+  5.6 - Sensor de Fase (CMP)
+  5.7 - Sensor de Detonação (KS) e Pré-Ignição
+  5.8 - Sensor de Oxigênio (Sonda Lambda)
+  5.9 - Sensor de Velocidade (VSS)
+  5.10 - Sensor de Fluxo de Ar (MAF): fio aquecido e filme aquecido
+5.1  Sensor de Temperatura da Água (ECT)
+O  ECT  é  um  termistor  NTC:  quando  a  temperatura  sobe  a  resistência  cai  e  quando  ela  cai  a  
+resistência sobe, funcionando como divisor de tensão com referência de 5V interna da UCE.
+Ele usa 2 pinos, um de sinal e um negativo de referência, e com o circuito aberto o sinal vai a 5V, 
+gerando DTC.
+Na prática, meça a resistência e compare com a temperatura: cerca de 5976 ohms a 0C, 2500 
+ohms a 20C, 1670 ohms a 40C, 800 ohms a 60C, 232 ohms a 90C e 175 ohms a 100C.
+Pelo  sinal  também  se  percebe  a  abertura  da  termostática  e  o  acionamento  do  eletroventilador;  
+confira com scanner, multímetro ou osciloscópio, comparando com um termômetro.
+
+5.2  Sensor de Temperatura do Ar (IAT)
+O IAT é um NTC de funcionamento igual ao ECT, mas mede a temperatura do ar admitido em vez 
+do líquido de arrefecimento.
+Pode ficar exposto no coletor ou na mangueira de admissão, ou ser integrado ao MAF, ao MAP e 
+ao corpo de borboleta, e não deve ser limpo com descarbonizantes ou solventes.
+Na  primeira  partida  do  dia,  IAT  e  ECT  devem  marcar  valores  iguais  ou  muito  próximos;  se  o  ar  
+marca  25C  e  a  água  20C,  a  central  enriquece  a  mistura  com  base  nos  20C,  causando  marcha  
+lenta ruim e cheiro de combustível.
+Sinal que oscila bruscamente, como saltar de 25C para 28C em instantes, indica termistor com 
+defeito.
+
+
+
+
+
+5.3  Sensor de Posição da Borboleta (TPS)
+O TPS é um potenciômetro que forma divisor de tensão e tem 3 pinos: alimentação 5V, negativo e 
+sinal.
+O sinal varia de 0 a 5V conforme a borboleta vai de 0% a 100%, ou de 5V a 0V em sensores de 
+padrão invertido; na prática deve ficar em torno de 100 mV a 4,8V, e 0V ou 5V exatos geram DTC 
+de curto.
+Além da posição, a UCE usa o TPS em estratégias de enriquecimento de aceleração, freio motor, 
+marcha lenta, desaceleração e cut-off.
+Teste  com  multímetro,  scanner  ou  osciloscópio  acelerando  progressivamente  e  verificando  a  
+ausência de buracos ou picos, tanto com a chave ligada quanto com o motor em funcionamento.
+
+5.4  Sensor de Pressão Absoluta (MAP)
+O MAP mede a pressão real dentro do coletor de admissão, instalado por tubulação ou acoplado 
+diretamente, e é o principal sensor de cálculo de injeção, combinado com rotação e temperatura: 
+quanto maior o MAP, mais combustível é injetado.
+Na  marcha  lenta  e  em  baixa  carga  existe  vácuo,  pois  a  pressão  interna  é  menor  que  a  
+atmosférica, e ao ligar a chave a UCE lê cerca de 1013 mBar para se ajustar ao ambiente.
+A  pinagem  é  5V,  negativo  e  sinal,  e  a  versão  TMAP  acrescenta  o  IAT  num  quarto  pino;  o  teto  
+costuma ser 1150 mBar, maior em sobrealimentados.
+No  teste  a  fundo  a  pressão  deve  igualar  a  atmosférica,  e  o  sensor  não  pode  ser  limpo  com  
+descarbonizante ou solvente.
+5.5  Sensor de Rotação e PMS (CKP): Indutivo e Efeito Hall
+O  CKP  informa  rotação,  posição  do  virabrequim,  PMS,  ponto  de  ignição,  ponto  de  injeção  e  
+eficiência  de  combustão,  lendo  uma  roda  fônica  dentada  com  falha,  como  a  60-2  (58  dentes  e  
+falha de 2) ou a 36-1; a cada dente do 60-2 o motor gira 6 graus.
+O  indutivo  tem  ímã  e  bobina,  gera  tensão  alternada  senoidal,  usa  2  pinos,  não  precisa  de  
+alimentação e tem a resistência medida com multímetro.
+O de efeito Hall é alimentado pela UCE com 5V, gera onda quadrada com cerca de 200 mV no 
+nível baixo e 4,7V no alto, mantém a tensão constante independente da rotação e funciona bem a 
+baixas rotações.
+Só com CKP a injeção é semissequencial.
+
+5.6  Sensor de Fase (CMP)
+O CMP é o sensor de posição do comando de válvulas e existe porque o CKP define o PMS, mas 
+não o tempo dos cilindros.
+Ele informa quando o pistão 1 entra em admissão/combustão, permitindo à UCE fazer injeção e 
+ignição sequencial; sem ele o sistema cai para semissequencial, injetando em cilindros gêmeos.
+Pode ser indutivo ou Hall, instalado no cabeçote sobre a engrenagem fônica do comando, e em 
+alguns  modelos  a  UCE  consegue  calcular  rotação  aproximada  por  ele,  mantendo  modo  de  
+segurança com potência reduzida.
+Também  serve  para  conferir  o  sincronismo  virtual  entre  virabrequim  e  comando  e  verificar  o  
+funcionamento do variador de avanço de fase.
+
+5.7  Sensor de Detonação (KS) e Pré-Ignição
+O KS fica instalado no bloco e detecta batidas e vibrações; internamente tem uma massa e um 
+cristal piezoelétrico que gera pulsos de tensão alternada sob esforço mecânico.
+Ao detectar detonação, a UCE atrasa o ponto de ignição lentamente e por etapas até o fenômeno 
+cessar ou atingir o limite de ajuste, depois reestabelece aos poucos; se o sinal ficar fraco, usa um 
+mapa de segurança.
+Ele não deve ser montado com arruelas ou calços, e o torque em geral não pode ultrapassar 20 
+Nm, pois excesso de aperto já coloca o veículo em estratégia de segurança.
+A  detonação  é  a  autocombustão  das  últimas  partículas,  com  ruído  metálico,  enquanto  a  pré-  
+ignição ocorre antes da centelha e não gera ruído.
+
+5.8  Sensor de Oxigênio (Sonda Lambda)
+A sonda lambda fica no escapamento antes do catalisador e às vezes depois, e informa à UCE a 
+quantidade de oxigênio, comparando o gás com o oxigênio atmosférico para gerar tensão.
+A de banda estreita produz de 0 a 1100 mV sem alimentação externa: abaixo de 450 mV indica 
+mistura  pobre  e  acima,  rica,  oscilando  constantemente;  o  aquecedor  chega  perto  de  800C  e  a  
+leitura já é eficiente entre 300C e 350C.
+A  de  4  fios  usa  preto  para  sinal,  cinza  para  negativo  de  referência  e  dois  brancos  para  o  
+aquecedor.
+A convencional tem resistência de 2 a 5 ohms com 12V integral, enquanto a planar tem 8 a 12 
+ohms e negativo por PWM controlado pela ECU, que acusa aquecedor rompido.
+
+A pós-catalisador monitora a eficiência do catalisador e oscila menos, em faixa mais pobre.
+
+5.9  Sensor de Velocidade (VSS)
+O  VSS  informa  a  velocidade  do  veículo  e  hoje  está  praticamente  extinto,  pois  a  UCE  passou  a  
+usar o sinal do ABS.
+Ele  alimenta  o  velocímetro  e  serve  a  estratégias  de  desaceleração,  cut-off  e  marcha  lenta,  
+podendo ser indutivo ou Hall e lendo uma roda fônica ou engrenagem acionada pelo diferencial; a 
+UCE define a velocidade pela frequência do sinal.
+A maioria é de efeito Hall, com 3 pinos (alimentação, negativo e sinal em onda quadrada), muitas 
+vezes funcionando com 12V, e os mesmos testes do CKP se aplicam.
+Por não depender da rotação para gerar sinal, o Hall responde bem a baixas velocidades, como 5 
+km/h, situação em que o indutivo é ruim; no diagnóstico mede-se a frequência, por exemplo 69 
+Hz, e compara-se com a literatura.
+
+5.10  Sensor de Fluxo de Ar (MAF): fio aquecido e filme aquecido
+O MAF mede a massa de ar que entra no motor e fica entre o filtro de ar e a TBI, sendo usado 
+pela UCE junto com IAT e MAP para calcular o combustível; ao contrário do antigo debímetro, que 
+media volume, ele mede massa.
+No  tipo  fio  aquecido  o  fio  é  mantido  a  cerca  de  120C  e  a  corrente  necessária  para  isso  é  
+proporcional   à   massa   de   ar,   havendo   sempre   um   IAT   acoplado   e   um   aquecimento   pós-   
+desligamento para queimar impurezas.
+No filme aquecido há uma listra central de aquecimento e dois sensores de temperatura, um antes 
+e outro depois; sem fluxo as temperaturas são iguais, e com fluxo o primeiro resfria e o segundo 
+aquece, gerando a diferença do sinal.
+O sinal de diagnóstico é digital, de 0 a 5V ou onda quadrada, lida por duty cycle ou tensão média.
+
+
+
+Pagina 1 de 13
+
+Pagina 2 de 13
+
+Pagina 3 de 13
+
+Pagina 4 de 13
+
+Pagina 5 de 13
+
+Pagina 6 de 13
+
+Pagina 7 de 13
+
+Pagina 8 de 13
+
+Pagina 9 de 13
+
+Pagina 10 de 13
+
+Pagina 11 de 13
+
+Pagina 12 de 13
+
+Pagina 13 de 13

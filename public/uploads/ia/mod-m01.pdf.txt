@@ -1,0 +1,139 @@
+AUTO ELETRICA  -  INJECAO ELETRONICA
+Material de estudo - apostila do modulo
+MODULO 01
+Introdução à Injeção Eletrônica
+O Triplo C, a relação estequiométrica, a central de comando (ECU), os tipos e modos de injeção e a 
+visão geral de sensores, atuadores e diagnóstico.
+Conteudo deste modulo:
+  1.1 - O que é Injeção Eletrônica — O Triplo C
+  1.2 - Relação Estequiométrica
+  1.3 - Central de Injeção Eletrônica (ECU)
+  1.4 - Tipos de Injeção: Monoponto
+  1.5 - Tipos de Injeção: Multiponto
+  1.6 - Modos de Injeção: Simultânea, Semissequencial e Sequencial
+  1.7 - Injeção Direta e Indireta
+  1.8 - Sensores e Atuadores — visão geral
+  1.9 - Auto Adaptação, Scanner e Tomada de Diagnóstico
+1.1  O que é Injeção Eletrônica — O Triplo C
+O sistema de injeção eletrônica tem uma função básica: fornecer combustível para os cilindros em 
+combustão, porém, com precisão.
+Para  o  motor  funcionar  são  fundamentais  os  três  C:  Combustível  (gasolina,  álcool  ou  GNV),  
+Comburente  (o  oxigênio  aspirado  pelo  ar)  e  Calor,  fornecido  pela  centelha  da  bobina  de  alta  
+tensão e entregue pela vela dentro da câmara de combustão.
+O motor é uma bomba de vácuo; nas primeiras injeções a eletrônica cuidava só do combustível e 
+a ignição do calor, mas hoje o módulo controla injeção e ignição com precisão.
+
+
+
+1.2  Relação Estequiométrica
+Existe  uma  relação  estequiométrica  entre  ar  e  combustível,  mensurada  em  massa  (KG),  que  
+determina  a  quantidade  ideal  de  oxigênio  para  a  queima  de  cada  combustível,  sem  sobrar  ou  
+faltar nenhum dos dois.
+Segundo o livro: gasolina pura 14,7:1, gasolina comum 13,2:1, etanol 9,0:1, diesel 15,2:1, metanol 
+6,4:1 e hidrogênio 34,0:1.
+No exemplo dado, um motor aspirando 100 gramas de oxigênio por ciclo injeta 7,57 gramas de 
+gasolina  comum  e  9,09  gramas  de  etanol  —  por  isso  o  sistema  flex  compensa  injetando  mais  
+combustível.
+
+
+
+1.3  Central de Injeção Eletrônica (ECU)
+A central de injeção eletrônica, conhecida como UCE (Unidade de Controle Eletrônico) ou ECU 
+(Electronic Control Unit), é basicamente um computador.
+Ela recebe dados de sensores, como temperatura da água e do ar, pressão do coletor e posição 
+do acelerador, processa essas informações e controla os dispositivos de gerenciamento do motor: 
+injeção de combustível, marcha lenta e ignição.
+Existem  centrais  analógicas,  sem  comunicação  com  scanner,  e  digitais,  com  conector  de  
+diagnóstico; há pelo menos 16 anos as centrais cuidam de combustível e ignição juntas.
+
+1.4  Tipos de Injeção: Monoponto
+A injeção monoponto é caracterizada por ter somente um injetor para todos os cilindros do motor, 
+instalado acima da borboleta de aceleração.
+O eletroinjetor injeta combustível em todas as fases de aspiração e o sistema trabalha com vazão 
+de  injetor  maior  e  pressão  de  combustível  menor;  é  considerado  ultrapassado  e  não  é  mais  
+utilizado.
+Por questões de eficiência e redução de poluentes, foi solicitada sua modificação para o sistema 
+multiponto em 1997; sua aparência física lembra o carburador, mas as semelhanças param por aí.
+
+1.5  Tipos de Injeção: Multiponto
+A  injeção  multiponto  possui  um  injetor  para  cada  cilindro,  instalado  mais  próximo  ao  cabeçote,  
+individualmente  no  duto  do  cilindro,  trabalhando  com  pressão  de  combustível  maior  e  melhor  
+atomização.
+Como  a  injeção  ocorre  próxima  às  válvulas  de  admissão,  pelo  coletor  passa  somente  ar,  
+permitindo maior diâmetro, melhor preenchimento dos cilindros, ganho de potência e redução da 
+condensação nas paredes frias do coletor.
+A rampa de injetores, também chamada de flauta, recebe e distribui o combustível; o coletor de 
+plástico oferece superfície lisa, menor peso e menor custo de fabricação.
+
+1.6  Modos de Injeção: Simultânea, Semissequencial e Sequencial
+Existem três modos de injeção: simultânea, semissequencial e sequencial.
+No simultâneo, o mais antigo, todos os injetores são acionados ao mesmo tempo e o combustível 
+fica  em  espera  sobre  a  válvula;  no  semissequencial,  ou  banco  a  banco,  a  injeção  ocorre  nos  
+cilindros gêmeos (1 e 4; 2 e 3) a cada 180º, com apenas um cilindro em espera, e também se 
+aplica à ignição.
+O modo sequencial, o mais moderno, injeta individualmente na ordem de ignição e somente no 
+cilindro em admissão, sem espera, exigindo sensores de posição do virabrequim e do comando 
+de válvulas.
+
+
+
+1.7  Injeção Direta e Indireta
+As  duas  configurações  de  injeção  são  a  indireta  e  a  direta,  e  a  principal  diferença  é  o  local  do  
+eletroinjetor.
+No sistema indireto, usado desde os primórdios, o injetor fica no coletor de admissão, antes da 
+válvula de admissão; no direto, o injetor é instalado na câmara de combustão, após as válvulas, 
+exigindo pressão de combustível muito maior para vencer a pressão interna do motor.
+As  vantagens  da  injeção  direta  citadas  no  livro:  atomização  mais  eficiente,  controle  preciso  do  
+ângulo de injeção, redução de consumo, resposta imediata de aceleração e maior torque — com 
+alto custo de produção.
+
+
+
+1.8  Sensores e Atuadores — visão geral
+Os  sensores  mapeiam  as  condições  do  motor  e  informam  à  central  os  dados  para  calcular  a  
+massa de ar e a quantidade de combustível.
+Entre  eles:  ECT  (temperatura  do  refrigerante),  IAT  (temperatura  do  ar),  TPS  (posição  da  
+borboleta),  MAP  (pressão  do  coletor),  CKP  (posição  do  virabrequim  e  PMS),  CMP  (fase  do  
+comando), sonda lambda O2 (oxigênio no escapamento) e o sensor KS (detonação).
+Os  atuadores  convertem  pulsos  elétricos  em  movimentos:  bomba  de  combustível,  eletroinjetor,  
+bobina  de  ignição  (eleva  12,6V  a  mais  de  25kV),  válvula  de  purga  canister,  relé  de  potência  e  
+atuador de marcha lenta.
+
+1.9  Auto Adaptação, Scanner e Tomada de Diagnóstico
+A  UCE  é  auto  adaptativa:  adapta-se  a  desgastes  de  sensores  e  atuadores,  do  motor,  do  
+combustível (álcool, gasolina ou mistura em qualquer proporção) e até à forma de condução.
+Após trocar alguma peça, pode ser necessário resetar esses parâmetros com um scanner, que 
+também lê os códigos DTC (Diagnostic Trouble Code), sensores, atuadores e funções especiais.
+Antigamente cada montadora tinha um conector próprio, como a Fiat com 3 vias; depois a tomada 
+de  diagnóstico  foi  universalizada  no  padrão  OBD  II,  permitindo  que  um  único  cabo  conecte  na  
+maioria dos veículos.
+
+
+
+Pagina 1 de 14
+
+Pagina 2 de 14
+
+Pagina 3 de 14
+
+Pagina 4 de 14
+
+Pagina 5 de 14
+
+Pagina 6 de 14
+
+Pagina 7 de 14
+
+Pagina 8 de 14
+
+Pagina 9 de 14
+
+Pagina 10 de 14
+
+Pagina 11 de 14
+
+Pagina 12 de 14
+
+Pagina 13 de 14
+
+Pagina 14 de 14
