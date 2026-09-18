@@ -1,0 +1,7 @@
+**/.env
+**/.env.*
+!**/.env.example
+**/*.dump
+**/*.tar.gz
+**/public/uploads/
+deploy/contabo/secrets/

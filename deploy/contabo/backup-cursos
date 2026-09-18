@@ -1,0 +1,23 @@
+#!/bin/sh
+set -eu
+
+umask 077
+BACKUP_ROOT=/srv/backups/daily
+STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
+DESTINATION="$BACKUP_ROOT/$STAMP"
+
+mkdir -p "$DESTINATION"
+
+docker exec cursos-postgres pg_dump -U postgres -Fc autoeletrica \
+  > "$DESTINATION/autoeletrica.dump"
+docker exec cursos-postgres pg_dump -U postgres -Fc fotoia \
+  > "$DESTINATION/fotoia.dump"
+
+tar -C /srv/data/autoeletrica -czf "$DESTINATION/autoeletrica-uploads.tar.gz" uploads
+tar -C /srv/data/fotoia -czf "$DESTINATION/fotoia-uploads.tar.gz" uploads
+
+sha256sum "$DESTINATION"/*.dump "$DESTINATION"/*.tar.gz \
+  > "$DESTINATION/SHA256SUMS"
+
+find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d -mtime +7 \
+  -exec rm -rf -- {} +

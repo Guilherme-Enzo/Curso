@@ -1,0 +1,11 @@
+[Unit]
+Description=Backup dos bancos e uploads dos cursos
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/backup-cursos
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

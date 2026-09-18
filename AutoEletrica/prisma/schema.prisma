@@ -1,0 +1,185 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String       @id @default(uuid())
+  name          String
+  email         String       @unique
+  passwordHash  String
+  role          String       @default("student") // "student" ou "teacher"
+  questions     Question[]
+  aiMessages    AiMessage[]
+  quizAttempts  QuizAttempt[]
+  studyTimes    StudyTime[]
+  videoProgress VideoProgress[]
+  topics        Topic[]
+  topicMessages TopicMessage[]
+  topicReads    TopicRead[]
+  createdAt     DateTime     @default(now())
+}
+
+model Module {
+  id          String   @id @default(uuid())
+  order       Int      // posição/ordem de exibição (1 a 10)
+  name        String
+  description String?
+  synopsis    String?  // resumo gerado pela IA do que será estudado no PDF
+  content     String?  // JSON com submódulos: [{title, content, images}]
+  pdfUrl      String?
+  quiz        Quiz?    // 1 quiz por módulo (cascade no delete)
+  videos      Video[]
+  aiMessages  AiMessage[]
+  quizAttempts QuizAttempt[]
+  studyTimes   StudyTime[]
+  createdAt   DateTime @default(now())
+}
+
+model Question {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  questionText String
+  answerText   String?
+  status       String   @default("open") // "open" ou "answered"
+  createdAt    DateTime @default(now())
+}
+
+model Quiz {
+  id        String         @id @default(uuid())
+  moduleId  String         @unique
+  module    Module         @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  title     String
+  source    String         @default("seed") // "seed" (livro) ou "ia" (Gemini)
+  questions QuizQuestion[]
+  attempts  QuizAttempt[]
+  createdAt DateTime       @default(now())
+}
+
+model QuizQuestion {
+  id           String       @id @default(uuid())
+  quizId       String
+  quiz         Quiz         @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  order        Int          @default(0)
+  question     String
+  correctIndex Int
+  options      QuizOption[]
+}
+
+model QuizOption {
+  id         String       @id @default(uuid())
+  questionId String
+  question   QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  order      Int          @default(0)
+  text       String
+}
+
+model AiMessage {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  moduleId  String
+  module    Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  role      String // "user" ou "assistant"
+  content   String
+  createdAt DateTime @default(now())
+
+  @@index([userId, moduleId])
+}
+
+model QuizAttempt {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  quizId    String
+  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  moduleId  String
+  module    Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  details   Json     // snapshot da avaliação: título, módulo e cada pergunta c/ opções, correto e resposta escolhida
+  correct   Int
+  total     Int
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model StudyTime {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  moduleId  String
+  module    Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  seconds   Int      @default(0)
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, moduleId])
+}
+
+model Video {
+  id          String   @id @default(uuid())
+  moduleId    String
+  module      Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  url         String
+  thumbnail   String?
+  duration    Int      @default(0)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  progress    VideoProgress[]
+}
+
+model VideoProgress {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  videoId   String
+  video     Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  watched   Boolean  @default(false)
+  seconds   Int      @default(0)
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, videoId])
+}
+
+model Topic {
+  id          String         @id @default(uuid())
+  title       String
+  description String
+  authorId    String
+  author      User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  messages    TopicMessage[]
+  reads       TopicRead[]
+  createdAt   DateTime       @default(now())
+
+  @@index([createdAt])
+}
+
+model TopicMessage {
+  id        String   @id @default(uuid())
+  topicId   String
+  topic     Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([topicId, createdAt])
+}
+
+model TopicRead {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topicId   String
+  topic     Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  readAt    DateTime @default(now())
+
+  @@unique([userId, topicId])
+}
