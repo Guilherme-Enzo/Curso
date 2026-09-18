@@ -23,4 +23,5 @@ checksums. Uma copia externa ainda deve ser configurada para proteger contra a
 perda total da VPS.
 
 O procedimento de recuperacao operacional esta em
-`/srv/backups/README-RESTORE.txt` no servidor.
+`/srv/backups/README-RESTORE.txt` no servidor e em `RESTORE.md` neste
+repositorio. O procedimento da migracao final esta em `CUTOVER.md`.
