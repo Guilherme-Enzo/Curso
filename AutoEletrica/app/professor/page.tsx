@@ -153,6 +153,23 @@ export default function TeacherPage() {
         {tab === "duvidas" && <QuestionsManager />}
         {tab === "comunidade" && <ComunidadeTab session={session!} />}
       </div>
+
+      <footer className="border-t border-white/5 bg-zinc-950">
+        <div className="mx-auto max-w-md px-4 py-8 sm:px-6">
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex items-center gap-2">
+              <img src="/icoauto-icon.png" alt="" className="h-7 w-7 rounded-lg" />
+              <span className="text-xs font-bold text-white">
+                Auto <span className="text-amber-400">Elétrica</span>
+              </span>
+            </div>
+            <div className="flex items-center gap-4 text-xs text-zinc-500">
+              <Link href="/" className="transition hover:text-white">Voltar ao início</Link>
+            </div>
+            <p className="text-xs text-zinc-600">© {new Date().getFullYear()} Auto Elétrica. Elétrica & Injeção Eletrônica Automotiva</p>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }

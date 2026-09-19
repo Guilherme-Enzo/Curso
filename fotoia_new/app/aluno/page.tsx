@@ -194,6 +194,23 @@ export default function StudentPage() {
         {tab === "comunidade" && <ComunidadeTab session={session!} />}
         {tab === "desempenho" && <DesempenhoTab />}
       </div>
+
+      <footer className="border-t border-violet-400/20 bg-[#0a0a0f]">
+        <div className="mx-auto max-w-md px-4 py-8 sm:px-6">
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex items-center gap-2">
+              <img src="/icofotoia-icon.png" alt="" className="h-7 w-7 rounded-lg" />
+              <span className="text-xs font-bold text-white">
+                Retrato <span className="text-violet-400">ImAginado</span>
+              </span>
+            </div>
+            <div className="flex items-center gap-4 text-xs text-zinc-500">
+              <Link href="/" className="transition hover:text-white">Voltar ao início</Link>
+            </div>
+            <p className="text-xs text-zinc-600">© {new Date().getFullYear()} Retrato ImAginado. Prompts de Fotografia e Edição com IA</p>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
