@@ -1,17 +1,20 @@
 import Link from "next/link";
 import Reveal from "@/app/components/reveal";
-import { MODULES } from "@/lib/modules";
+import { getPublicModules, type PublicModule } from "@/lib/publicModules";
 
-const SUBMODULE_COUNT = MODULES.reduce((acc, m) => acc + m.submodules.length, 0);
+export const dynamic = "force-dynamic";
 
-export default function Home() {
+export default async function Home() {
+  const modules = await getPublicModules();
+  const lessonCount = modules.reduce((total, module) => total + module.submodules.length, 0);
+
   return (
     <main className="flex-1 min-h-screen bg-[#07070b] text-zinc-100 antialiased">
       <Navbar />
-      <Hero />
+      <Hero moduleCount={modules.length} lessonCount={lessonCount} />
       <TrustBar />
       <HowItWorks />
-      <Modules />
+      <Modules modules={modules} />
       <Features />
       <AiSection />
       <Testimonials />
@@ -72,7 +75,7 @@ function Navbar() {
   );
 }
 
-function Hero() {
+function Hero({ moduleCount, lessonCount }: { moduleCount: number; lessonCount: number }) {
   return (
     <section
       className="relative overflow-hidden"
@@ -116,7 +119,7 @@ function Hero() {
             <p className="mx-auto mt-6 max-w-2xl text-balance text-base leading-relaxed text-zinc-400 sm:text-lg">
               Cansado de trocar peça por tentativa e erro? Aqui você aprende a
               ler o que o scanner tá te dizendo — do zero da injeção eletrônica
-              até o diagnóstico profissional em 10 módulos baseados no livro{" "}
+               até o diagnóstico profissional em {moduleCount} módulos baseados no livro{" "}
               <span className="font-semibold text-zinc-300">
                 “Injeção Eletrônica — Os Fundamentos”
               </span>
@@ -147,9 +150,9 @@ function Hero() {
           <Reveal delay={400}>
             <div className="mt-10 grid grid-cols-3 gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-4 backdrop-blur sm:mx-auto sm:max-w-xl">
               {[
-                { v: "10", l: "Módulos do livro" },
-                { v: String(SUBMODULE_COUNT), l: "Submódulos organizados" },
-                { v: "100", l: "Perguntas de avaliação" },
+                 { v: String(moduleCount), l: "Módulos disponíveis" },
+                 { v: String(lessonCount), l: "Submódulos organizados" },
+                 { v: String(moduleCount), l: "Avaliações disponíveis" },
               ].map((s) => (
                 <div key={s.l} className="text-center">
                   <p className="text-2xl font-black text-amber-400 sm:text-3xl">
@@ -250,15 +253,7 @@ function HowItWorks() {
   );
 }
 
-const modules = MODULES.map((m) => ({
-  num: m.num,
-  title: m.title,
-  desc: m.summary,
-  tag: m.tag,
-  icon: m.icon,
-}));
-
-function Modules() {
+function Modules({ modules }: { modules: PublicModule[] }) {
   return (
     <section
       className="relative border-t border-white/5 bg-gradient-to-b from-transparent via-white/[0.015] to-transparent py-24"
@@ -271,7 +266,7 @@ function Modules() {
               O plano de estudos
             </p>
             <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">
-              10 módulos do livro: do Triplo C ao sistema de alimentação
+              {modules.length} módulos do livro: do fundamento ao diagnóstico
             </h2>
             <p className="mt-4 text-zinc-400">
               Cada módulo é dividido em submódulos com teoria enxuta, figuras
@@ -284,8 +279,8 @@ function Modules() {
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {modules.map((m, i) => (
-            <Reveal key={m.num} delay={(i % 3) * 100}>
-              <article className="group relative h-full overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] p-6 backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-2xl hover:shadow-amber-500/10">
+            <Reveal key={m.id} delay={(i % 3) * 100}>
+              <Link href={`/conteudo/${m.order}`} className="group relative block h-full overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] p-6 backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-2xl hover:shadow-amber-500/10">
                 <div className="absolute right-0 top-0 h-20 w-20 translate-x-8 -translate-y-8 rounded-full bg-amber-500/10 blur-2xl transition group-hover:bg-amber-500/25" />
                 <div className="relative flex items-center justify-between">
                   <span className="grid h-11 w-11 place-items-center rounded-xl bg-white/[0.04] text-xl transition group-hover:bg-amber-500/15">
@@ -296,19 +291,19 @@ function Modules() {
                     )}
                   </span>
                   <span className="text-4xl font-black text-white/10 transition-colors group-hover:text-amber-500/40">
-                    {m.num}
+                    {String(m.order).padStart(2, "0")}
                   </span>
                 </div>
                 <h3 className="relative mt-4 text-lg font-bold text-white">
-                  {m.title}
+                  {m.name}
                 </h3>
                 <p className="relative mt-2 text-sm leading-relaxed text-zinc-400">
-                  {m.desc}
+                  {m.summary || m.description || "Conteúdo prático de elétrica e injeção eletrônica."}
                 </p>
                 <span className="relative mt-4 inline-block rounded-full border border-white/10 px-3 py-1 text-[11px] font-medium uppercase tracking-wider text-zinc-400">
                   {m.tag}
                 </span>
-              </article>
+              </Link>
             </Reveal>
           ))}
         </div>
@@ -537,7 +532,7 @@ const faqs = [
   },
   {
     q: "As avaliações valem certificado?",
-    a: "Cada módulo tem uma avaliação. Concluir os 10 módulos te dá um histórico de progresso — e em breve, certificado de conclusão.",
+    a: "Cada módulo tem uma avaliação. Concluir todos os módulos disponíveis te dá um histórico de progresso — e em breve, certificado de conclusão.",
   },
   {
     q: "E se eu travar numa dúvida?",
