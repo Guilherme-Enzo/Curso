@@ -259,7 +259,7 @@ function ConteudoTab() {
       <p className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5 text-base leading-relaxed text-zinc-300">
         Conteúdo baseado no livro{" "}
         <span className="font-semibold text-white">
-          "Injeção Eletrônica — Os Fundamentos"
+           "Fotografia e Edição com IA"
         </span>
         . Clique em <span className="font-semibold text-white">Visualizar</span> para
         estudar o conteúdo completo de cada módulo.
@@ -275,7 +275,11 @@ function ConteudoTab() {
               <div className="min-w-0">
                 <div className="flex items-center gap-3">
                   <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-violet-500/20 to-cyan-500/20 text-xl">
-                    {mod.icon}
+                    {mod.icon?.startsWith("/") ? (
+                      <img src={mod.icon} alt="" className="h-8 w-8 rounded-lg" />
+                    ) : (
+                      mod.icon
+                    )}
                   </span>
                   <div>
                     <p className="text-sm font-bold uppercase tracking-wider text-violet-300">
@@ -874,7 +878,10 @@ function AvaliacoesTab({ userId: _userId }: { userId: string }) {
               >
                 <div className="flex items-center gap-3">
                   <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-violet-500/20 to-cyan-500/20 text-xl">
-                    {MODULES.find((m) => m.id === q.moduleOrder)?.icon ?? "✅"}
+                    {(() => {
+                      const icon = MODULES.find((m) => m.id === q.moduleOrder)?.icon ?? "✅";
+                      return icon.startsWith("/") ? <img src={icon} alt="" className="h-8 w-8 rounded-lg" /> : icon;
+                    })()}
                   </span>
                   <div>
                     <p className="flex flex-wrap items-center gap-2 text-lg font-semibold text-white">
@@ -1030,7 +1037,10 @@ function DesempenhoTab() {
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-violet-400/30 bg-zinc-950/50 px-5 py-4">
                   <div className="flex items-center gap-3">
                     <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-lg">
-                      {MODULES.find((m) => m.id === g.order)?.icon ?? "📘"}
+                      {(() => {
+                        const icon = MODULES.find((m) => m.id === g.order)?.icon ?? "📘";
+                        return icon.startsWith("/") ? <img src={icon} alt="" className="h-7 w-7 rounded-lg" /> : icon;
+                      })()}
                     </span>
                     <div>
                       <p className="text-sm font-bold uppercase tracking-wider text-violet-300">

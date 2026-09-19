@@ -61,7 +61,11 @@ export default function ConteudoViewer() {
           >
             <div className="flex items-center gap-3">
               <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-600/20 text-xl">
-                {mod.icon}
+                {mod.icon?.startsWith("/") ? (
+                  <img src={mod.icon} alt="" className="h-8 w-8 rounded-lg" />
+                ) : (
+                  mod.icon
+                )}
               </span>
               <div>
                 <p className="text-sm font-bold uppercase tracking-wider text-amber-400">
