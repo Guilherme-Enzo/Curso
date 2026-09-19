@@ -23,4 +23,5 @@ export const config = {
     "/perfil/:path*",
     "/comunidade/:path*",
   ],
+  runtime: "nodejs",
 };
