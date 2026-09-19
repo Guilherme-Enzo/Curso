@@ -35,9 +35,11 @@ function Navbar() {
     <header className="sticky top-0 z-50 border-b border-violet-400/20 bg-[#0a0a0f]/75 backdrop-blur-xl">
       <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-3 sm:h-16 sm:px-6">
         <a href="#topo" className="flex items-center gap-2">
-          <span className="grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br from-violet-400 to-cyan-500 text-sm font-black text-white shadow-lg shadow-violet-500/30 sm:h-9 sm:w-9 sm:rounded-xl sm:text-lg">
-            📸
-          </span>
+          <img
+            src="/icofotoia-icon.png"
+            alt="Retrato Imaginado"
+            className="h-7 w-7 rounded-lg shadow-lg shadow-violet-500/30 sm:h-9 sm:w-9 sm:rounded-xl"
+          />
           <span className="text-base font-bold tracking-tight text-white sm:text-lg">
             Retrato <span className="text-violet-400">Imaginado</span>
           </span>
