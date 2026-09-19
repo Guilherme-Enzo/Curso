@@ -41,7 +41,7 @@ function Navbar() {
             className="h-7 w-7 rounded-lg shadow-lg shadow-violet-500/30 sm:h-9 sm:w-9 sm:rounded-xl"
           />
           <span className="text-base font-bold tracking-tight text-white sm:text-lg">
-            Retrato <span className="text-violet-400"><span className="text-cyan-400">I</span>magin<span className="text-cyan-400">A</span>do</span>
+            Retrato <span className="text-white"><span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">I</span>magin<span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">A</span>do</span>
           </span>
         </a>
 
@@ -611,7 +611,7 @@ function Footer() {
             <div className="flex items-center gap-2">
               <img src="/icofotoia-icon.png" alt="" className="h-9 w-9 rounded-xl" />
               <span className="text-lg font-bold text-white">
-                Retrato <span className="text-violet-400"><span className="text-cyan-400">I</span>magin<span className="text-cyan-400">A</span>do</span>
+                Retrato <span className="text-white"><span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">I</span>magin<span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">A</span>do</span>
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-zinc-500">

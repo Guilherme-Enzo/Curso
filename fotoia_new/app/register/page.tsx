@@ -59,7 +59,7 @@ export default function RegisterPage() {
         <Link href="/" className="flex items-center justify-center gap-2">
           <img src="/icofotoia-icon.png" alt="" className="h-9 w-9 rounded-xl shadow-lg shadow-violet-500/30" />
           <span className="text-lg font-bold tracking-tight text-white">
-            Retrato <span className="text-violet-400"><span className="text-cyan-400">I</span>magin<span className="text-cyan-400">A</span>do</span>
+            Retrato <span className="text-white"><span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">I</span>magin<span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">A</span>do</span>
           </span>
         </Link>
         <p className="mt-3 text-center text-sm text-zinc-400">Crie sua conta para começar</p>
@@ -132,7 +132,7 @@ export default function RegisterPage() {
             <div className="flex items-center gap-2">
               <img src="/icofotoia-icon.png" alt="" className="h-7 w-7 rounded-lg" />
               <span className="text-xs font-bold text-white">
-                Retrato <span className="text-violet-400"><span className="text-cyan-400">I</span>magin<span className="text-cyan-400">A</span>do</span>
+                Retrato <span className="text-white"><span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">I</span>magin<span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">A</span>do</span>
               </span>
             </div>
             <div className="flex items-center gap-4 text-xs text-zinc-500">
