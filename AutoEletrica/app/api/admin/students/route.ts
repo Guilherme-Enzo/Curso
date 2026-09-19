@@ -38,8 +38,14 @@ export async function POST(req: Request) {
   if (!name || !email || !password) {
     return NextResponse.json({ error: "Nome, e-mail e senha são obrigatórios" }, { status: 400 });
   }
+  if (name.length > 100 || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return NextResponse.json({ error: "Nome ou e-mail inválido" }, { status: 400 });
+  }
   if (password.length < 6) {
     return NextResponse.json({ error: "A senha deve ter pelo menos 6 caracteres" }, { status: 400 });
+  }
+  if (password.length > 128) {
+    return NextResponse.json({ error: "A senha deve ter no máximo 128 caracteres" }, { status: 400 });
   }
 
   const exists = await prisma.user.findUnique({ where: { email } });

@@ -1,8 +1,7 @@
 # Sincronizacao final e cutover
 
-Este roteiro deve ser executado somente depois que dominio, DNS, Caddy e um
-destino de backup externo estiverem definidos. A janela estimada e de 10 a 20
-minutos.
+Status: concluido em 18/09/2026. Este arquivo preserva apenas o registro do
+procedimento; nao deve ser executado novamente.
 
 ## Preparacao
 
@@ -45,16 +44,9 @@ As sessoes antigas podem exigir novo login porque a Contabo usa outro
 5. Monitorar logs, uso de disco, banco e respostas 5xx.
 6. Remover a chave temporaria de migracao.
 
-## Reversao
-
-Antes de liberar gravacoes na Contabo, a reversao consiste em restaurar o DNS
-anterior e iniciar novamente os servicos da Azure. Se a Contabo ja recebeu
-gravacoes reais, nao reative a Azure sem antes decidir como reconciliar esses
-dados.
-
 ## Pos-corte
 
-1. Manter a Azure desligada, mas disponivel para reversao por alguns dias.
+1. A Contabo e o unico ambiente operacional.
 2. Confirmar diariamente os backups local e externo.
 3. Rotacionar chaves de API e demais credenciais que tenham sido expostas.
-4. Somente depois da validacao, encerrar os recursos antigos da Azure.
+4. Nao religar ou sincronizar o ambiente legado.

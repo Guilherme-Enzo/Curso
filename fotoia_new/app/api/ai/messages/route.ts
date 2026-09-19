@@ -19,9 +19,10 @@ export async function GET(req: Request) {
 
   const messages = await prisma.aiMessage.findMany({
     where: { userId: user.id, moduleId },
-    orderBy: { createdAt: "asc" },
+    orderBy: { createdAt: "desc" },
+    take: 100,
     select: { id: true, role: true, content: true },
   });
 
-  return NextResponse.json({ messages });
+  return NextResponse.json({ messages: messages.reverse() });
 }

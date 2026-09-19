@@ -16,7 +16,10 @@ export async function POST(req: Request) {
   }
 
   const moduleId = typeof body.moduleId === "string" ? body.moduleId : "";
-  const seconds = Math.min(Math.max(Math.floor(body.seconds ?? 60), 1), 600);
+  const requestedSeconds = Number(body.seconds ?? 60);
+  const seconds = Number.isFinite(requestedSeconds)
+    ? Math.min(Math.max(Math.floor(requestedSeconds), 1), 60)
+    : 60;
   if (!moduleId) {
     return NextResponse.json({ error: "Módulo inválido" }, { status: 400 });
   }

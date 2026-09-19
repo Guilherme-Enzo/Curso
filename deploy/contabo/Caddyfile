@@ -1,0 +1,79 @@
+{
+	admin 127.0.0.1:2019
+}
+
+cgialabs.com.br, www.cgialabs.com.br {
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options nosniff
+	}
+	redir https://autoeletrica.cgialabs.com.br{uri} permanent
+}
+
+autoeletrica.cgialabs.com.br {
+	encode zstd gzip
+
+	header {
+		-Server
+		-X-Powered-By
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		X-Content-Type-Options nosniff
+		X-Frame-Options SAMEORIGIN
+		Referrer-Policy strict-origin-when-cross-origin
+	}
+
+	@legacy_fotoia_root path /fotoia
+	redir @legacy_fotoia_root https://retratoimaginado.cgialabs.com.br/ 308
+
+	@legacy_fotoia_path path /fotoia/*
+	route @legacy_fotoia_path {
+		uri strip_prefix /fotoia
+		redir https://retratoimaginado.cgialabs.com.br{uri} 308
+	}
+
+	reverse_proxy 127.0.0.1:3001
+
+	log {
+		output file /var/log/caddy/autoeletrica-access.log {
+			roll_size 10mb
+			roll_keep 10
+			roll_keep_for 720h
+		}
+		format json
+	}
+}
+
+retratoimaginado.cgialabs.com.br {
+	encode zstd gzip
+
+	header {
+		-Server
+		-X-Powered-By
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		X-Content-Type-Options nosniff
+		X-Frame-Options SAMEORIGIN
+		Referrer-Policy strict-origin-when-cross-origin
+	}
+
+	@legacy_root path /fotoia
+	redir @legacy_root / 308
+
+	@legacy_path path /fotoia/*
+	route @legacy_path {
+		uri strip_prefix /fotoia
+		redir {uri} 308
+	}
+
+	reverse_proxy 127.0.0.1:3000
+
+	log {
+		output file /var/log/caddy/retratoimaginado-access.log {
+			roll_size 10mb
+			roll_keep 10
+			roll_keep_for 720h
+		}
+		format json
+	}
+}

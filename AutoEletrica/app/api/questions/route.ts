@@ -39,6 +39,9 @@ export async function POST(req: Request) {
       { status: 400 }
     );
   }
+  if (questionText.length > 4000) {
+    return NextResponse.json({ error: "A dúvida deve ter no máximo 4000 caracteres" }, { status: 400 });
+  }
 
   const question = await prisma.question.create({
     data: { userId: user.id, questionText },

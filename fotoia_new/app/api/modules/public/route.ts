@@ -2,10 +2,12 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { MODULES } from "@/lib/modules";
 import { parseStoredContent } from "@/lib/contentAI";
+import { getApiUser } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const user = await getApiUser();
   const dbModules = await prisma.module.findMany({
     orderBy: { order: "asc" },
     include: { quiz: { select: { id: true } } },
@@ -26,7 +28,7 @@ export async function GET() {
       name: m.name,
       description: m.description,
       synopsis: m.synopsis,
-      pdfUrl: m.pdfUrl,
+      pdfUrl: user ? m.pdfUrl : null,
       createdAt: m.createdAt.toISOString(),
       hasQuiz: !!m.quiz,
       icon,

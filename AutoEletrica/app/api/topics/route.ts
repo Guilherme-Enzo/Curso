@@ -17,23 +17,17 @@ export async function GET() {
     },
   });
 
-  const topicIds = topics.map((t) => t.id);
-  const readRecords = topics
-    .filter((t) => t.reads[0]?.readAt)
-    .map((t) => ({ topicId: t.id, readAt: t.reads[0]!.readAt }));
-
-  const unreadCounts: Record<string, number> = {};
-  for (const t of topics) {
-    const read = readRecords.find((r) => r.topicId === t.id);
-    if (!read) {
-      unreadCounts[t.id] = t._count.messages;
-    } else {
+  const unreadEntries = await Promise.all(
+    topics.map(async (topic) => {
+      const readAt = topic.reads[0]?.readAt;
+      if (!readAt) return [topic.id, topic._count.messages] as const;
       const count = await prisma.topicMessage.count({
-        where: { topicId: t.id, createdAt: { gt: read.readAt } },
+        where: { topicId: topic.id, createdAt: { gt: readAt } },
       });
-      unreadCounts[t.id] = count;
-    }
-  }
+      return [topic.id, count] as const;
+    })
+  );
+  const unreadCounts = Object.fromEntries(unreadEntries) as Record<string, number>;
 
   return NextResponse.json({
     topics: topics.map((t) => ({
@@ -64,6 +58,9 @@ export async function POST(req: Request) {
   }
   if (!description) {
     return NextResponse.json({ error: "A descrição do tópico é obrigatória." }, { status: 400 });
+  }
+  if (title.length > 120 || description.length > 2000) {
+    return NextResponse.json({ error: "Título ou descrição excede o limite permitido." }, { status: 400 });
   }
 
   const topic = await prisma.topic.create({

@@ -2,22 +2,21 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
-const BASE = "/fotoia";
+import { withBasePath } from "@/lib/publicPath";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
 
   useEffect(() => {
     function checkSession() {
-      fetch(BASE + "/api/auth/session")
+      fetch(withBasePath("/api/auth/session"))
         .then((r) => r.json())
         .then((data) => {
           if (data.user) {
             const role = data.user.role;
-            if (role === "admin") window.location.href = BASE + "/admin";
-            else if (role === "teacher") window.location.href = BASE + "/professor";
-            else window.location.href = BASE + "/aluno";
+            if (role === "admin") window.location.href = withBasePath("/admin");
+            else if (role === "teacher") window.location.href = withBasePath("/professor");
+            else window.location.href = withBasePath("/aluno");
           }
         })
         .catch(() => {});
@@ -35,7 +34,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(BASE + "/api/auth/login", {
+      const res = await fetch(withBasePath("/api/auth/login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -47,9 +46,9 @@ export default function LoginPage() {
         return;
       }
       const role = data.user.role;
-      if (role === "admin") window.location.href = BASE + "/admin";
-      else if (role === "teacher") window.location.href = BASE + "/professor";
-      else window.location.href = BASE + "/aluno";
+      if (role === "admin") window.location.href = withBasePath("/admin");
+      else if (role === "teacher") window.location.href = withBasePath("/professor");
+      else window.location.href = withBasePath("/aluno");
     } catch {
       setError("Erro de conexão com o servidor");
       setLoading(false);

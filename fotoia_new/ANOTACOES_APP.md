@@ -1,23 +1,25 @@
-# Auto Elétrica — ANOTACOES DO APP
+# Retrato Imaginado — ANOTACOES DO APP
 
 > Visão completa do projeto: infra, código, rotas, deploy, marca e decisões de design.
 
 ---
 
 ## Marca
-- Nome correto: **Auto Elétrica** (duas palavras, com acento)
-- Tagline: "Elétrica & Injeção Eletrônica Automotiva"
-- Palette: tema azul elétrico fixo (fundos azulados #020617/#082f49, superfícies zinc mapeadas para azuis, acentos ciano/azul #06b6d4/#2563eb, gradientes) — **sem seletor de tema** (aplicado no `<html data-theme="blue">`)
+- Nome correto: **Retrato Imaginado**
+- Tema: fotografia, edição e criação de imagens com IA
+- Paleta: violeta, azul e ciano em fundo escuro
 
 ---
 
 ## Infraestrutura
-- IP público: `13.68.155.190`
-- Porta pública: **80** (app Next escuta direto, precisa `sudo` para porta <1024)
-- SSH: Guilherme (G maiúsculo) via `/root/.local/bin/vps` (sshpass)
-- UFW: 22/80/443 apenas
-- Azure NSG: 22/80/443 abertas
-- EasyPanel/n8n: **REMOVIDOS** (2026-09-11 — foco só no app)
+- Provedor oficial: **Contabo**, IP `37.60.227.11`
+- URL: `https://retratoimaginado.cgialabs.com.br`
+- SSH: `guilherme@37.60.227.11` por chave, sem senha armazenada
+- Código: `/srv/apps/curso/fotoia_new`
+- Container: `fotoia`, vinculado a `127.0.0.1:3000`
+- Proxy/HTTPS: Caddy + Let's Encrypt; DNS e proxy externo pelo Cloudflare
+- UFW público: 22/tcp, 80/tcp e 443/tcp
+- A Azure foi desativada e não faz parte do deploy ou da operação
 
 ---
 
@@ -30,7 +32,7 @@
 | @prisma/client | 6.19.3 |
 | Node.js | v22.23.2 (NodeSource) |
 | npm | 10.9.8 |
-| PostgreSQL | 16 (local, porta 5432) |
+| PostgreSQL | 16 (container interno, sem porta pública) |
 
 ---
 
@@ -61,7 +63,7 @@
 
 ## Estrutura de Arquivos
 ```
-~/AutoEletrica/
+/srv/apps/curso/fotoia_new/
 ├── prisma/
 │   ├── schema.prisma      # Module (order/name/description/pdfUrl) — Material removido
 │   └── prisma.config.ts
@@ -245,11 +247,13 @@
 ---
 
 ## Deploy
-- Build: `npm run build` (produção, no VPS)
-- **SEVIÇO:** systemd `autoeletrica.service` → `sudo systemctl restart autoeletrica`
-- Start manual (fallback): `cd ~/AutoEletrica && sudo env PORT=80 npm run start`
-- Logs: `journalctl -u autoeletrica -f` ou `/tmp/app.log`
-- Staging local (Android): `/tmp/opencode/aeweb/` — edits feitos aqui, scp pro VPS
+- Compose: `/srv/stacks/sites/sites.compose.yaml`
+- Build: `sudo docker compose -f /srv/stacks/sites/sites.compose.yaml build fotoia`
+- Deploy: `sudo docker compose -f /srv/stacks/sites/sites.compose.yaml up -d fotoia`
+- Logs: `sudo docker compose -f /srv/stacks/sites/sites.compose.yaml logs -f fotoia`
+- Uploads persistentes: `/srv/data/fotoia/uploads`
+- Segredos: `/srv/secrets/fotoia.env`, fora do Git e nunca documentados
+- Na Contabo o app usa a raiz do subdomínio, sem `basePath`; links antigos `/fotoia` são redirecionados pelo Caddy
 - **Upload de PDF:** salvo em `public/uploads/materiais/` (fora do build — serve por `/arquivos/materiais/[file]` em runtime, nada de cache do `next start`); **limite de 100MB por arquivo** (`lib/upload.ts` → `savePdf` valida `file.size > 100 * 1024 * 1024`; extensão só `.pdf`). Antes era 20MB
 - **💬 Comunidade (`/comunidade`, link no header de aluno/professor/admin):** fórum com memória permanente (banco). **Lista de tópicos** mostra título, descrição e nome do criador (e data); botão "＋ Criar novo tópico" abre formulário (título + descrição, obrigatórios) — qualquer logado cria. **Caixa de diálogo** (modal estilo AiChatModal) por tópico: comentários com nome do autor e hora, input para comentar; **cada usuário pode editar e excluir os próprios comentários** (botões aparecem só nos dele; API valida `authorId === user.id`, senão 403). **Excluir tópico = só teacher/admin** (aluno nem vê o botão; API 403). Feedback no padrão do painel: painel âmbar "Criando tópico, aguarde..."/"Enviando comentário, aguarde..."/"Salvando comentário, aguarde..."/"Excluindo…" com spinner, botão "Salvando...", e depois verde "Tópico criado com sucesso!"/"Comentário editado com sucesso!"/"Comentário excluído." — a lista/diálogo é atualizado na hora (fetch) sem recarregar a página; no tópico com comentário editado, aparece "(editado)". **3 pontinhos (⋮)** no canto da data do comentário (só nos próprios), dropdown com Editar/Excluir; fecha ao clicar fora. **Badge de não-lidas** server-side: tabela `TopicRead` registra `readAt` por (usuário, tópico); badge âmbar mostra mensagens com `createdAt > readAt`; sem registro = todas como não-lidas; ao abrir tópico, `upsert` marca como lido. **Sair vermelho** no diálogo (border-red-700 text-red-400). Permissões testadas em produção: 17/17. Deploy exige `npx prisma db push` (tabelas Topic + TopicMessage + TopicRead) + `npx prisma generate` + restart
 - **Dependências IA:** `npm install @google/genai` + `npm install pdf-parse@1.1.1` + `npm install --save-dev @types/pdf-parse`; `GEMINI_API_KEY` já configurada no `.env` da VPS (modelo opcional `GEMINI_MODEL`, default `gemini-3.6-flash` — `gemini-2.0-flash` retorna 404 "no longer available"); **reserva OpenRouter:** `OPENROUTER_API_KEY` (setada na VPS) + `OPENROUTER_MODELS` opcional (lista de modelos, vírgula) — sem nenhuma chave o app continua funcionando, só sem IA
@@ -258,35 +262,27 @@
 
 ## Comandos Úteis
 ```bash
-# Build na VPS
-cd ~/AutoEletrica && npm run build
+# Estado dos containers
+sudo docker compose -f /srv/stacks/sites/sites.compose.yaml ps
 
-# Serviço (recomendado — porta 80, sobe sozinho)
-sudo systemctl restart autoeletrica
-sudo systemctl status autoeletrica
-sudo journalctl -u autoeletrica -f
+# Build e deploy do Retrato Imaginado
+sudo docker compose -f /srv/stacks/sites/sites.compose.yaml build fotoia
+sudo docker compose -f /srv/stacks/sites/sites.compose.yaml up -d fotoia
 
-# Seed (recria usuários de teste + quizzes)
-cd ~/AutoEletrica && node seed.js
+# Logs
+sudo docker compose -f /srv/stacks/sites/sites.compose.yaml logs -f fotoia
 
-# Ver logs antigos
-tail -f /tmp/app.log
-
-# Verificar quem está na porta 80
-sudo ss -tlnp | grep ":80 "
-
-# Prisma
-npx prisma validate
-npx prisma db push
-npx prisma generate
+# Backup manual validado pelo systemd
+sudo systemctl start cursos-backup.service
+sudo systemctl status cursos-backup.service --no-pager
 ```
 
 ### Usuários de Teste
 | Papel | Email | Senha |
 |---|---|---|
-| Aluno | `aluno.teste@fotoia.com` | `13421342` |
-| Professor | `professor.teste@fotoia.com` | `13421342` |
-| Admin | `admin@fotoia.com` | `13421342` |
+| Aluno | `aluno.teste@fotoia.com` | Consulte o responsável |
+| Professor | `professor.teste@fotoia.com` | Consulte o responsável |
+| Admin | `admin@fotoia.com` | Consulte o responsável |
 
 ---
 
@@ -308,8 +304,11 @@ Onde está aplicado: criar/editar módulo e gerar quiz (painel amarelo + verde),
 - ✔ **Desempenho do aluno** validado em produção (tentativas salvas + média + horas de estudo + resumo clicável); tentativas de teste: 2 (20% no Módulo 1)
 - Testes finais móvel (aluno/professor no celular — usuário vai validar na VPS)
 - Profissional: ver tentativas/desempenho dos **alunos** no painel do professor (próxima frente; banco já guarda `QuizAttempt`)
-- Deploy estável (possível containerização futura)
-- HTTPS (domínio + Let's Encrypt) para cookie secure completo
+- ✔ Deploy Docker estável na Contabo
+- ✔ HTTPS com Caddy, Let's Encrypt e Cloudflare
+- ✔ Miniatura social exclusiva em `/logofotoia.jpg`
+- Configurar uma cópia externa dos backups locais
+- Rotacionar chaves de IA que tenham sido expostas anteriormente
 
 ---
 

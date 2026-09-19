@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
 
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads", "materiais");
 const VIDEO_DIR = path.join(process.cwd(), "public", "uploads", "videos");
+const AI_CACHE_DIR = path.join(process.cwd(), "public", "uploads", "ia");
 
 export function buildFileUrl(filename: string): string {
   return `/arquivos/materiais/${filename}`;
@@ -25,6 +26,9 @@ export async function savePdf(file: File): Promise<string> {
   await mkdir(UPLOAD_DIR, { recursive: true });
   const filename = `${randomUUID()}.pdf`;
   const buffer = Buffer.from(await file.arrayBuffer());
+  if (buffer.subarray(0, 5).toString("ascii") !== "%PDF-") {
+    throw new Error("O arquivo enviado não é um PDF válido.");
+  }
   await writeFile(path.join(UPLOAD_DIR, filename), buffer);
 
   return buildFileUrl(filename);
@@ -55,6 +59,11 @@ export async function removeFile(fileUrl: string) {
     await unlink(path.join(UPLOAD_DIR, name));
   } catch {
     // arquivo já não existe
+  }
+  try {
+    await unlink(path.join(AI_CACHE_DIR, `${name}.txt`));
+  } catch {
+    // cache já não existe
   }
 }
 

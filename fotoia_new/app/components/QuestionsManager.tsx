@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Question } from "./types";
 import ErrorModal from "./ErrorModal";
+import { withBasePath } from "@/lib/publicPath";
 
 type StudentGroup = {
   student: { id: string; name: string };
@@ -42,7 +43,7 @@ export default function QuestionsManager() {
 
   const load = useCallback(async () => {
     try {
-      const res = await fetch("/fotoia/api/questions");
+      const res = await fetch(withBasePath("/api/questions"));
       if (!res.ok) {
         setModalError("Erro ao carregar dúvidas");
         return;
@@ -74,7 +75,7 @@ export default function QuestionsManager() {
     setError("");
     setSending(true);
     try {
-      const res = await fetch(`/fotoia/api/questions/${answeringQuestion.id}`, {
+      const res = await fetch(withBasePath(`/api/questions/${answeringQuestion.id}`), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ answerText: answerText.trim() }),

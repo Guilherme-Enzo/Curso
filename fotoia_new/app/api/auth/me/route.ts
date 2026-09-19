@@ -35,9 +35,9 @@ export async function PATCH(req: NextRequest) {
   const data: { name?: string; passwordHash?: string } = {};
 
   if (name !== undefined) {
-    if (name.length < 2) {
+    if (name.length < 2 || name.length > 100) {
       return NextResponse.json(
-        { error: "O nome deve ter pelo menos 2 caracteres" },
+        { error: "O nome deve ter entre 2 e 100 caracteres" },
         { status: 400 }
       );
     }
@@ -45,9 +45,9 @@ export async function PATCH(req: NextRequest) {
   }
 
   if (newPassword !== undefined) {
-    if (newPassword.length < 6) {
+    if (newPassword.length < 6 || newPassword.length > 128) {
       return NextResponse.json(
-        { error: "A nova senha deve ter pelo menos 6 caracteres" },
+        { error: "A nova senha deve ter entre 6 e 128 caracteres" },
         { status: 400 }
       );
     }

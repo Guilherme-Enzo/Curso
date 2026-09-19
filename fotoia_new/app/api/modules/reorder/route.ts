@@ -21,8 +21,15 @@ export async function PATCH(req: Request) {
       if (!moduleId || !Array.isArray(order) || order.length === 0) {
         return NextResponse.json({ error: "Dados inválidos" }, { status: 400 });
       }
+      const ids = [...new Set(order.filter((id): id is string => typeof id === "string"))];
+      const videos = await prisma.video.count({
+        where: { moduleId, id: { in: ids } },
+      });
+      if (ids.length !== order.length || videos !== ids.length) {
+        return NextResponse.json({ error: "A ordem contém vídeos inválidos" }, { status: 400 });
+      }
       await prisma.$transaction(
-        order.map((id, idx) =>
+        ids.map((id, idx) =>
           prisma.video.update({
             where: { id },
             data: { order: idx + 1 },
@@ -35,6 +42,9 @@ export async function PATCH(req: Request) {
     const order: { id: string; order: number }[] = body.order;
     if (!Array.isArray(order) || order.length === 0) {
       return NextResponse.json({ error: "Dados inválidos" }, { status: 400 });
+    }
+    if (order.some((item) => !item || typeof item.id !== "string" || !Number.isInteger(item.order))) {
+      return NextResponse.json({ error: "Ordem de módulos inválida" }, { status: 400 });
     }
 
     await prisma.$transaction(

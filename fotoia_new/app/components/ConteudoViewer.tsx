@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { withBasePath } from "@/lib/publicPath";
 
 type Submodule = {
   title: string;
@@ -28,7 +29,7 @@ export default function ConteudoViewer() {
   const [modules, setModules] = useState<ModuleData[] | null>(null);
 
   useEffect(() => {
-    fetch("/fotoia/api/modules/public")
+    fetch(withBasePath("/api/modules/public"))
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => d && setModules(d.modules))
       .catch(() => {});

@@ -37,6 +37,9 @@ export async function PATCH(
       { status: 400 }
     );
   }
+  if (content.length > 4000) {
+    return NextResponse.json({ error: "O comentário deve ter no máximo 4000 caracteres." }, { status: 400 });
+  }
 
   const updated = await prisma.topicMessage.update({
     where: { id: messageId },

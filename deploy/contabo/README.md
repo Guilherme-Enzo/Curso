@@ -1,7 +1,18 @@
 # Deploy na Contabo
 
-Arquivos de infraestrutura dos sites AutoEletrica e FotoIA. Nenhum segredo deve
+Arquivos de infraestrutura dos sites AutoEletrica e Retrato Imaginado. Nenhum segredo deve
 ser salvo neste diretorio.
+
+Ambiente oficial:
+
+- AutoEletrica: `https://autoeletrica.cgialabs.com.br`
+- Retrato Imaginado: `https://retratoimaginado.cgialabs.com.br`
+- DNS/proxy: Cloudflare
+- Proxy de origem e HTTPS: Caddy com Let's Encrypt
+- A Azure esta desativada e nao participa da operacao.
+
+A configuracao versionada do proxy esta em `Caddyfile`. Na instalacao ela deve
+ser validada e instalada em `/etc/caddy/Caddyfile` antes do reload.
 
 ## Caminhos do servidor
 
@@ -12,8 +23,7 @@ ser salvo neste diretorio.
 - Segredos: `/srv/secrets`
 - Backups: `/srv/backups`
 
-Os sites ficam vinculados somente a `127.0.0.1`. A publicacao deve ser feita por
-um proxy reverso com HTTPS.
+Os sites ficam vinculados somente a `127.0.0.1` e sao publicados pelo Caddy.
 
 ## Backup
 

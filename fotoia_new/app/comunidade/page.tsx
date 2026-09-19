@@ -6,6 +6,7 @@ import Link from "next/link";
 import CommunityTopicDialog from "@/app/components/CommunityTopicDialog";
 import ConfirmModal from "@/app/components/ConfirmModal";
 import ErrorModal from "@/app/components/ErrorModal";
+import { withBasePath } from "@/lib/publicPath";
 
 type Session = { id: string; role: string; name: string };
 
@@ -47,7 +48,7 @@ export default function ComunidadePage() {
 
   const loadTopics = useCallback(async () => {
     try {
-      const res = await fetch("/fotoia/api/topics");
+      const res = await fetch(withBasePath("/api/topics"));
       if (!res.ok) return;
       const data = await res.json();
       setTopics(data.topics);
@@ -72,15 +73,15 @@ export default function ComunidadePage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/fotoia/api/auth/session");
+        const res = await fetch(withBasePath("/api/auth/session"));
         if (!res.ok) {
-          window.location.href = "/fotoia/login";
+          window.location.href = withBasePath("/login");
           return;
         }
         const data = await res.json();
         setSession(data.user);
       } catch {
-        window.location.href = "/fotoia/login";
+        window.location.href = withBasePath("/login");
       } finally {
         setLoading(false);
       }
@@ -103,8 +104,8 @@ export default function ComunidadePage() {
   const home = session?.role === "admin" ? "/admin" : session?.role === "teacher" ? "/professor" : "/aluno";
 
   async function handleLogout() {
-    await fetch("/fotoia/api/auth/logout", { method: "POST" });
-    window.location.href = "/fotoia/login";
+    await fetch(withBasePath("/api/auth/logout"), { method: "POST" });
+    window.location.href = withBasePath("/login");
   }
 
   async function handleCreate(e: React.FormEvent) {
@@ -112,7 +113,7 @@ export default function ComunidadePage() {
     setSending(true);
     setStatus(null);
     try {
-      const res = await fetch("/fotoia/api/topics", {
+      const res = await fetch(withBasePath("/api/topics"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -153,7 +154,7 @@ export default function ComunidadePage() {
     setStatus(null);
     setDeletingId(t.id);
     try {
-      const res = await fetch(`/fotoia/api/topics/${t.id}`, { method: "DELETE" });
+      const res = await fetch(withBasePath(`/api/topics/${t.id}`), { method: "DELETE" });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setModalError(data.error || "Erro ao excluir tópico");

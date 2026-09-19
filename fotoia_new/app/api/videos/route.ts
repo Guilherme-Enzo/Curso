@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getApiUser, isStaff } from "@/lib/session";
-import { saveVideo } from "@/lib/upload";
+import { removeVideo, saveVideo } from "@/lib/upload";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
@@ -64,8 +64,20 @@ export async function POST(req: Request) {
     if (!moduleId || !title) {
       return NextResponse.json({ error: "Módulo e título são obrigatórios" }, { status: 400 });
     }
+    if (title.length > 150 || (description?.length ?? 0) > 2000) {
+      return NextResponse.json({ error: "Título ou descrição excede o limite permitido" }, { status: 400 });
+    }
     if (!file || !(file instanceof File)) {
       return NextResponse.json({ error: "Envie um arquivo de vídeo" }, { status: 400 });
+    }
+    const thumbFile = form.get("thumbnail");
+    if (
+      thumbFile &&
+      thumbFile instanceof File &&
+      thumbFile.size > 0 &&
+      (thumbFile.size > 5 * 1024 * 1024 || !["image/jpeg", "image/png"].includes(thumbFile.type))
+    ) {
+      return NextResponse.json({ error: "Miniatura inválida ou maior que 5MB" }, { status: 400 });
     }
 
     const module = await prisma.module.findUnique({ where: { id: moduleId } });
@@ -80,21 +92,26 @@ export async function POST(req: Request) {
 
     // Save client-generated thumbnail if provided
     let thumbnail: string | null = null;
-    const thumbFile = form.get("thumbnail");
-    if (thumbFile && thumbFile instanceof File && thumbFile.size > 0) {
-      const thumbDir = path.join(process.cwd(), "public", "uploads", "videos");
-      await mkdir(thumbDir, { recursive: true });
-      const thumbName = `${randomUUID()}_thumb.jpg`;
-      const buf = Buffer.from(await thumbFile.arrayBuffer());
-      await writeFile(path.join(thumbDir, thumbName), buf);
-      thumbnail = `/uploads/videos/${thumbName}`;
+    try {
+      if (thumbFile && thumbFile instanceof File && thumbFile.size > 0) {
+        const thumbDir = path.join(process.cwd(), "public", "uploads", "videos");
+        await mkdir(thumbDir, { recursive: true });
+        const thumbName = `${randomUUID()}_thumb${thumbFile.type === "image/png" ? ".png" : ".jpg"}`;
+        const buf = Buffer.from(await thumbFile.arrayBuffer());
+        await writeFile(path.join(thumbDir, thumbName), buf);
+        thumbnail = `/uploads/videos/${thumbName}`;
+      }
+
+      const video = await prisma.video.create({
+        data: { moduleId, title, description, url, order, duration, thumbnail },
+      });
+
+      return NextResponse.json({ video }, { status: 201 });
+    } catch (error) {
+      await removeVideo(url);
+      if (thumbnail) await removeVideo(thumbnail);
+      throw error;
     }
-
-    const video = await prisma.video.create({
-      data: { moduleId, title, description, url, order, duration, thumbnail },
-    });
-
-    return NextResponse.json({ video }, { status: 201 });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Erro ao enviar vídeo";
     return NextResponse.json({ error: msg }, { status: 400 });

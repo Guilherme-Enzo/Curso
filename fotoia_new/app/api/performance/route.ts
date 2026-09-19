@@ -47,8 +47,10 @@ export async function GET() {
   }));
 
   const total = list.length;
-  const average =
-    total > 0 ? Math.round((list.reduce((s, a) => s + a.correct, 0) / list.reduce((s, a) => s + a.total, 0)) * 100) : 0;
+  const answered = list.reduce((sum, attempt) => sum + attempt.total, 0);
+  const average = answered > 0
+    ? Math.round((list.reduce((sum, attempt) => sum + attempt.correct, 0) / answered) * 100)
+    : 0;
 
   return NextResponse.json({
     attempts: list,

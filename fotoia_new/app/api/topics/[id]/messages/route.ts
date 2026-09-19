@@ -25,6 +25,9 @@ export async function POST(
       { status: 400 }
     );
   }
+  if (content.length > 4000) {
+    return NextResponse.json({ error: "O comentário deve ter no máximo 4000 caracteres." }, { status: 400 });
+  }
 
   const message = await prisma.topicMessage.create({
     data: { topicId: id, authorId: user.id, content },

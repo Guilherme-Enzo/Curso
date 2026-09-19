@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getApiUser, isStaff } from "@/lib/session";
-import { savePdf } from "@/lib/upload";
+import { removeFile, savePdf } from "@/lib/upload";
 import { generateModuleQuiz, type GeneratedQuiz } from "@/lib/quizAI";
 import { generateModuleContent, type GeneratedContent } from "@/lib/contentAI";
 

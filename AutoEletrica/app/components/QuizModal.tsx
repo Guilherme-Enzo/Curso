@@ -6,7 +6,6 @@ type QuizQuestion = {
   id: string;
   question: string;
   order: number;
-  correctIndex: number;
   options: { id: string; text: string; order: number }[];
 };
 

@@ -13,6 +13,11 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     volumes:
       - /srv/data/postgres:/var/lib/postgresql/data
       - /srv/stacks/sites/init-databases.sh:/docker-entrypoint-initdb.d/10-databases.sh:ro
@@ -42,19 +47,22 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/fotoia/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 15s
       timeout: 5s
       retries: 10
       start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - cursos
 
   autoeletrica:
     build:
       context: /srv/apps/curso/AutoEletrica
-      args:
-        FOTOIA_INTERNAL_URL: http://fotoia:3000
     image: local/autoeletrica:staging
     container_name: autoeletrica
     restart: unless-stopped
@@ -70,14 +78,17 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      fotoia:
-        condition: service_healthy
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 15s
       timeout: 5s
       retries: 10
       start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - cursos
 

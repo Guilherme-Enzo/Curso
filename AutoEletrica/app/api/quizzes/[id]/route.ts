@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getApiUser } from "@/lib/session";
+import { checkRateLimit } from "@/lib/rateLimit";
 
 export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
   const user = await getApiUser();
@@ -25,7 +26,21 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
   }
 
   return NextResponse.json({
-    quiz: { ...quiz, moduleOrder: quiz.module.order },
+    quiz: {
+      id: quiz.id,
+      title: quiz.title,
+      moduleOrder: quiz.module.order,
+      questions: quiz.questions.map((question) => ({
+        id: question.id,
+        question: question.question,
+        order: question.order,
+        options: question.options.map((option) => ({
+          id: option.id,
+          text: option.text,
+          order: option.order,
+        })),
+      })),
+    },
   });
 }
 
@@ -33,6 +48,14 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   const user = await getApiUser();
   if (!user) {
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
+  }
+
+  const rate = checkRateLimit(`quiz:${user.id}`, 20, 10 * 60 * 1000);
+  if (!rate.allowed) {
+    return NextResponse.json(
+      { error: "Muitas correções em pouco tempo. Aguarde e tente novamente." },
+      { status: 429, headers: { "Retry-After": String(rate.retryAfter) } }
+    );
   }
 
   const { id } = await ctx.params;

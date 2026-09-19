@@ -9,6 +9,7 @@ import ConteudoViewer from "@/app/components/ConteudoViewer";
 import ConfirmModal from "@/app/components/ConfirmModal";
 import ErrorModal from "@/app/components/ErrorModal";
 import ComunidadeTab from "@/app/components/ComunidadeTab";
+import { withBasePath } from "@/lib/publicPath";
 
 type Session = { userId: string; role: string; name: string };
 
@@ -54,19 +55,19 @@ export default function AdminPage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/fotoia/api/auth/session");
+        const res = await fetch(withBasePath("/api/auth/session"));
         if (!res.ok) {
-          window.location.href = "/fotoia/login";
+          window.location.href = withBasePath("/login");
           return;
         }
         const data = await res.json();
         if (data?.user?.role !== "admin") {
-          window.location.href = data?.user?.role === "teacher" ? "/fotoia/professor" : "/fotoia/aluno";
+          window.location.href = data?.user?.role === "teacher" ? withBasePath("/professor") : withBasePath("/aluno");
           return;
         }
         setSession(data.user);
       } catch {
-        window.location.href = "/fotoia/login";
+        window.location.href = withBasePath("/login");
       } finally {
         setLoading(false);
       }
@@ -75,8 +76,8 @@ export default function AdminPage() {
   }, [router]);
 
   async function handleLogout() {
-    await fetch("/fotoia/api/auth/logout", { method: "POST" });
-    window.location.href = "/fotoia/login";
+    await fetch(withBasePath("/api/auth/logout"), { method: "POST" });
+    window.location.href = withBasePath("/login");
   }
 
   if (loading) {
@@ -190,7 +191,7 @@ function Dashboard() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/fotoia/api/admin/stats");
+        const res = await fetch(withBasePath("/api/admin/stats"));
         if (!res.ok) {
           setError("Erro ao carregar estatísticas");
           return;
@@ -258,7 +259,7 @@ function TeachersManager() {
 
   async function load() {
     try {
-      const res = await fetch("/fotoia/api/admin/teachers");
+      const res = await fetch(withBasePath("/api/admin/teachers"));
       if (!res.ok) {
         setModalError("Erro ao carregar professores");
         return;
@@ -280,7 +281,7 @@ function TeachersManager() {
     setSuccess("");
     setSending(true);
     try {
-      const res = await fetch("/fotoia/api/admin/teachers", {
+      const res = await fetch(withBasePath("/api/admin/teachers"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
@@ -311,7 +312,7 @@ function TeachersManager() {
     setSuccess("");
     setDeletingId(id);
     try {
-      const res = await fetch(`/fotoia/api/admin/teachers/${id}`, { method: "DELETE" });
+      const res = await fetch(withBasePath(`/api/admin/teachers/${id}`), { method: "DELETE" });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setModalError(data.error || "Erro ao excluir professor");
@@ -578,7 +579,7 @@ function StudentsManager() {
 
   async function load() {
     try {
-      const res = await fetch("/fotoia/api/admin/students");
+      const res = await fetch(withBasePath("/api/admin/students"));
       if (!res.ok) {
         setModalError("Erro ao carregar alunos");
         return;
@@ -600,7 +601,7 @@ function StudentsManager() {
     setSuccess("");
     setSending(true);
     try {
-      const res = await fetch("/fotoia/api/admin/students", {
+      const res = await fetch(withBasePath("/api/admin/students"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
@@ -631,7 +632,7 @@ function StudentsManager() {
     setSuccess("");
     setDeletingId(id);
     try {
-      const res = await fetch(`/fotoia/api/admin/students/${id}`, { method: "DELETE" });
+      const res = await fetch(withBasePath(`/api/admin/students/${id}`), { method: "DELETE" });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setModalError(data.error || "Erro ao excluir aluno");

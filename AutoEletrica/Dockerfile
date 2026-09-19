@@ -11,8 +11,6 @@ FROM dependencies AS builder
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL=postgresql://build:build@localhost:5432/build
-ARG FOTOIA_INTERNAL_URL=http://localhost:3000
-ENV FOTOIA_INTERNAL_URL=$FOTOIA_INTERNAL_URL
 COPY . .
 RUN npx prisma generate && npm run build
 

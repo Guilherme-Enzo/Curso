@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { withBasePath } from "@/lib/publicPath";
 
 type QuizQuestion = {
   id: string;
   question: string;
   order: number;
-  correctIndex: number;
   options: { id: string; text: string; order: number }[];
 };
 
@@ -36,7 +36,7 @@ export default function QuizModal({ moduleOrder, moduleName, onClose }: Props) {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`/fotoia/api/quizzes?moduleOrder=${moduleOrder}`)
+    fetch(withBasePath(`/api/quizzes?moduleOrder=${moduleOrder}`))
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
         if (!d?.quizzes?.length) {
@@ -44,7 +44,7 @@ export default function QuizModal({ moduleOrder, moduleName, onClose }: Props) {
           return;
         }
         const qId = d.quizzes[0].id;
-        return fetch(`/fotoia/api/quizzes/${qId}`);
+        return fetch(withBasePath(`/api/quizzes/${qId}`));
       })
       .then((r) => r?.json())
       .then((d) => {
@@ -62,7 +62,7 @@ export default function QuizModal({ moduleOrder, moduleName, onClose }: Props) {
     setSubmitting(true);
     setError("");
     try {
-      const res = await fetch(`/fotoia/api/quizzes/${quiz.id}`, {
+      const res = await fetch(withBasePath(`/api/quizzes/${quiz.id}`), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ answers }),

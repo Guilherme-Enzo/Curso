@@ -5,6 +5,7 @@ import { CourseModule } from "./types";
 import ConfirmModal from "./ConfirmModal";
 import ErrorModal from "./ErrorModal";
 import ModuleEditModal from "./ModuleEditModal";
+import { withBasePath } from "@/lib/publicPath";
 
 type Form = {
   name: string;
@@ -40,7 +41,7 @@ export default function ModulesManager() {
 
   const load = useCallback(async () => {
     try {
-      const res = await fetch(`/fotoia/api/modules?t=${Date.now()}`);
+      const res = await fetch(withBasePath(`/api/modules?t=${Date.now()}`));
       if (!res.ok) return;
       const data = await res.json();
       setModules(data.modules);
@@ -78,7 +79,7 @@ export default function ModulesManager() {
         return;
       }
       const order = current.map((m, i) => ({ id: m.id, order: i + 1 }));
-      const res = await fetch("/fotoia/api/modules/reorder", {
+      const res = await fetch(withBasePath("/api/modules/reorder"), {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ order }),
@@ -143,7 +144,7 @@ export default function ModulesManager() {
           vfd.append("moduleId", data.module.id);
           vfd.append("title", form.videoTitle || form.video.name);
           vfd.append("file", form.video);
-          const vRes = await fetch("/fotoia/api/videos", { method: "POST", body: vfd });
+          const vRes = await fetch(withBasePath("/api/videos"), { method: "POST", body: vfd });
           if (vRes.ok) videoMsg = " - video adicionado";
           else videoMsg = " - erro ao enviar video";
         } catch { videoMsg = " - erro ao enviar video"; }
@@ -158,7 +159,7 @@ export default function ModulesManager() {
   }
 
   async function handleCreate(_e: React.FormEvent) {
-    const ok = await sendForm("/fotoia/api/modules", true);
+    const ok = await sendForm(withBasePath("/api/modules"), true);
     if (!ok) return;
     setModalSuccess(`Módulo adicionado com sucesso!${ok.message}`);
     load();
@@ -170,7 +171,7 @@ export default function ModulesManager() {
   }
 
   async function handlePatch(id: string, _e: React.FormEvent) {
-    const ok = await sendForm(`/fotoia/api/modules/${id}`, false);
+    const ok = await sendForm(withBasePath(`/api/modules/${id}`), false);
     if (!ok) return;
     setModalSuccess(`Módulo atualizado com sucesso!${ok.message}`);
     load();
@@ -186,7 +187,7 @@ export default function ModulesManager() {
     setRegenerating(m.id);
     setStatus(null);
     try {
-      const res = await fetch(`/fotoia/api/modules/${m.id}/quiz`, { method: "POST" });
+      const res = await fetch(withBasePath(`/api/modules/${m.id}/quiz`), { method: "POST" });
       const data = await res.json();
       if (!res.ok) {
         setModalError(data.error || "Erro ao gerar quiz com IA");
@@ -205,7 +206,7 @@ export default function ModulesManager() {
     setStatus(null);
     setDeleting(m.id);
     try {
-      const res = await fetch(`/fotoia/api/modules/${m.id}`, { method: "DELETE" });
+      const res = await fetch(withBasePath(`/api/modules/${m.id}`), { method: "DELETE" });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setModalError(data.error || "Erro ao excluir módulo");

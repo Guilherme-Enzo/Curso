@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getApiUser } from "@/lib/session";
 import { getModuleContent, askForSuggestions, geminiErrorMessage } from "@/lib/aiChat";
+import { checkRateLimit } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -10,6 +11,13 @@ export async function GET(req: Request) {
   const user = await getApiUser();
   if (!user) {
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
+  }
+  const rate = checkRateLimit(`ai-suggestions:${user.id}`, 10, 10 * 60 * 1000);
+  if (!rate.allowed) {
+    return NextResponse.json(
+      { error: "Limite temporário de sugestões atingido." },
+      { status: 429, headers: { "Retry-After": String(rate.retryAfter) } }
+    );
   }
 
   const { searchParams } = new URL(req.url);

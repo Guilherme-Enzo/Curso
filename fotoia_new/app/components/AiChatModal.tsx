@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import katex from "katex";
 import "katex/dist/katex.min.css";
+import { withBasePath } from "@/lib/publicPath";
 
 type ChatMsg = { id?: string; role: "user" | "assistant"; content: string };
 
@@ -315,7 +316,7 @@ export default function AiChatModal({ module, onClose }: ModalProps) {
   const loadSuggestions = useCallback(async (moduleId: string) => {
     setSuggestionsLoading(true);
     try {
-      const res = await fetch(`/fotoia/api/ai/suggestions?moduleId=${moduleId}`);
+      const res = await fetch(withBasePath(`/api/ai/suggestions?moduleId=${moduleId}`));
       if (!res.ok) return;
       const data = await res.json();
       setSuggestions(Array.isArray(data.suggestions) ? data.suggestions.slice(0, 3) : []);
@@ -331,7 +332,7 @@ export default function AiChatModal({ module, onClose }: ModalProps) {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`/fotoia/api/ai/messages?moduleId=${module.id}`);
+      const res = await fetch(withBasePath(`/api/ai/messages?moduleId=${module.id}`));
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "Erro ao carregar conversa");
@@ -390,7 +391,7 @@ export default function AiChatModal({ module, onClose }: ModalProps) {
     };
 
     try {
-      const res = await fetch("/fotoia/api/ai/ask", {
+      const res = await fetch(withBasePath("/api/ai/ask"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ moduleId: module.id, question }),

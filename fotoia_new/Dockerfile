@@ -9,8 +9,10 @@ RUN npm ci
 
 FROM dependencies AS builder
 WORKDIR /app
+ARG NEXT_PUBLIC_BASE_PATH=
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL=postgresql://build:build@localhost:5432/build
+ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 COPY . .
 RUN npx prisma generate && npm run build
 

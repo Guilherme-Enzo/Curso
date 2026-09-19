@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ConfirmModal from "./ConfirmModal";
+import { withBasePath } from "@/lib/publicPath";
 
 type VideoItem = {
   id: string;
@@ -33,7 +34,7 @@ type Props = {
 
 function videoServeUrl(url: string): string {
   const name = url.split("/").pop();
-  return `/fotoia/api/videos/serve/${name}`;
+  return withBasePath(`/api/videos/serve/${name}`);
 }
 
 function formatDuration(sec: number): string {
@@ -82,7 +83,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
 
   function fetchVideos() {
     setLoadingVideos(true);
-    fetch(`/fotoia/api/videos?moduleId=${mod.id}`, { cache: "no-store" })
+    fetch(withBasePath(`/api/videos?moduleId=${mod.id}`), { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
         const list = d?.videos ?? [];
@@ -101,7 +102,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
       fd.append("name", name.trim());
       fd.append("description", desc.trim());
       if (pdfFile) fd.append("file", pdfFile);
-      const res = await fetch(`/fotoia/api/modules/${mod.id}`, { method: "PATCH", body: fd });
+      const res = await fetch(withBasePath(`/api/modules/${mod.id}`), { method: "PATCH", body: fd });
       if (!res.ok) {
         const data = await res.json();
         onError(data.error || "Erro ao salvar");
@@ -117,7 +118,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
     setConfirmPdfDelete(false);
     setDeletingPdf(true);
     try {
-      const res = await fetch(`/fotoia/api/modules/${mod.id}`, {
+      const res = await fetch(withBasePath(`/api/modules/${mod.id}`), {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ pdfUrl: null }),
@@ -170,7 +171,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
       fd.append("file", uploadFile);
       fd.append("duration", String(duration));
       if (thumbBlob) fd.append("thumbnail", thumbBlob, "thumb.jpg");
-      const res = await fetch("/fotoia/api/videos", { method: "POST", body: fd });
+      const res = await fetch(withBasePath("/api/videos"), { method: "POST", body: fd });
       if (!res.ok) { onError("Erro ao enviar vídeo"); return; }
       setUploadSuccess(true);
       fetchVideos();
@@ -183,7 +184,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
     setConfirmVideoDelete(null);
     setDeletingVideoId(id);
     try {
-      await fetch(`/fotoia/api/videos/${id}`, { method: "DELETE" });
+      await fetch(withBasePath(`/api/videos/${id}`), { method: "DELETE" });
       fetchVideos();
     } catch { onError("Erro ao excluir vídeo"); }
     finally { setDeletingVideoId(null); }
@@ -224,7 +225,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
           }
           URL.revokeObjectURL(videoEl.src);
         } catch {}
-        await fetch(`/fotoia/api/videos/${editVideo.id}`, { method: "DELETE" });
+        await fetch(withBasePath(`/api/videos/${editVideo.id}`), { method: "DELETE" });
         const fd = new FormData();
         fd.append("moduleId", mod.id);
         fd.append("title", editTitle.trim() || editVideo.title);
@@ -232,9 +233,9 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
         fd.append("file", editFile);
         fd.append("duration", String(duration));
         if (thumbBlob) fd.append("thumbnail", thumbBlob, "thumb.jpg");
-        await fetch("/fotoia/api/videos", { method: "POST", body: fd });
+        await fetch(withBasePath("/api/videos"), { method: "POST", body: fd });
       } else {
-        await fetch(`/fotoia/api/videos/${editVideo.id}`, {
+        await fetch(withBasePath(`/api/videos/${editVideo.id}`), {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ title: editTitle.trim(), description: editDesc.trim() }),
@@ -250,7 +251,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
     setSavingOrder(true);
     try {
       const order = videoOrder.map((v) => v.id);
-      await fetch("/fotoia/api/modules/reorder", {
+      await fetch(withBasePath("/api/modules/reorder"), {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type: "videos", moduleId: mod.id, order }),

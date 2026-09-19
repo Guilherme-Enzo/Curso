@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
 import { createReadStream, statSync } from "fs";
 import path from "path";
+import { Readable } from "stream";
+import { getApiUser } from "@/lib/session";
 
 const VIDEO_DIR = path.join(process.cwd(), "public", "uploads", "videos");
 
@@ -17,42 +18,63 @@ const MIME_MAP: Record<string, string> = {
 export const dynamic = "force-dynamic";
 
 export async function GET(
-  _req: Request,
+  req: Request,
   { params }: { params: Promise<{ filename: string }> }
 ) {
+  const user = await getApiUser();
+  if (!user) return new Response("Não autenticado", { status: 401 });
+
   const { filename } = await params;
   const safe = path.basename(filename);
-  const filePath = path.join(VIDEO_DIR, safe);
   const ext = path.extname(safe).toLowerCase();
-  const contentType = MIME_MAP[ext] || "application/octet-stream";
+  if (safe !== filename || !MIME_MAP[ext]) {
+    return new Response("Forbidden", { status: 403 });
+  }
 
   try {
-    const st = statSync(filePath);
-    const stream = createReadStream(filePath);
-    const webStream = new ReadableStream({
-      start(controller) {
-        stream.on("data", (chunk) => {
-          if (typeof chunk === "string") {
-            controller.enqueue(new TextEncoder().encode(chunk));
-          } else {
-            controller.enqueue(new Uint8Array(chunk));
-          }
-        });
-        stream.on("end", () => controller.close());
-        stream.on("error", (err) => controller.error(err));
-      },
-    });
+    const filePath = path.join(VIDEO_DIR, safe);
+    const stat = statSync(filePath);
+    if (!stat.isFile()) throw new Error("Not a file");
 
-    return new NextResponse(webStream, {
-      status: 200,
-      headers: {
-        "Content-Type": contentType,
-        "Content-Length": String(st.size),
-        "Accept-Ranges": "bytes",
-        "Cache-Control": "public, max-age=31536000, immutable",
-      },
-    });
+    const range = req.headers.get("range");
+    let start = 0;
+    let end = stat.size - 1;
+    let status = 200;
+
+    if (range) {
+      const match = /^bytes=(\d*)-(\d*)$/.exec(range);
+      if (!match) {
+        return new Response(null, {
+          status: 416,
+          headers: { "Content-Range": `bytes */${stat.size}` },
+        });
+      }
+      if (!match[1] && match[2]) {
+        start = Math.max(0, stat.size - Number(match[2]));
+      } else {
+        start = Number(match[1] || 0);
+        end = match[2] ? Math.min(Number(match[2]), stat.size - 1) : end;
+      }
+      if (start > end || start >= stat.size) {
+        return new Response(null, {
+          status: 416,
+          headers: { "Content-Range": `bytes */${stat.size}` },
+        });
+      }
+      status = 206;
+    }
+
+    const stream = createReadStream(filePath, { start, end });
+    const headers: Record<string, string> = {
+      "Accept-Ranges": "bytes",
+      "Cache-Control": "private, max-age=3600",
+      "Content-Length": String(end - start + 1),
+      "Content-Type": MIME_MAP[ext],
+    };
+    if (status === 206) headers["Content-Range"] = `bytes ${start}-${end}/${stat.size}`;
+
+    return new Response(Readable.toWeb(stream) as ReadableStream, { status, headers });
   } catch {
-    return NextResponse.json({ error: "Não encontrado" }, { status: 404 });
+    return new Response("Não encontrado", { status: 404 });
   }
 }

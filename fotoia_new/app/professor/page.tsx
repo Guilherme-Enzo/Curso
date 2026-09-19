@@ -7,6 +7,7 @@ import ModulesManager from "@/app/components/ModulesManager";
 import QuestionsManager from "@/app/components/QuestionsManager";
 import ConteudoViewer from "@/app/components/ConteudoViewer";
 import ComunidadeTab from "@/app/components/ComunidadeTab";
+import { withBasePath } from "@/lib/publicPath";
 
 type Session = { userId: string; role: string; name: string };
 
@@ -36,19 +37,19 @@ export default function TeacherPage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/fotoia/api/auth/session");
+        const res = await fetch(withBasePath("/api/auth/session"));
         if (!res.ok) {
-          window.location.href = "/fotoia/login";
+          window.location.href = withBasePath("/login");
           return;
         }
         const data = await res.json();
         if (data?.user?.role !== "teacher") {
-          window.location.href = "/fotoia/aluno";
+          window.location.href = withBasePath("/aluno");
           return;
         }
         setSession(data.user);
       } catch {
-        window.location.href = "/fotoia/login";
+        window.location.href = withBasePath("/login");
       } finally {
         setLoading(false);
       }
@@ -57,8 +58,8 @@ export default function TeacherPage() {
   }, [router]);
 
   async function handleLogout() {
-    await fetch("/fotoia/api/auth/logout", { method: "POST" });
-    window.location.href = "/fotoia/login";
+    await fetch(withBasePath("/api/auth/logout"), { method: "POST" });
+    window.location.href = withBasePath("/login");
   }
 
   if (loading) {

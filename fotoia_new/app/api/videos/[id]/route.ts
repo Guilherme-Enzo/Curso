@@ -17,6 +17,12 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if (Object.keys(data).length === 0) {
     return NextResponse.json({ error: "Nada para atualizar" }, { status: 400 });
   }
+  if (data.title !== undefined && (!data.title || data.title.length > 150)) {
+    return NextResponse.json({ error: "Título inválido" }, { status: 400 });
+  }
+  if ((data.description?.length ?? 0) > 2000) {
+    return NextResponse.json({ error: "Descrição muito longa" }, { status: 400 });
+  }
 
   const video = await prisma.video.findUnique({ where: { id } });
   if (!video) return NextResponse.json({ error: "Não encontrado" }, { status: 404 });

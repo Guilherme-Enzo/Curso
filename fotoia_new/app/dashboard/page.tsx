@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-
-const BASE = "/fotoia";
+import { withBasePath } from "@/lib/publicPath";
 
 export default function DashboardPage() {
   const ran = useRef(false);
@@ -12,19 +11,19 @@ export default function DashboardPage() {
     ran.current = true;
     async function redirectByRole() {
       try {
-        const res = await fetch(BASE + "/api/auth/session");
+        const res = await fetch(withBasePath("/api/auth/session"));
         if (!res.ok) {
-          window.location.href = BASE + "/login";
+          window.location.href = withBasePath("/login");
           return;
         }
         const data = await res.json();
         const role = data?.user?.role;
-        if (role === "admin") window.location.href = BASE + "/admin";
-        else if (role === "teacher") window.location.href = BASE + "/professor";
-        else if (role === "student") window.location.href = BASE + "/aluno";
-        else window.location.href = BASE + "/login";
+        if (role === "admin") window.location.href = withBasePath("/admin");
+        else if (role === "teacher") window.location.href = withBasePath("/professor");
+        else if (role === "student") window.location.href = withBasePath("/aluno");
+        else window.location.href = withBasePath("/login");
       } catch {
-        window.location.href = BASE + "/login";
+        window.location.href = withBasePath("/login");
       }
     }
     redirectByRole();

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getApiUser, isStaff } from "@/lib/session";
-import { savePdf } from "@/lib/upload";
+import { removeFile, savePdf } from "@/lib/upload";
 import { generateModuleQuiz, type GeneratedQuiz } from "@/lib/quizAI";
 import { generateModuleContent, type GeneratedContent } from "@/lib/contentAI";
 
@@ -60,18 +60,27 @@ export async function POST(req: Request) {
     if (!name) {
       return NextResponse.json({ error: "O nome do módulo é obrigatório" }, { status: 400 });
     }
+    if (name.length > 150 || (description?.length ?? 0) > 5000) {
+      return NextResponse.json({ error: "Nome ou descrição excede o limite permitido" }, { status: 400 });
+    }
 
     let pdfUrl: string | null = null;
-    if (file && file instanceof File) {
+    if (file && file instanceof File && file.size > 0) {
       pdfUrl = await savePdf(file);
     }
 
     const max = await prisma.module.aggregate({ _max: { order: true } });
     const order = (max._max.order ?? 0) + 1;
 
-    const module = await prisma.module.create({
-      data: { order, name, description, pdfUrl },
-    });
+    let module;
+    try {
+      module = await prisma.module.create({
+        data: { order, name, description, pdfUrl },
+      });
+    } catch (error) {
+      if (pdfUrl) await removeFile(pdfUrl);
+      throw error;
+    }
 
     let quiz: GeneratedQuiz | null = null;
     let contentResult: GeneratedContent | null = null;

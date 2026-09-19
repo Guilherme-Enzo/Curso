@@ -6,6 +6,7 @@ import Link from "next/link";
 import AiChatModal from "@/app/components/AiChatModal";
 import QuizModal from "@/app/components/QuizModal";
 import VideoPlayerModal from "@/app/components/VideoPlayerModal";
+import { withBasePath } from "@/lib/publicPath";
 
 type Submodule = {
   title: string;
@@ -42,7 +43,7 @@ const numStr = (n: number) => String(n).padStart(2, "0");
 
 function videoServeUrl(url: string): string {
   const name = url.split("/").pop();
-  return `/fotoia/api/videos/serve/${name}`;
+  return withBasePath(`/api/videos/serve/${name}`);
 }
 
 export default function ConteudoDetailPage() {
@@ -60,7 +61,7 @@ export default function ConteudoDetailPage() {
   const [playingVideo, setPlayingVideo] = useState<VideoItem | null>(null);
 
   useEffect(() => {
-    fetch(`/fotoia/api/modules/public?t=${Date.now()}`)
+    fetch(withBasePath(`/api/modules/public?t=${Date.now()}`))
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
         if (!d) return;
@@ -73,7 +74,7 @@ export default function ConteudoDetailPage() {
 
   useEffect(() => {
     if (!mod) return;
-    fetch(`/fotoia/api/videos?moduleId=${mod.id}`, { cache: "no-store" })
+    fetch(withBasePath(`/api/videos?moduleId=${mod.id}`), { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => d && setVideos(d.videos ?? []))
       .catch(() => {});

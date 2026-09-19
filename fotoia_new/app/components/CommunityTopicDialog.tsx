@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import ConfirmModal from "./ConfirmModal";
+import { withBasePath } from "@/lib/publicPath";
 
 type Topic = {
   id: string;
@@ -71,7 +72,7 @@ export default function CommunityTopicDialog({ topic, userId, onClose }: Props) 
     let timer: ReturnType<typeof setInterval>;
     const tick = async () => {
       try {
-        const res = await fetch(`/fotoia/api/topics/${topic.id}`);
+        const res = await fetch(withBasePath(`/api/topics/${topic.id}`));
         if (!res.ok) return;
         const data = await res.json();
         if (!active) return;
@@ -117,7 +118,7 @@ export default function CommunityTopicDialog({ topic, userId, onClose }: Props) 
     setSending(true);
     setStatus(null);
     try {
-      const res = await fetch(`/fotoia/api/topics/${topic.id}/messages`, {
+      const res = await fetch(withBasePath(`/api/topics/${topic.id}/messages`), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: text.trim() }),
@@ -150,7 +151,7 @@ export default function CommunityTopicDialog({ topic, userId, onClose }: Props) 
     setSaving(true);
     setStatus(null);
     try {
-      const res = await fetch(`/fotoia/api/topics/${topic!.id}/messages/${m.id}`, {
+      const res = await fetch(withBasePath(`/api/topics/${topic!.id}/messages/${m.id}`), {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: editText.trim() }),
@@ -182,7 +183,7 @@ export default function CommunityTopicDialog({ topic, userId, onClose }: Props) 
     setStatus(null);
     setDeletingId(m.id);
     try {
-      const res = await fetch(`/fotoia/api/topics/${topic!.id}/messages/${m.id}`, {
+      const res = await fetch(withBasePath(`/api/topics/${topic!.id}/messages/${m.id}`), {
         method: "DELETE",
       });
       if (!res.ok) {

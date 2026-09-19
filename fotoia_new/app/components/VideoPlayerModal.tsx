@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { withBasePath } from "@/lib/publicPath";
 
 type Props = {
   url: string;
@@ -43,7 +44,7 @@ export default function VideoPlayerModal({
         const sec = Math.floor(v.currentTime);
         const watched = v.currentTime >= v.duration - 5;
         navigator.sendBeacon(
-          "/fotoia/api/videos/" + videoId + "/progress",
+          withBasePath(`/api/videos/${videoId}/progress`),
           new Blob([JSON.stringify({ seconds: sec, watched })], { type: "application/json" })
         );
       }
@@ -79,7 +80,7 @@ export default function VideoPlayerModal({
       if (!v || v.duration <= 0) return;
       const sec = Math.floor(v.currentTime);
       const watched = v.currentTime >= v.duration - 5;
-      fetch("/fotoia/api/videos/" + videoId + "/progress", {
+      fetch(withBasePath(`/api/videos/${videoId}/progress`), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ seconds: sec, watched }),

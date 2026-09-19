@@ -27,6 +27,9 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
       { status: 400 }
     );
   }
+  if (answerText.length > 4000) {
+    return NextResponse.json({ error: "A resposta deve ter no máximo 4000 caracteres" }, { status: 400 });
+  }
 
   const existing = await prisma.question.findUnique({ where: { id } });
   if (!existing) {

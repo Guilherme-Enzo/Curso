@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import CommunityTopicDialog from "./CommunityTopicDialog";
 import ConfirmModal from "./ConfirmModal";
 import ErrorModal from "./ErrorModal";
+import { withBasePath } from "@/lib/publicPath";
 
 type Topic = {
   id: string;
@@ -36,7 +37,7 @@ export default function ComunidadeTab({ session }: { session: Session }) {
 
   const loadTopics = useCallback(async () => {
     try {
-      const res = await fetch("/fotoia/api/topics");
+      const res = await fetch(withBasePath("/api/topics"));
       if (!res.ok) return;
       const data = await res.json();
       setTopics(data.topics);
@@ -54,7 +55,7 @@ export default function ComunidadeTab({ session }: { session: Session }) {
     setSending(true);
     setStatus(null);
     try {
-      const res = await fetch("/fotoia/api/topics", {
+      const res = await fetch(withBasePath("/api/topics"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: form.title.trim(), description: form.description.trim() }),
@@ -71,7 +72,7 @@ export default function ComunidadeTab({ session }: { session: Session }) {
     setStatus(null);
     setDeletingId(t.id);
     try {
-      const res = await fetch(`/fotoia/api/topics/${t.id}`, { method: "DELETE" });
+      const res = await fetch(withBasePath(`/api/topics/${t.id}`), { method: "DELETE" });
       if (!res.ok) { const data = await res.json().catch(() => ({})); setModalError(data.error || "Erro ao excluir"); return; }
       setDeleteSuccess(`Tópico "${t.title}" excluído!`);
       loadTopics();

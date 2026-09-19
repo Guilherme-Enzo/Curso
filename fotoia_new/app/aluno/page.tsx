@@ -8,6 +8,7 @@ import AiChatModal from "@/app/components/AiChatModal";
 import ErrorModal from "@/app/components/ErrorModal";
 import QuizResultModal from "@/app/components/QuizResultModal";
 import ComunidadeTab from "@/app/components/ComunidadeTab";
+import { withBasePath } from "@/lib/publicPath";
 
 type Session = { userId: string; role: string; name: string };
 
@@ -46,7 +47,6 @@ type QuizDetail = {
     id: string;
     question: string;
     order: number;
-    correctIndex: number;
     options: { id: string; text: string; order: number }[];
   }[];
 };
@@ -77,19 +77,19 @@ export default function StudentPage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/fotoia/api/auth/session");
+        const res = await fetch(withBasePath("/api/auth/session"));
         if (!res.ok) {
-          window.location.href = "/fotoia/login";
+          window.location.href = withBasePath("/login");
           return;
         }
         const data = await res.json();
         if (data?.user?.role !== "student") {
-          window.location.href = "/fotoia/professor";
+          window.location.href = withBasePath("/professor");
           return;
         }
         setSession(data.user);
       } catch {
-        window.location.href = "/fotoia/login";
+        window.location.href = withBasePath("/login");
       } finally {
         setLoading(false);
       }
@@ -98,8 +98,8 @@ export default function StudentPage() {
   }, [router]);
 
   async function handleLogout() {
-    await fetch("/fotoia/api/auth/logout", { method: "POST" });
-    window.location.href = "/fotoia/login";
+    await fetch(withBasePath("/api/auth/logout"), { method: "POST" });
+    window.location.href = withBasePath("/login");
   }
 
   if (loading) {
@@ -205,7 +205,7 @@ function ConteudoTab() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    fetch(`/fotoia/api/modules/public?t=${Date.now()}`)
+    fetch(withBasePath(`/api/modules/public?t=${Date.now()}`))
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => d && setModules(d.modules))
       .catch(() => {});
@@ -309,7 +309,7 @@ function ModulesTab() {
 
   const load = useCallback(async () => {
     try {
-      const res = await fetch(`/fotoia/api/modules?t=${Date.now()}`);
+      const res = await fetch(withBasePath(`/api/modules?t=${Date.now()}`));
       if (!res.ok) {
         setError("Erro ao carregar módulos");
         return;
@@ -446,7 +446,7 @@ function DuvidasTab({ userId: _userId }: { userId: string }) {
 
   const load = useCallback(async () => {
     try {
-      const res = await fetch("/fotoia/api/questions");
+      const res = await fetch(withBasePath("/api/questions"));
       if (!res.ok) {
         setModalError("Erro ao carregar dúvidas");
         return;
@@ -467,7 +467,7 @@ function DuvidasTab({ userId: _userId }: { userId: string }) {
     setError("");
     setSending(true);
     try {
-      const res = await fetch("/fotoia/api/questions", {
+      const res = await fetch(withBasePath("/api/questions"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ questionText: text }),
@@ -668,7 +668,7 @@ function AvaliacoesTab({ userId: _userId }: { userId: string }) {
 
   const load = useCallback(async () => {
     try {
-      const res = await fetch("/fotoia/api/quizzes");
+      const res = await fetch(withBasePath("/api/quizzes"));
       if (!res.ok) {
         setError("Erro ao carregar avaliações");
         return;
@@ -689,7 +689,7 @@ function AvaliacoesTab({ userId: _userId }: { userId: string }) {
     setError("");
     setResult(null);
     try {
-      const res = await fetch(`/fotoia/api/quizzes/${id}`);
+      const res = await fetch(withBasePath(`/api/quizzes/${id}`));
       if (!res.ok) throw new Error("Falha");
       const data = await res.json();
       setActive(data.quiz);
@@ -706,7 +706,7 @@ function AvaliacoesTab({ userId: _userId }: { userId: string }) {
     setError("");
     setLoadingQuiz(true);
     try {
-      const res = await fetch(`/fotoia/api/quizzes/${active.id}`, {
+      const res = await fetch(withBasePath(`/api/quizzes/${active.id}`), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ answers }),
@@ -934,7 +934,7 @@ function DesempenhoTab() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("/fotoia/api/performance");
+        const res = await fetch(withBasePath("/api/performance"));
         if (!res.ok) {
           setError("Erro ao carregar desempenho");
           return;

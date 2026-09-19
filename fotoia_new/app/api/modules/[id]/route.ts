@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getApiUser, isStaff } from "@/lib/session";
-import { savePdf, removeFile } from "@/lib/upload";
+import { savePdf, removeFile, removeVideo } from "@/lib/upload";
 import { generateModuleQuiz, type GeneratedQuiz } from "@/lib/quizAI";
 import { generateModuleContent, type GeneratedContent } from "@/lib/contentAI";
 
 async function findModule(id: string) {
-  return prisma.module.findUnique({ where: { id } });
+  return prisma.module.findUnique({ where: { id }, include: { videos: true } });
 }
 
 export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }> }) {
@@ -30,13 +30,13 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
     let description: string | null;
     let pdfUrl = existing.pdfUrl;
     let changedPdf = false;
+    let uploadedPdf: string | null = null;
 
     if (ct.includes("application/json")) {
       const body = await req.json();
       name = String(body.name ?? existing.name ?? "").trim();
       description = body.description !== undefined ? (String(body.description).trim() || null) : existing.description;
       if (body.pdfUrl !== undefined && body.pdfUrl === null && existing.pdfUrl) {
-        await removeFile(existing.pdfUrl);
         pdfUrl = null;
         changedPdf = true;
       }
@@ -45,21 +45,44 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
       name = String(form.get("name") ?? "").trim();
       description = String(form.get("description") ?? "").trim() || null;
       const file = form.get("file");
-      if (file && file instanceof File) {
-        pdfUrl = await savePdf(file);
+      if (file && file instanceof File) uploadedPdf = file.size > 0 ? await savePdf(file) : null;
+      if (uploadedPdf) {
+        pdfUrl = uploadedPdf;
         changedPdf = true;
-        if (existing.pdfUrl) await removeFile(existing.pdfUrl);
       }
     }
 
     if (!name) {
+      if (uploadedPdf) await removeFile(uploadedPdf);
       return NextResponse.json({ error: "O nome do módulo é obrigatório" }, { status: 400 });
     }
+    if (name.length > 150 || (description?.length ?? 0) > 5000) {
+      if (uploadedPdf) await removeFile(uploadedPdf);
+      return NextResponse.json({ error: "Nome ou descrição excede o limite permitido" }, { status: 400 });
+    }
 
-    const updated = await prisma.module.update({
-      where: { id },
-      data: { name, description, pdfUrl },
-    });
+    let updated;
+    try {
+      updated = await prisma.module.update({
+        where: { id },
+        data: {
+          name,
+          description,
+          pdfUrl,
+          ...(!pdfUrl && changedPdf ? { content: null, synopsis: null } : {}),
+        },
+      });
+    } catch (error) {
+      if (uploadedPdf) await removeFile(uploadedPdf);
+      throw error;
+    }
+
+    if (changedPdf && existing.pdfUrl && existing.pdfUrl !== pdfUrl) {
+      await removeFile(existing.pdfUrl);
+    }
+    if (changedPdf && !pdfUrl) {
+      await prisma.quiz.deleteMany({ where: { moduleId: id } });
+    }
 
     let quiz: GeneratedQuiz | null = null;
     let contentResult: GeneratedContent | null = null;
@@ -67,7 +90,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
     const errors: string[] = [];
 
     // If PDF changed, regenerate content (and synopsis only if no description)
-    if (changedPdf) {
+    if (changedPdf && pdfUrl) {
       const hasDescription = !!description;
       const [quizResult, contentGen] = await Promise.all([
         generateModuleQuiz(updated.id).then((q) => q).catch((e) => {
@@ -124,6 +147,10 @@ export async function DELETE(_req: Request, ctx: { params: Promise<{ id: string 
   }
 
   if (existing.pdfUrl) await removeFile(existing.pdfUrl);
+  for (const video of existing.videos) {
+    await removeVideo(video.url);
+    if (video.thumbnail) await removeVideo(video.thumbnail);
+  }
 
   return NextResponse.json({ ok: true });
 }

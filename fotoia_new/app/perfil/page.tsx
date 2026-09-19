@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ErrorModal from "@/app/components/ErrorModal";
+import { withBasePath } from "@/lib/publicPath";
 
 type Session = { id: string; name: string; email: string; role: string };
 
@@ -41,9 +42,9 @@ export default function PerfilPage() {
     let active = true;
     (async () => {
       try {
-        const res = await fetch("/fotoia/api/auth/session");
+        const res = await fetch(withBasePath("/api/auth/session"));
         if (!res.ok) {
-          window.location.href = "/fotoia/login";
+          window.location.href = withBasePath("/login");
           return;
         }
         const data = await res.json();
@@ -51,7 +52,7 @@ export default function PerfilPage() {
         setSession(data.user);
         setName(data.user.name);
       } catch {
-        window.location.href = "/fotoia/login";
+        window.location.href = withBasePath("/login");
       } finally {
         if (active) setLoading(false);
       }
@@ -74,7 +75,7 @@ export default function PerfilPage() {
     setMsg(null);
     setSaving("name");
     try {
-      const res = await fetch("/fotoia/api/auth/me", {
+      const res = await fetch(withBasePath("/api/auth/me"), {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name }),
@@ -106,7 +107,7 @@ export default function PerfilPage() {
     }
     setSaving("password");
     try {
-      const res = await fetch("/fotoia/api/auth/me", {
+      const res = await fetch(withBasePath("/api/auth/me"), {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ currentPassword, newPassword }),
@@ -134,8 +135,8 @@ export default function PerfilPage() {
   const home = session?.role === "admin" ? "/admin" : session?.role === "teacher" ? "/professor" : "/aluno";
 
   async function handleLogout() {
-    await fetch("/fotoia/api/auth/logout", { method: "POST" });
-    window.location.href = "/fotoia/login";
+    await fetch(withBasePath("/api/auth/logout"), { method: "POST" });
+    window.location.href = withBasePath("/login");
   }
 
   return (

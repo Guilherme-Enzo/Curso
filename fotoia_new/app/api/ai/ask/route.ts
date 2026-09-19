@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { getApiUser } from "@/lib/session";
+import { checkRateLimit } from "@/lib/rateLimit";
 import {
   getModuleContent,
   streamChatAnswer,
@@ -24,6 +25,18 @@ export async function POST(req: Request) {
     });
   }
 
+  const rate = checkRateLimit(`ai:${user.id}`, 20, 10 * 60 * 1000);
+  if (!rate.allowed) {
+    return new Response(sse({ error: "Limite temporário de perguntas atingido." }), {
+      status: 429,
+      headers: {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "Retry-After": String(rate.retryAfter),
+      },
+    });
+  }
+
   let body: { moduleId?: string; question?: string };
   try {
     body = await req.json();
@@ -38,6 +51,12 @@ export async function POST(req: Request) {
   const moduleId = String(body.moduleId ?? "");
   if (!moduleId || !question || question.length < 3) {
     return new Response(sse({ error: "Escreva a pergunta e escolha o módulo." }), {
+      status: 400,
+      headers: { "Content-Type": "text/event-stream", "Cache-Control": "no-cache" },
+    });
+  }
+  if (question.length > 2000) {
+    return new Response(sse({ error: "A pergunta deve ter no máximo 2000 caracteres." }), {
       status: 400,
       headers: { "Content-Type": "text/event-stream", "Cache-Control": "no-cache" },
     });
@@ -63,11 +82,12 @@ export async function POST(req: Request) {
 
   const recent = await prisma.aiMessage.findMany({
     where: { userId: user.id, moduleId },
-    orderBy: { createdAt: "asc" },
+    orderBy: { createdAt: "desc" },
+    take: HISTORY_MESSAGES,
     select: { role: true, content: true },
   });
   const history: ChatMessage[] = recent
-    .slice(-HISTORY_MESSAGES)
+    .reverse()
     .map((m) => ({ role: m.role as ChatMessage["role"], content: m.content }));
 
   let pdfText: string;
@@ -110,6 +130,7 @@ export async function POST(req: Request) {
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",
       Connection: "keep-alive",
+      "X-Accel-Buffering": "no",
     },
   });
 }
