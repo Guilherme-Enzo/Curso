@@ -29,7 +29,19 @@ type Teacher = {
   createdAt: string;
 };
 
+type Student = Teacher & { birthDate: string | null };
+
 type Tab = "dashboard" | "conteudo" | "materiais" | "duvidas" | "professores" | "alunos" | "comunidade";
+
+function calculateAge(birthDate: string | null) {
+  if (!birthDate) return null;
+  const birth = new Date(birthDate);
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const birthdayNotReached = today.getMonth() < birth.getMonth() || (today.getMonth() === birth.getMonth() && today.getDate() < birth.getDate());
+  if (birthdayNotReached) age -= 1;
+  return age >= 0 ? age : null;
+}
 
 export default function AdminPage() {
   const router = useRouter();
@@ -578,9 +590,10 @@ function TeachersManager() {
 }
 
 function StudentsManager() {
-  const [students, setStudents] = useState<Teacher[] | null>(null);
+  const [students, setStudents] = useState<Student[] | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [modalError, setModalError] = useState<string | null>(null);
@@ -619,7 +632,7 @@ function StudentsManager() {
       const res = await fetch(withBasePath("/api/admin/students"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, birthDate }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -634,6 +647,7 @@ function StudentsManager() {
         setName("");
         setEmail("");
         setPassword("");
+        setBirthDate("");
       }, 2000);
     } catch {
       setModalError("Falha de conexão");
@@ -686,6 +700,7 @@ function StudentsManager() {
             setName("");
             setEmail("");
             setPassword("");
+            setBirthDate("");
           }}
         >
           <div
@@ -702,7 +717,8 @@ function StudentsManager() {
                     setCreating(false);
                     setName("");
                     setEmail("");
-                    setPassword("");
+            setPassword("");
+            setBirthDate("");
                   }}
                   className="text-xl text-zinc-500 transition hover:text-white"
                 >
@@ -761,6 +777,20 @@ function StudentsManager() {
                   minLength={6}
                   disabled={sending}
                   placeholder="Mínimo 6 caracteres"
+                  className="mt-2 w-full rounded-xl border border-violet-400/25 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-amber-500 disabled:opacity-50"
+                />
+              </div>
+
+              <div>
+                <label className="block text-base font-semibold text-zinc-200">
+                  Data de nascimento
+                </label>
+                <input
+                  type="date"
+                  value={birthDate}
+                  onChange={(e) => setBirthDate(e.target.value)}
+                  required
+                  disabled={sending}
                   className="mt-2 w-full rounded-xl border border-violet-400/25 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-amber-500 disabled:opacity-50"
                 />
               </div>
@@ -830,7 +860,10 @@ function StudentsManager() {
               >
                 <div>
                   <h3 className="text-lg font-semibold text-white">{s.name}</h3>
-                  <p className="mt-1 text-sm text-zinc-500">{s.email}</p>
+                    <p className="mt-1 text-sm text-zinc-500">{s.email}</p>
+                    <p className="mt-1 text-sm font-semibold text-amber-300">
+                      {calculateAge(s.birthDate) === null ? "Idade não informada" : `${calculateAge(s.birthDate)} anos`}
+                    </p>
                   <p className="mt-0.5 text-xs text-zinc-600">
                     Cadastrado em {new Date(s.createdAt).toLocaleDateString("pt-BR")}
                   </p>
