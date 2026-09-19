@@ -19,7 +19,7 @@ export const MODULES: Module[] = [
     id: 1,
     num: "01",
     title: "Introducao à Fotografia com IA",
-    icon: "📸",
+    icon: "/icofotoia-icon.png",
     tag: "Fundamentos",
     summary:
       "O que e fotografia generativa, como a IA interpreta comandos de texto e por que prompts sao a nova ferramenta essencial para criar imagens incriveis.",

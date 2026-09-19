@@ -84,7 +84,7 @@ export const MODULES: CourseModule[] = [
     id: 2,
     num: "02",
     title: "Sistema de Ignição",
-    icon: "⚡",
+    icon: "/icoauto-icon.png",
     tag: "Faísca",
     summary:
       "Como a centelha nasce: bobina, cabo e vela, driver de ignição, tipos de bobinas, o gráfico padrão no osciloscópio e as falhas de ignição.",

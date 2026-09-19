@@ -35,9 +35,7 @@ function Navbar() {
     <header className="sticky top-0 z-50 border-b border-white/5 bg-[#07070b]/75 backdrop-blur-xl">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <a href="#topo" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 text-lg font-black text-zinc-950 shadow-lg shadow-orange-600/30">
-            ⚡
-          </span>
+          <img src="/icoauto-icon.png" alt="" className="h-9 w-9 rounded-xl shadow-lg shadow-orange-600/30" />
           <span className="text-lg font-bold tracking-tight text-white">
             Auto <span className="text-amber-400">Elétrica</span>
           </span>
@@ -291,7 +289,11 @@ function Modules() {
                 <div className="absolute right-0 top-0 h-20 w-20 translate-x-8 -translate-y-8 rounded-full bg-amber-500/10 blur-2xl transition group-hover:bg-amber-500/25" />
                 <div className="relative flex items-center justify-between">
                   <span className="grid h-11 w-11 place-items-center rounded-xl bg-white/[0.04] text-xl transition group-hover:bg-amber-500/15">
-                    {m.icon}
+                    {m.icon.startsWith("/") ? (
+                      <img src={m.icon} alt="" className="h-7 w-7 rounded-lg" />
+                    ) : (
+                      m.icon
+                    )}
                   </span>
                   <span className="text-4xl font-black text-white/10 transition-colors group-hover:text-amber-500/40">
                     {m.num}
@@ -357,7 +359,11 @@ function Features() {
             <Reveal key={f.title} delay={i * 120}>
               <div className="relative h-full rounded-2xl border border-white/8 bg-zinc-950/70 p-7 backdrop-blur transition hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.04]">
                 <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-600/20 text-2xl">
-                  {f.icon}
+                  {f.icon.startsWith("/") ? (
+                    <img src={f.icon} alt="" className="h-8 w-8 rounded-lg" />
+                  ) : (
+                    f.icon
+                  )}
                 </div>
                 <h3 className="mt-5 text-lg font-bold text-white">{f.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-zinc-400">
@@ -637,9 +643,7 @@ function Footer() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div className="col-span-2">
             <div className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 text-lg font-black text-zinc-950">
-                ⚡
-              </span>
+              <img src="/icoauto-icon.png" alt="" className="h-9 w-9 rounded-xl" />
               <span className="text-lg font-bold text-white">
                 Auto <span className="text-amber-400">Elétrica</span>
               </span>

@@ -145,9 +145,7 @@ export default function PerfilPage() {
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-violet-400 to-cyan-500 text-lg font-black text-zinc-950 shadow-lg shadow-violet-500/30">
-                📸
-              </span>
+              <img src="/icoauto-icon.png" alt="" className="h-9 w-9 rounded-xl shadow-lg shadow-orange-600/30" />
               <span className="text-lg font-bold tracking-tight text-white">
                 Retrato <span className="text-violet-400">ImAginado</span>
               </span>
@@ -465,9 +463,7 @@ export default function PerfilPage() {
         <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-2">
-              <span className="grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 text-xs font-black text-zinc-950">
-                ⚡
-              </span>
+              <img src="/icoauto-icon.png" alt="" className="h-7 w-7 rounded-lg" />
               <span className="text-xs font-bold text-white">
                 Auto <span className="text-amber-400">Elétrica</span>
               </span>

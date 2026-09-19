@@ -122,9 +122,7 @@ export default function StudentPage() {
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 text-lg font-black text-zinc-950 shadow-lg shadow-orange-600/30">
-                ⚡
-              </span>
+              <img src="/icoauto-icon.png" alt="" className="h-9 w-9 rounded-xl shadow-lg shadow-orange-600/30" />
               <span className="text-lg font-bold tracking-tight text-white">
                 Auto <span className="text-amber-400">Elétrica</span>
               </span>

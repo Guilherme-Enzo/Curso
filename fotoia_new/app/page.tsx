@@ -281,7 +281,11 @@ function Modules() {
               >
                 <div className="mb-4 flex items-center justify-between">
                   <span className="grid h-12 w-12 place-items-center rounded-xl bg-violet-500/10 text-2xl">
-                    {mod.icon}
+                    {mod.icon.startsWith("/") ? (
+                      <img src={mod.icon} alt="" className="h-8 w-8 rounded-lg" />
+                    ) : (
+                      mod.icon
+                    )}
                   </span>
                   <span className="font-mono text-sm text-zinc-600">
                     {mod.num}/12

@@ -71,9 +71,7 @@ export default function RegisterPage() {
       <div className="flex flex-1 items-center justify-center p-4">
       <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-8 shadow-2xl">
         <Link href="/" className="flex items-center justify-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 text-lg font-black text-zinc-950 shadow-lg shadow-orange-600/30">
-            ⚡
-          </span>
+          <img src="/icoauto-icon.png" alt="" className="h-9 w-9 rounded-xl shadow-lg shadow-orange-600/30" />
           <span className="text-lg font-bold tracking-tight text-white">
             Auto <span className="text-amber-400">Elétrica</span>
           </span>
@@ -146,9 +144,7 @@ export default function RegisterPage() {
         <div className="mx-auto max-w-md px-4 py-8 sm:px-6">
           <div className="flex flex-col items-center gap-4">
             <div className="flex items-center gap-2">
-              <span className="grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 text-xs font-black text-zinc-950">
-                ⚡
-              </span>
+              <img src="/icoauto-icon.png" alt="" className="h-7 w-7 rounded-lg" />
               <span className="text-xs font-bold text-white">
                 Auto <span className="text-amber-400">Elétrica</span>
               </span>
