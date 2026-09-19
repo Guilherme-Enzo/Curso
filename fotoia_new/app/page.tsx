@@ -313,7 +313,7 @@ const features = [
     desc: "Aprenda a escrever comandos que geram imagens incriveis com Midjourney, DALL-E e Stable Diffusion.",
   },
   {
-    icon: "📸",
+    icon: "/icofotoia-icon.png",
     title: "Fotografia Profissional",
     desc: "Composicao, iluminacao, profundidade de campo e outros conceitos que tornam suas criacoes impactantes.",
   },
@@ -361,7 +361,11 @@ function Features() {
           {features.map((f, i) => (
             <Reveal key={i} delay={i * 100}>
               <div className="h-full rounded-2xl border border-violet-400/40 bg-violet-500/[0.08] backdrop-blur-sm p-6">
-                <span className="text-3xl">{f.icon}</span>
+                {f.icon.startsWith("/") ? (
+                  <img src={f.icon} alt="" className="h-8 w-8 rounded-lg" />
+                ) : (
+                  <span className="text-3xl">{f.icon}</span>
+                )}
                 <h3 className="mt-4 text-lg font-bold text-white">{f.title}</h3>
                 <p className="mt-2 text-sm text-zinc-400">{f.desc}</p>
               </div>
@@ -601,9 +605,7 @@ function Footer() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div className="col-span-2">
             <div className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-violet-400 to-cyan-500 text-lg font-black text-white">
-                📸
-              </span>
+              <img src="/icofotoia-icon.png" alt="" className="h-9 w-9 rounded-xl" />
               <span className="text-lg font-bold text-white">
                 Retrato <span className="text-violet-400">Imaginado</span>
               </span>

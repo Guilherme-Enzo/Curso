@@ -57,9 +57,7 @@ export default function RegisterPage() {
       <div className="flex flex-1 items-center justify-center p-4">
       <div className="w-full max-w-md rounded-2xl border border-violet-500/20 bg-white/[0.03] backdrop-blur-sm p-8 shadow-2xl">
         <Link href="/" className="flex items-center justify-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-violet-400 to-cyan-500 text-lg font-black text-zinc-950 shadow-lg shadow-violet-500/30">
-            📸
-          </span>
+          <img src="/icofotoia-icon.png" alt="" className="h-9 w-9 rounded-xl shadow-lg shadow-violet-500/30" />
           <span className="text-lg font-bold tracking-tight text-white">
             Retrato <span className="text-violet-400">ImAginado</span>
           </span>
@@ -132,9 +130,7 @@ export default function RegisterPage() {
         <div className="mx-auto max-w-md px-4 py-8 sm:px-6">
           <div className="flex flex-col items-center gap-4">
             <div className="flex items-center gap-2">
-              <span className="grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br from-violet-400 to-cyan-500 text-xs font-black text-white">
-                📸
-              </span>
+              <img src="/icofotoia-icon.png" alt="" className="h-7 w-7 rounded-lg" />
               <span className="text-xs font-bold text-white">
                 Retrato <span className="text-violet-400">ImAginado</span>
               </span>

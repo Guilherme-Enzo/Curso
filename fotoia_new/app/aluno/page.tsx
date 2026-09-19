@@ -123,9 +123,7 @@ export default function StudentPage() {
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-violet-400 to-cyan-500 text-lg font-black text-zinc-950 shadow-lg shadow-violet-500/30">
-                📸
-              </span>
+              <img src="/icofotoia-icon.png" alt="" className="h-9 w-9 rounded-xl shadow-lg shadow-violet-500/30" />
               <span className="text-lg font-bold tracking-tight text-white">
                 Retrato <span className="text-violet-400">ImAginado</span>
               </span>
