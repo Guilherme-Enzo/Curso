@@ -1,17 +1,20 @@
 import Link from "next/link";
 import Reveal from "@/app/components/reveal";
-import { MODULES } from "@/lib/modules";
+import { getPublicModules, type PublicModule } from "@/lib/publicModules";
 
-const SUBMODULE_COUNT = MODULES.reduce((acc, m) => acc + m.submodules.length, 0);
+export const dynamic = "force-dynamic";
 
-export default function Home() {
+export default async function Home() {
+  const modules = await getPublicModules();
+  const lessonCount = modules.reduce((total, module) => total + module.submodules.length, 0);
+
   return (
     <main className="flex-1 min-h-screen bg-[#0a0a0f] text-zinc-100 antialiased">
       <Navbar />
-      <Hero />
+      <Hero moduleCount={modules.length} lessonCount={lessonCount} />
       <TrustBar />
       <HowItWorks />
-      <Modules />
+      <Modules modules={modules} />
       <Features />
       <AiSection />
       <Testimonials />
@@ -76,7 +79,7 @@ function Navbar() {
   );
 }
 
-function Hero() {
+function Hero({ moduleCount, lessonCount }: { moduleCount: number; lessonCount: number }) {
   return (
     <section
       className="relative overflow-hidden"
@@ -148,8 +151,8 @@ function Hero() {
           <Reveal delay={400}>
             <div className="mt-10 grid grid-cols-3 gap-3 rounded-2xl border border-violet-400/30 bg-white/[0.05] backdrop-blur-md p-4 sm:mx-auto sm:max-w-xl">
               {[
-                { v: "12", l: "Modulos completos" },
-                { v: String(SUBMODULE_COUNT), l: "Aulas praticas" },
+                { v: String(moduleCount), l: "Modulos completos" },
+                { v: String(lessonCount), l: "Aulas praticas" },
                 { v: "200+", l: "Prompts prontos" },
               ].map((s) => (
                 <div key={s.l} className="text-center">
@@ -251,7 +254,7 @@ function HowItWorks() {
   );
 }
 
-function Modules() {
+function Modules({ modules }: { modules: PublicModule[] }) {
   return (
     <section id="modulos" className="border-t border-violet-400/20 bg-violet-500/[0.04] py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -261,7 +264,7 @@ function Modules() {
               Programa completo
             </span>
             <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">
-              12 Modulos Para Voce{" "}
+              {modules.length} Modulos Para Voce{" "}
               <span className="bg-gradient-to-r from-violet-300 to-cyan-300 bg-clip-text text-transparent">
                 Dominar a IA
               </span>
@@ -273,10 +276,10 @@ function Modules() {
         </Reveal>
 
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {MODULES.map((mod, i) => (
+          {modules.map((mod, i) => (
             <Reveal key={mod.id} delay={i * 50}>
               <Link
-                href={`/conteudo/${mod.id}`}
+                href={`/conteudo/${mod.order}`}
                 className="group block rounded-2xl border border-violet-400/40 bg-violet-500/[0.08] backdrop-blur-sm p-6 transition-all hover:border-violet-400/80 hover:glow-violet hover:bg-violet-500/[0.12] rounded-2xl"
               >
                 <div className="mb-4 flex items-center justify-between">
@@ -288,14 +291,14 @@ function Modules() {
                     )}
                   </span>
                   <span className="font-mono text-sm text-zinc-600">
-                    {mod.num}/12
+                    {String(mod.order).padStart(2, "0")}/{modules.length}
                   </span>
                 </div>
                 <h3 className="text-lg font-bold text-white transition-colors group-hover:text-violet-300">
-                  {mod.title}
+                  {mod.name}
                 </h3>
                 <p className="mt-2 line-clamp-2 text-sm text-zinc-500">
-                  {mod.summary}
+                  {mod.summary || mod.description || "Conteúdo prático de fotografia e edição com IA."}
                 </p>
                 <div className="mt-4 flex items-center gap-2 text-xs text-zinc-600">
                   <span className="h-1 w-1 rounded-full bg-violet-400" />
