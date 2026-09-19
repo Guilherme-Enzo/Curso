@@ -23,6 +23,7 @@ export const config = {
     "/perfil/:path*",
     "/comunidade/:path*",
     "/conteudo/:path*",
+    "/completar-cadastro/:path*",
   ],
   runtime: "nodejs",
 };

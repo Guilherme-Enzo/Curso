@@ -12,7 +12,11 @@ export default function LoginPage() {
       fetch(withBasePath("/api/auth/session"))
         .then((r) => r.json())
         .then((data) => {
-          if (data.user) {
+            if (data.user) {
+              if (!data.user.birthDate) {
+                window.location.href = withBasePath("/completar-cadastro");
+                return;
+              }
             const role = data.user.role;
             if (role === "admin") window.location.href = withBasePath("/admin");
             else if (role === "teacher") window.location.href = withBasePath("/professor");
@@ -50,6 +54,10 @@ export default function LoginPage() {
       if (!res.ok) {
         setError(data.error || "Erro ao entrar");
         setLoading(false);
+        return;
+      }
+      if (!data.user.birthDate) {
+        window.location.href = withBasePath("/completar-cadastro");
         return;
       }
       const role = data.user.role;

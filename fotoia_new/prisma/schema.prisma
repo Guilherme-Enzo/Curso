@@ -12,6 +12,7 @@ model User {
   name          String
   email         String       @unique
   passwordHash  String
+  birthDate     DateTime?    @db.Date
   role          String       @default("student") // "student" ou "teacher"
   questions     Question[]
   aiMessages    AiMessage[]

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { withBasePath } from "@/lib/publicPath";
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState({ name: "", email: "", birthDate: "", password: "" });
 
   useEffect(() => {
     function checkSession() {
@@ -13,6 +13,7 @@ export default function RegisterPage() {
         .then((r) => r.json())
         .then((data) => {
           if (data.user) {
+            if (!data.user.birthDate) window.location.href = withBasePath("/completar-cadastro");
             const role = data.user.role;
             if (role === "admin") window.location.href = withBasePath("/admin");
             else if (role === "teacher") window.location.href = withBasePath("/professor");
@@ -45,7 +46,14 @@ export default function RegisterPage() {
         setLoading(false);
         return;
       }
-      window.location.href = withBasePath("/login");
+      const role = data.user.role;
+      if (!data.user.birthDate) {
+        window.location.href = withBasePath("/completar-cadastro");
+        return;
+      }
+      else if (role === "admin") window.location.href = withBasePath("/admin");
+      else if (role === "teacher") window.location.href = withBasePath("/professor");
+      else window.location.href = withBasePath("/aluno");
     } catch {
       setError("Erro de conexão com o servidor");
       setLoading(false);
@@ -92,6 +100,17 @@ export default function RegisterPage() {
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="mt-1 w-full rounded-lg border border-violet-400/25 bg-violet-500/[0.08] px-3 py-2 text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
               placeholder="voce@email.com"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-zinc-300">Data de nascimento</label>
+            <input
+              type="date"
+              required
+              value={form.birthDate}
+              onChange={(e) => setForm({ ...form, birthDate: e.target.value })}
+              className="mt-1 w-full rounded-lg border border-violet-400/25 bg-violet-500/[0.08] px-3 py-2 text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
             />
           </div>
 

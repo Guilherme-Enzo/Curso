@@ -10,9 +10,10 @@ export async function POST(req: NextRequest) {
     const name = typeof body?.name === "string" ? body.name.trim() : "";
     const email = typeof body?.email === "string" ? body.email.trim().toLowerCase() : "";
     const password = typeof body?.password === "string" ? body.password : "";
+    const birthDate = typeof body?.birthDate === "string" ? body.birthDate : "";
     const role = "student"; // cadastro público é só de aluno; professores são criados pelo admin
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !birthDate) {
       return NextResponse.json(
         { error: "Nome, e-mail e senha são obrigatórios" },
         { status: 400 }
@@ -36,6 +37,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "A senha deve ter no máximo 128 caracteres" }, { status: 400 });
     }
 
+    const parsedBirthDate = new Date(`${birthDate}T00:00:00.000Z`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDate) || Number.isNaN(parsedBirthDate.getTime()) || parsedBirthDate > new Date()) {
+      return NextResponse.json({ error: "Informe uma data de nascimento válida" }, { status: 400 });
+    }
+
     const rate = checkRateLimit(`register:${clientAddress(req)}`, 5, 60 * 60 * 1000);
     if (!rate.allowed) {
       return NextResponse.json(
@@ -51,14 +57,14 @@ export async function POST(req: NextRequest) {
 
     const passwordHash = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
-      data: { name, email, passwordHash, role },
+      data: { name, email, passwordHash, birthDate: parsedBirthDate, role },
     });
 
     const token = signToken({ userId: user.id, role: user.role, name: user.name });
 
     const res = NextResponse.json({
       message: "Cadastro realizado com sucesso",
-      user: { id: user.id, name: user.name, email: user.email, role: user.role },
+      user: { id: user.id, name: user.name, email: user.email, birthDate: user.birthDate, role: user.role },
     });
 
     res.cookies.set("token", token, {

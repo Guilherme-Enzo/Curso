@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
     }
 
     const token = signToken({ userId: user.id, role: user.role, name: user.name });
-    const destination = user.role === "admin" ? "/admin" : user.role === "teacher" ? "/professor" : "/aluno";
+    const destination = !user.birthDate ? "/completar-cadastro" : user.role === "admin" ? "/admin" : user.role === "teacher" ? "/professor" : "/aluno";
     const response = NextResponse.redirect(new URL(destination, request.url));
     response.cookies.set("token", token, {
       httpOnly: true,
