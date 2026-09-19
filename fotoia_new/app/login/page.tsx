@@ -28,6 +28,13 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const errorCode = new URLSearchParams(window.location.search).get("error");
+    if (errorCode?.startsWith("google_")) {
+      setError("Não foi possível entrar com o Google. Tente novamente.");
+    }
+  }, []);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -106,6 +113,19 @@ export default function LoginPage() {
             {loading ? "Entrando..." : "Entrar"}
           </button>
         </form>
+
+        <div className="my-5 flex items-center gap-3 text-xs text-zinc-600">
+          <span className="h-px flex-1 bg-zinc-800" />
+          ou
+          <span className="h-px flex-1 bg-zinc-800" />
+        </div>
+        <a
+          href={withBasePath("/api/auth/google")}
+          className="flex w-full items-center justify-center gap-3 rounded-lg border border-zinc-700 bg-white px-4 py-2 font-semibold text-zinc-800 transition hover:bg-zinc-100"
+        >
+          <span className="text-lg font-bold text-blue-600">G</span>
+          Continuar com Google
+        </a>
 
         <p className="mt-4 text-center text-sm text-zinc-400">
           Não tem conta?{" "}
