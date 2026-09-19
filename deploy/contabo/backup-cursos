@@ -5,19 +5,42 @@ umask 077
 BACKUP_ROOT=/srv/backups/daily
 STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
 DESTINATION="$BACKUP_ROOT/$STAMP"
+RCLONE_CONF=/root/.config/rclone/rclone.conf
+GDRIVE_REMOTE=curso-drive:backups/curso/$STAMP
 
 mkdir -p "$DESTINATION"
 
+echo "[1/6] Dump autoeletrica..."
 docker exec cursos-postgres pg_dump -U postgres -Fc autoeletrica \
   > "$DESTINATION/autoeletrica.dump"
+
+echo "[2/6] Dump fotoia..."
 docker exec cursos-postgres pg_dump -U postgres -Fc fotoia \
   > "$DESTINATION/fotoia.dump"
 
+echo "[3/6] Tar uploads autoeletrica..."
 tar -C /srv/data/autoeletrica -czf "$DESTINATION/autoeletrica-uploads.tar.gz" uploads
+
+echo "[4/6] Tar uploads fotoia..."
 tar -C /srv/data/fotoia -czf "$DESTINATION/fotoia-uploads.tar.gz" uploads
 
+echo "[5/6] SHA256..."
 sha256sum "$DESTINATION"/*.dump "$DESTINATION"/*.tar.gz \
   > "$DESTINATION/SHA256SUMS"
 
+echo "[6/6] Upload Google Drive..."
+if [ -f "$RCLONE_CONF" ]; then
+  rclone copy "$DESTINATION" "$GDRIVE_REMOTE" \
+    --config "$RCLONE_CONF" \
+    --transfers 2 \
+    --log-level INFO 2>&1 || echo "WARN: upload Google Drive falhou"
+  echo "Upload OK: $GDRIVE_REMOTE"
+else
+  echo "WARN: rclone.conf nao encontrado, upload pulado"
+fi
+
+echo "Limpeza backups antigos (>7d)..."
 find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d -mtime +7 \
   -exec rm -rf -- {} +
+
+echo "Backup $STAMP concluido."
