@@ -125,7 +125,7 @@ export default function StudentPage() {
             <Link href="/" className="flex items-center gap-2">
               <img src="/icofotoia-icon.png" alt="" className="h-9 w-9 rounded-xl shadow-lg shadow-violet-500/30" />
               <span className="text-lg font-bold tracking-tight text-white">
-                Retrato <span className="text-violet-400">ImAginado</span>
+                Retrato <span className="text-violet-400"><span className="text-cyan-400">I</span>magin<span className="text-cyan-400">A</span>do</span>
               </span>
             </Link>
           </div>
@@ -201,13 +201,13 @@ export default function StudentPage() {
             <div className="flex items-center gap-2">
               <img src="/icofotoia-icon.png" alt="" className="h-7 w-7 rounded-lg" />
               <span className="text-xs font-bold text-white">
-                Retrato <span className="text-violet-400">ImAginado</span>
+                Retrato <span className="text-violet-400"><span className="text-cyan-400">I</span>magin<span className="text-cyan-400">A</span>do</span>
               </span>
             </div>
             <div className="flex items-center gap-4 text-xs text-zinc-500">
               <Link href="/" className="transition hover:text-white">Voltar ao início</Link>
             </div>
-            <p className="text-xs text-zinc-600">© {new Date().getFullYear()} Retrato ImAginado. Prompts de Fotografia e Edição com IA</p>
+            <p className="text-xs text-zinc-600">© {new Date().getFullYear()} Retrato ImaginAdo. Prompts de Fotografia e Edição com IA</p>
           </div>
         </div>
       </footer>

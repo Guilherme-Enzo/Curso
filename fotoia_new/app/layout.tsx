@@ -9,21 +9,21 @@ const SITE_URL = "https://retratoimaginado.cgialabs.com.br";
 const OG_URL = `${SITE_URL}/logofotoia.jpg`;
 
 export const metadata: Metadata = {
-  title: "Retrato ImAginado — Prompts de Fotografia e Edição com IA",
+  title: "Retrato ImaginAdo — Prompts de Fotografia e Edição com IA",
   description: "Domine a arte de criar imagens incríveis usando Inteligência Artificial. Aprenda prompts para Midjourney, DALL-E, Stable Diffusion e mais.",
   alternates: { canonical: SITE_URL },
   openGraph: {
-    title: "Retrato ImAginado — Prompts de Fotografia e Edição com IA",
+    title: "Retrato ImaginAdo — Prompts de Fotografia e Edição com IA",
     description: "Plataforma educacional de prompts de fotografia e edição com IA. Aprenda Midjourney, DALL-E, Stable Diffusion e mais.",
     url: SITE_URL,
-    siteName: "Retrato ImAginado",
-    images: [{ url: OG_URL, width: 1200, height: 630, alt: "Retrato ImAginado - Prompts de Fotografia e Edição com IA" }],
+    siteName: "Retrato ImaginAdo",
+    images: [{ url: OG_URL, width: 1200, height: 630, alt: "Retrato ImaginAdo - Prompts de Fotografia e Edição com IA" }],
     locale: "pt_BR",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Retrato ImAginado — Prompts de Fotografia e Edição com IA",
+    title: "Retrato ImaginAdo — Prompts de Fotografia e Edição com IA",
     description: "Aprenda prompts de fotografia e edição com IA. Do básico ao avançado.",
     images: [OG_URL],
   },
