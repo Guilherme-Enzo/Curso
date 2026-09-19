@@ -285,7 +285,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
           <button onClick={() => setTab("edit")} className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${tab === "edit" ? "bg-amber-500/20 text-amber-400" : "text-zinc-400 hover:text-white"}`}>
             Editar
           </button>
-          <button onClick={() => setTab("videos")} className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${tab === "videos" ? "bg-violet-500/20 text-violet-400" : "text-zinc-400 hover:text-white"}`}>
+          <button onClick={() => setTab("videos")} className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${tab === "videos" ? "bg-cyan-500/20 text-cyan-400" : "text-zinc-400 hover:text-white"}`}>
             🎬 Vídeos ({videos.length})
           </button>
         </div>
@@ -352,7 +352,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
               {reordering ? (
                 <>
                   <button onClick={handleSaveOrder} disabled={savingOrder}
-                    className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-purple-600 px-4 py-2.5 text-sm font-bold text-white disabled:opacity-50">
+                    className="w-full rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2.5 text-sm font-bold text-zinc-950 disabled:opacity-50">
                     {savingOrder ? "Salvando..." : "Salvar ordem"}
                   </button>
                   <button onClick={() => { setReordering(false); setVideoOrder(videos); }}
@@ -363,7 +363,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
               ) : (
                 <>
                   <button onClick={() => { setShowUpload(true); setUploadTitle(mod.name); setUploadDesc(""); setUploadFile(null); setUploadSuccess(false); }}
-                    className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-purple-600 px-4 py-2.5 text-sm font-bold text-white">
+                    className="w-full rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2.5 text-sm font-bold text-zinc-950">
                     + Adicionar vídeo
                   </button>
                   {videos.length > 1 && (
@@ -387,7 +387,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
               ) : reordering ? (
                 videoOrder.map((v, idx) => (
                   <div key={v.id} className="flex items-center gap-3 rounded-xl border border-zinc-800 bg-zinc-950 p-3">
-                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-violet-500/20 text-sm font-bold text-violet-400">
+                      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-cyan-500/20 text-sm font-bold text-cyan-400">
                       {idx + 1}
                     </span>
                     <div className="min-w-0 flex-1">
@@ -439,8 +439,8 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
                     <div className="flex items-center gap-3 py-4"><span className="text-2xl">✓</span><p className="text-base font-bold text-emerald-400">Vídeo enviado!</p></div>
                   ) : uploading ? (
                     <div className="flex flex-col items-center gap-4 py-8">
-                      <span className="h-10 w-10 animate-spin rounded-full border-4 border-violet-400 border-t-transparent" />
-                      <p className="text-base font-bold text-violet-300">Enviando vídeo...</p>
+                      <span className="h-10 w-10 animate-spin rounded-full border-4 border-cyan-400 border-t-transparent" />
+                      <p className="text-base font-bold text-cyan-300">Enviando vídeo...</p>
                       <p className="text-sm text-zinc-500">Isso pode levar um momento</p>
                     </div>
                   ) : (
@@ -454,21 +454,21 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
                         <div>
                           <label className="block text-sm font-semibold text-zinc-200">Título</label>
                           <input value={uploadTitle} onChange={(e) => setUploadTitle(e.target.value)}
-                            className="mt-1 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2 text-sm text-white outline-none focus:border-violet-500" />
+                            className="mt-1 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2 text-sm text-white outline-none focus:border-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-semibold text-zinc-200">Descrição</label>
                           <textarea value={uploadDesc} onChange={(e) => setUploadDesc(e.target.value)} rows={2} placeholder="Opcional"
-                            className="mt-1 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2 text-sm text-white outline-none focus:border-violet-500" />
+                            className="mt-1 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2 text-sm text-white outline-none focus:border-cyan-500" />
                         </div>
                         <div>
                           <label className="block text-sm font-semibold text-zinc-200">Arquivo (MP4, WebM)</label>
                           <input type="file" accept="video/mp4,video/webm,video/ogg,video/quicktime"
                             onChange={(e) => setUploadFile(e.target.files?.[0] ?? null)}
-                            className="mt-1 block w-full cursor-pointer rounded-xl border border-dashed border-zinc-600 bg-zinc-950 px-4 py-3 text-sm text-zinc-300 file:mr-3 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-violet-500 file:to-purple-600 file:px-3 file:py-1.5 file:text-sm file:font-bold file:text-white hover:border-violet-500/50" />
+                             className="mt-1 block w-full cursor-pointer rounded-xl border border-dashed border-zinc-600 bg-zinc-950 px-4 py-3 text-sm text-zinc-300 file:mr-3 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-cyan-500 file:to-blue-600 file:px-3 file:py-1.5 file:text-sm file:font-bold file:text-zinc-950 hover:border-cyan-500/50" />
                         </div>
                         <button onClick={handleUploadVideo} disabled={!uploadTitle.trim() || !uploadFile}
-                          className="w-full rounded-xl bg-gradient-to-r from-violet-500 to-purple-600 py-2.5 text-sm font-bold text-white disabled:opacity-50">
+                           className="w-full rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 py-2.5 text-sm font-bold text-zinc-950 disabled:opacity-50">
                           Enviar vídeo
                         </button>
                       </div>
@@ -529,7 +529,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
                 <label className="block text-sm font-semibold text-zinc-200">Substituir vídeo (opcional)</label>
                 <input type="file" accept="video/mp4,video/webm,video/ogg,video/quicktime" disabled={savingVideo}
                   onChange={(e) => setEditFile(e.target.files?.[0] ?? null)}
-                  className="mt-1 block w-full cursor-pointer rounded-xl border border-dashed border-zinc-600 bg-zinc-950 px-4 py-3 text-sm text-zinc-300 file:mr-3 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-violet-500 file:to-purple-600 file:px-3 file:py-1.5 file:text-sm file:font-bold file:text-white hover:border-violet-500/50 disabled:opacity-50" />
+                   className="mt-1 block w-full cursor-pointer rounded-xl border border-dashed border-zinc-600 bg-zinc-950 px-4 py-3 text-sm text-zinc-300 file:mr-3 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-cyan-500 file:to-blue-600 file:px-3 file:py-1.5 file:text-sm file:font-bold file:text-zinc-950 hover:border-cyan-500/50 disabled:opacity-50" />
                 {editFile && <p className="mt-1 text-xs text-emerald-400">Novo arquivo selecionado</p>}
               </div>
               {savingVideo ? (

@@ -469,8 +469,8 @@ export default function AiChatModal({ module, onClose }: ModalProps) {
               </p>
               <p className="mt-1 text-sm leading-relaxed text-zinc-400">
                 Estude com a IA e aproveite ao máximo este módulo: faça
-                perguntas, tire suas dúvidas, peça explicações e exemplos de
-                oficina sobre qualquer tema relacionado. A cada resposta, ela
+                 perguntas, tire suas dúvidas, peça explicações e exemplos
+                 visuais sobre qualquer tema relacionado. A cada resposta, ela
                 te convida a continuar estudando — é como ter um professor
                 particular sempre por perto.
               </p>

@@ -442,7 +442,7 @@ function AiSection() {
           {aiPoints.map((p, i) => (
             <Reveal key={p.title} delay={i * 120}>
               <div className="relative h-full rounded-2xl border border-white/8 bg-zinc-950/70 p-7 backdrop-blur transition hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.04]">
-                <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-orange-600/20 text-2xl">
+                <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 text-2xl">
                   {p.icon}
                 </div>
                 <h3 className="mt-5 text-lg font-bold text-white">{p.title}</h3>
@@ -671,7 +671,7 @@ function Footer() {
             <ul className="mt-4 space-y-2.5 text-sm text-zinc-400">
               <li><Link href="/login" className="transition hover:text-white">Entrar</Link></li>
               <li><Link href="/register" className="transition hover:text-white">Criar conta</Link></li>
-              <li><Link href="/dashboard" className="transition hover:text-white">Área do aluno</Link></li>
+              <li><Link href="/aluno" className="transition hover:text-white">Área do aluno</Link></li>
               <li><Link href="/professor" className="transition hover:text-white">Painel do professor</Link></li>
             </ul>
           </div>

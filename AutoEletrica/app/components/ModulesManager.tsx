@@ -456,10 +456,10 @@ export default function ModulesManager() {
                   onChange={(e) =>
                     setForm({ ...form, video: e.target.files?.[0] ?? null })
                   }
-                  className="mt-2 block w-full cursor-pointer rounded-xl border border-dashed border-zinc-600 bg-zinc-950 px-4 py-4 text-base text-zinc-300 file:mr-4 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-violet-500 file:to-cyan-500 file:px-4 file:py-2 file:text-base file:font-bold file:text-zinc-950 hover:border-violet-500/50 disabled:opacity-50"
+                  className="mt-2 block w-full cursor-pointer rounded-xl border border-dashed border-zinc-600 bg-zinc-950 px-4 py-4 text-base text-zinc-300 file:mr-4 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-cyan-500 file:to-blue-600 file:px-4 file:py-2 file:text-base file:font-bold file:text-zinc-950 hover:border-cyan-500/50 disabled:opacity-50"
                 />
                 {form.video && (
-                  <p className="mt-2 text-sm text-violet-300">
+                  <p className="mt-2 text-sm text-cyan-300">
                     {form.video.name} ({(form.video.size / 1024 / 1024).toFixed(1)} MB)
                   </p>
                 )}
@@ -470,7 +470,7 @@ export default function ModulesManager() {
                     onChange={(e) => setForm({ ...form, videoTitle: e.target.value })}
                     placeholder="Titulo do video"
                     disabled={sending}
-                    className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-violet-500 disabled:opacity-50"
+                    className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-cyan-500 disabled:opacity-50"
                   />
                 )}
               </div>

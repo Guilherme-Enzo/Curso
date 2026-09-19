@@ -22,6 +22,7 @@ export const config = {
     "/admin/:path*",
     "/perfil/:path*",
     "/comunidade/:path*",
+    "/conteudo/:path*",
   ],
   runtime: "nodejs",
 };

@@ -40,7 +40,7 @@ export function isGeminiConfigured(): boolean {
 
 function buildPrompt(moduleName: string, text: string): string {
   return [
-    "Você é um professor de elétrica e injeção eletrônica automotiva.",
+    "Você é um professor de fotografia, edição e criação de imagens com inteligência artificial.",
     `Com base no conteúdo abaixo, do módulo "${moduleName}" do livro "Fotografia e Edição com IA",`,
     `crie EXATAMENTE ${QUIZ_QUESTIONS} perguntas de múltipla escolha, cada uma com exatamente 4 alternativas.`,
     "As perguntas devem ser objetivas e baseadas somente no texto fornecido, cobrindo os tópicos mais importantes.",

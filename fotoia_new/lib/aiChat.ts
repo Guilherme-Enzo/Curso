@@ -181,9 +181,9 @@ export async function askForSuggestions(
   pdfText: string
 ): Promise<string[]> {
   const prompt = [
-    `Você é o professor do módulo "${moduleName}" de elétrica e injeção eletrônica automotiva.`,
+    `Você é o professor do módulo "${moduleName}" de fotografia, edição e criação de imagens com inteligência artificial.`,
     "Com base APENAS no conteúdo abaixo, crie 3 perguntas de estudo curtas (uma frase cada) que um aluno faria para revisar os pontos mais importantes deste módulo.",
-    "Varie o estilo entre as perguntas: uma pedindo explicação prática com exemplo de oficina, outra pedindo passo a passo de teste, outra sobre a aplicação de um componente.",
+    "Varie o estilo entre as perguntas: uma pedindo explicação prática com exemplo visual, outra pedindo um passo a passo de criação, outra sobre a aplicação de uma técnica ou ferramenta.",
     "Não repita perguntas genéricas como 'o que é isso'. Seja específico do conteúdo.",
     "Responda APENAS com JSON, sem markdown, sem código extra, neste formato:",
     '{"suggestions":["pergunta 1","pergunta 2","pergunta 3"]}',

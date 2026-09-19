@@ -166,7 +166,7 @@ export default function VideoPlayerModal({
                 <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
                   <button
                     onClick={() => handleChoice(true)}
-                    className="rounded-xl bg-gradient-to-r from-violet-500 to-purple-600 px-6 py-3 text-base font-bold text-white transition hover:-translate-y-0.5"
+                     className="rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-base font-bold text-zinc-950 transition hover:-translate-y-0.5"
                   >
                     ▶ Continuar de {formatTime(initialSeconds)}
                   </button>

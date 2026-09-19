@@ -83,7 +83,7 @@ export default function ComunidadeTab({ session }: { session: Session }) {
     <section className="mt-6 space-y-8">
       <button
         onClick={() => { setCreating(true); setStatus(null); }}
-        className="w-full rounded-2xl border-2 border-dashed border-amber-600/40 bg-zinc-900 p-6 text-lg font-bold text-violet-300 transition hover:border-amber-500/70 hover:bg-amber-500/10"
+        className="w-full rounded-2xl border-2 border-dashed border-cyan-600/40 bg-zinc-900 p-6 text-lg font-bold text-cyan-300 transition hover:border-cyan-500/70 hover:bg-cyan-500/10"
       >
         ＋ Criar novo tópico
       </button>
@@ -96,7 +96,7 @@ export default function ComunidadeTab({ session }: { session: Session }) {
 
       {creating && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" onClick={() => { if (modalSuccess || sending) return; setCreating(false); setForm(emptyForm); }}>
-          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-violet-400/25 bg-zinc-900 p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-cyan-400/25 bg-zinc-900 p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-bold text-white">{modalSuccess ? "Sucesso" : "Criar tópico"}</h2>
               {!modalSuccess && !sending && <button onClick={() => { setCreating(false); setForm(emptyForm); }} className="text-xl text-zinc-500 transition hover:text-white">✕</button>}
@@ -123,8 +123,8 @@ export default function ComunidadeTab({ session }: { session: Session }) {
                   </div>
                 )}
                 <div className="flex flex-wrap gap-3 pt-2">
-                  <button type="submit" disabled={sending} className="rounded-xl bg-gradient-to-r from-violet-500 to-cyan-500 px-6 py-3 text-base font-bold text-zinc-950 transition hover:-translate-y-0.5 disabled:opacity-50">{sending ? "Salvando..." : "Publicar tópico"}</button>
-                  <button type="button" onClick={() => { setCreating(false); setForm(emptyForm); }} className="rounded-xl border border-violet-400/25 px-6 py-3 text-base font-semibold text-zinc-300 transition hover:bg-white/5">Cancelar</button>
+                  <button type="submit" disabled={sending} className="rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-base font-bold text-zinc-950 transition hover:-translate-y-0.5 disabled:opacity-50">{sending ? "Salvando..." : "Publicar tópico"}</button>
+                  <button type="button" onClick={() => { setCreating(false); setForm(emptyForm); }} className="rounded-xl border border-cyan-400/25 px-6 py-3 text-base font-semibold text-zinc-300 transition hover:bg-white/5">Cancelar</button>
                 </div>
               </form>
             )}

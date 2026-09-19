@@ -141,26 +141,20 @@ export default function PerfilPage() {
 
   return (
     <main className="min-h-screen bg-[#050508] text-white">
-            <header className="relative z-50 border-b border-violet-400/30 bg-violet-500/[0.06] backdrop-blur">
+      <header className="relative z-50 border-b border-cyan-400/30 bg-cyan-500/[0.06] backdrop-blur">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
               <img src="/icoauto-icon.png" alt="" className="h-9 w-9 rounded-xl shadow-lg shadow-orange-600/30" />
               <span className="text-lg font-bold tracking-tight text-white">
-                Retrato <span className="text-violet-400">ImAginado</span>
+                Auto <span className="text-cyan-400">Elétrica</span>
               </span>
             </Link>
           </div>
           <div className="flex items-center gap-2">
             <Link
-              href="/comunidade"
-              className="hidden sm:flex rounded-lg border border-violet-400/50 px-4 py-2 text-base text-violet-300 transition hover:bg-violet-500/[0.12] hover:text-violet-200"
-            >
-              Comunidade
-            </Link>
-            <Link
               href="/perfil"
-              className="hidden sm:flex rounded-lg border border-violet-400/25 px-4 py-2 text-base text-zinc-300 transition hover:border-zinc-500 hover:text-white"
+              className="hidden sm:flex rounded-lg border border-cyan-400/25 px-4 py-2 text-base text-zinc-300 transition hover:border-zinc-500 hover:text-white"
             >
               Perfil
             </Link>
@@ -173,15 +167,14 @@ export default function PerfilPage() {
             <div className="relative sm:hidden">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="rounded-lg border border-violet-400/40 px-3 py-2 text-lg text-zinc-300 transition hover:bg-violet-500/[0.12]"
+                className="rounded-lg border border-cyan-400/40 px-3 py-2 text-lg text-zinc-300 transition hover:bg-cyan-500/[0.12]"
               >
                 ⋮
               </button>
               {menuOpen && (
                 <>
-                  <div className="absolute right-0 top-full mt-1 z-50 w-44 rounded-xl border border-violet-400/30 bg-[#0a0a0f] shadow-2xl">
-                    <Link href="/comunidade" onClick={() => setMenuOpen(false)} className="block px-4 py-3 text-sm text-violet-300 hover:bg-violet-500/10 rounded-t-xl">Comunidade</Link>
-                    <Link href="/perfil" onClick={() => setMenuOpen(false)} className="block px-4 py-3 text-sm text-zinc-300 hover:bg-violet-500/10">Perfil</Link>
+                  <div className="absolute right-0 top-full mt-1 z-50 w-44 rounded-xl border border-cyan-400/30 bg-[#0a0a0f] shadow-2xl">
+                    <Link href="/perfil" onClick={() => setMenuOpen(false)} className="block rounded-t-xl px-4 py-3 text-sm text-zinc-300 hover:bg-cyan-500/10">Perfil</Link>
                     <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="block w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 rounded-b-xl">Sair</button>
                   </div>
                 </>

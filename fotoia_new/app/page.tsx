@@ -276,7 +276,7 @@ function Modules() {
           {MODULES.map((mod, i) => (
             <Reveal key={mod.id} delay={i * 50}>
               <Link
-                href={`/modulo/${mod.id}`}
+                href={`/conteudo/${mod.id}`}
                 className="group block rounded-2xl border border-violet-400/40 bg-violet-500/[0.08] backdrop-blur-sm p-6 transition-all hover:border-violet-400/80 hover:glow-violet hover:bg-violet-500/[0.12] rounded-2xl"
               >
                 <div className="mb-4 flex items-center justify-between">

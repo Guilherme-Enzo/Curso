@@ -50,7 +50,10 @@ export default function RegisterPage() {
         setError(data.error || "Erro ao cadastrar");
         return;
       }
-      router.push("/dashboard");
+      const role = data.user?.role;
+      if (role === "admin") router.push("/admin");
+      else if (role === "teacher") router.push("/professor");
+      else router.push("/aluno");
     } catch {
       setError("Erro de conexão com o servidor");
     } finally {

@@ -32,7 +32,7 @@ export type GeneratedContent = {
 
 function buildSynopsisPrompt(moduleName: string, text: string): string {
   return [
-    "Você é um professor de elétrica e injeção eletrônica automotiva.",
+    "Você é um professor de fotografia, edição e criação de imagens com inteligência artificial.",
     `Com base no conteúdo abaixo, do módulo "${moduleName}" do livro "Fotografia e Edição com IA",`,
     "escreva uma sinopse curta (3 a 5 frases) explicando o que o aluno vai estudar neste módulo.",
     "A sinopse deve ser objetiva, indicando os principais tópicos abordados no PDF.",
@@ -45,10 +45,10 @@ function buildSynopsisPrompt(moduleName: string, text: string): string {
 
 function buildDescriptionPrompt(moduleName: string, text: string): string {
   return [
-    "Você é um professor de elétrica e injeção eletrônica automotiva.",
+    "Você é um professor de fotografia, edição e criação de imagens com inteligência artificial.",
     `Com base no conteúdo abaixo, do módulo "${moduleName}", gere uma DESCRICAO do módulo.`,
     "A descrição deve ser uma lista dos tópicos que serão estudados, separados por vírgula.",
-    "Exemplo: O Triplo C, Relação Estequiométrica, Central de Fotografia com IA (ECU), Tipos de Midjourney, DALL-E e Stable Diffusion",
+    "Exemplo: composição, iluminação, direção de arte, Midjourney, DALL-E e Stable Diffusion",
     "",
     "Regras:",
     "- Extraia os tópicos principais do PDF",
@@ -63,7 +63,7 @@ function buildDescriptionPrompt(moduleName: string, text: string): string {
 
 function buildContentPrompt(moduleName: string, text: string): string {
   return [
-    "Você é um professor de elétrica e injeção eletrônica automotiva.",
+    "Você é um professor de fotografia, edição e criação de imagens com inteligência artificial.",
     `Com base no conteúdo abaixo, do módulo "${moduleName}" do livro "Fotografia e Edição com IA",`,
     "gere uma estrutura de conteúdo didático para estudantes.",
     "",
