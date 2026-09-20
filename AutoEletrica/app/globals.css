@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+:root {
+  /* Tema azul elétrico (padrão fixo do site) */
+  --background: #06b6d4;
+  --foreground: #0a0a10;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+
+  /* remapeia a escala zinc (superfícies azuladas) */
+  --color-zinc-950: #020617;
+  --color-zinc-900: #082f49;
+  --color-zinc-800: #0c4a6e;
+  --color-zinc-700: #075985;
+  --color-zinc-600: #0369a1;
+
+  /* destaque âmbar/laranja → azul elétrico */
+  --color-amber-300: #67e8f9;
+  --color-amber-400: #22d3ee;
+  --color-amber-500: #06b6d4;
+  --color-amber-600: #0891b2;
+  --color-amber-800: #155e75;
+  --color-orange-400: #60a5fa;
+  --color-orange-500: #3b82f6;
+  --color-orange-600: #2563eb;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+a,
+[role="button"],
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+input,
+select,
+textarea {
+  font-size: 1rem;
+}
+
+::selection {
+  background: var(--primary, #2563eb);
+  color: #fff;
+}
+
+/* Fundos fixos (hex nas telas) → ajustes do azul elétrico */
+[class*="bg-[#050508]"],
+[class*="bg-[#07070b]"] {
+  background-color: #020617;
+}
+[class*="bg-[#0a0a12]"] {
+  background-color: #082f49;
+}
+[class*="from-[#07070b]"] {
+  --tw-gradient-from: #020617;
+}
+
+/* Largura do conteúdo (grade do tema base 16) */
+html[data-grid="16"] .max-w-6xl {
+  max-width: 88rem;
+}
+html[data-grid="24"] .max-w-6xl {
+  max-width: 108rem;
+}
+/* Chat do tutor: matemática (KaTeX) no mesmo tamanho do texto */
+.modal-chat .katex {
+  font-size: 1em;
+  line-height: inherit;
+}
+.modal-chat .katex-display {
+  font-size: 1em;
+}

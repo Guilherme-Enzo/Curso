@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0f"/>
+      <stop offset="50%" style="stop-color:#1a1030"/>
+      <stop offset="100%" style="stop-color:#0a0a0f"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#a78bfa"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="540" y="160" width="120" height="120" rx="24" fill="url(#accent)"/>
+  <text x="600" y="330" text-anchor="middle" font-size="52" font-weight="bold" fill="white" font-family="Arial, sans-serif">Retrato<tspan fill="#a78bfa"> ImAginado</tspan></text>
+  <text x="600" y="390" text-anchor="middle" font-size="24" fill="#a1a1aa" font-family="Arial, sans-serif">Prompts de Fotografia e Edicao com IA</text>
+  <text x="600" y="560" text-anchor="middle" font-size="18" fill="#52525b" font-family="Arial, sans-serif">fotografia | edicao | prompts | IA</text></svg>

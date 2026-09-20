@@ -1,0 +1,2 @@
+ALTER TABLE "User" ADD COLUMN "authProvider" TEXT NOT NULL DEFAULT 'password';
+ALTER TABLE "User" ALTER COLUMN "passwordHash" DROP NOT NULL;

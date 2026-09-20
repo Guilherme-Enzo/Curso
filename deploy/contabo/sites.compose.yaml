@@ -1,0 +1,105 @@
+name: cursos
+
+services:
+  postgres:
+    image: postgres:16-bookworm
+    container_name: cursos-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    volumes:
+      - /srv/data/postgres:/var/lib/postgresql/data
+      - /srv/stacks/sites/init-databases.sh:/docker-entrypoint-initdb.d/10-databases.sh:ro
+    secrets:
+      - postgres_password
+      - autoeletrica_db_password
+      - fotoia_db_password
+    networks:
+      - cursos
+
+  fotoia:
+    build:
+      context: /srv/apps/curso/fotoia_new
+    image: local/fotoia:staging
+    container_name: fotoia
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - /srv/secrets/fotoia.env
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - /srv/data/fotoia/uploads:/app/public/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - cursos
+
+  autoeletrica:
+    build:
+      context: /srv/apps/curso/AutoEletrica
+    image: local/autoeletrica:staging
+    container_name: autoeletrica
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - /srv/secrets/autoeletrica.env
+    ports:
+      - "127.0.0.1:3001:3000"
+    volumes:
+      - /srv/data/autoeletrica/uploads:/app/public/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - cursos
+
+networks:
+  cursos:
+    name: cursos
+
+secrets:
+  postgres_password:
+    file: /srv/secrets/postgres_password
+  autoeletrica_db_password:
+    file: /srv/secrets/autoeletrica_db_password
+  fotoia_db_password:
+    file: /srv/secrets/fotoia_db_password
