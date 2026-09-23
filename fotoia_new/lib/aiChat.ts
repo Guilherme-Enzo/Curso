@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { GoogleGenAI } from "@google/genai";
+import pdfParse from "pdf-parse";
 import { resolveFile } from "@/lib/upload";
 import { MODULES } from "@/lib/modules";
 import {
@@ -10,11 +11,6 @@ import {
   openRouterModels,
   openRouterStream,
 } from "@/lib/openrouter";
-
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const pdfParse = require("pdf-parse/lib/pdf-parse.js") as (
-  buffer: Buffer
-) => Promise<{ text: string }>;
 
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
 const MAX_TEXT_CHARS = 80000;
@@ -118,12 +114,12 @@ export async function getModuleContent(pdfUrl: string): Promise<string> {
 function buildPrompt(moduleName: string, text: string, history: ChatMessage[]): string {
   const historyBlock = history.length
     ? history
-        .map((m) => `${m.role === "user" ? "Aluno" : "Professor"}: ${m.content}`)
+        .map((m) => `${m.role === "user" ? "Usuário" : "Colaborador"}: ${m.content}`)
         .join("\n\n")
     : "(ainda não há conversa anterior)";
 
   return [
-    `Você é o professor responsável pelo módulo "${moduleName}".`,
+    `Você é o colaborador responsável pelo módulo "${moduleName}".`,
     "REGRAS ESTRTAS:",
     "1. Responda APENAS com base no conteúdo do módulo fornecido abaixo.",
     "2. NÃO use conhecimento de outros módulos ou temas fora deste módulo.",
@@ -137,7 +133,7 @@ function buildPrompt(moduleName: string, text: string, history: ChatMessage[]): 
     "HISTÓRICO DA CONVERSA:",
     historyBlock,
     "",
-    "Responda agora a pergunta do aluno em markdown simples: títulos com ##, negrito com ** e listas com -.",
+    "Responda agora a pergunta do usuário em markdown simples: títulos com ##, negrito com ** e listas com -.",
     "Qualquer fórmula deve sair em LaTeX: fórmulas curtas entre $...$ e fórmulas grandes entre $$...$$.",
     "No final da resposta, faça UMA pergunta curta oferecendo ajuda sobre algum tópico do módulo.",
   ].join("\n");
@@ -181,8 +177,8 @@ export async function askForSuggestions(
   pdfText: string
 ): Promise<string[]> {
   const prompt = [
-    `Você é o professor do módulo "${moduleName}" de fotografia, edição e criação de imagens com inteligência artificial.`,
-    "Com base APENAS no conteúdo abaixo, crie 3 perguntas de estudo curtas (uma frase cada) que um aluno faria para revisar os pontos mais importantes deste módulo.",
+    `Você é o colaborador do módulo "${moduleName}" de fotografia, edição e criação de imagens com inteligência artificial.`,
+    "Com base APENAS no conteúdo abaixo, crie 3 perguntas de estudo curtas (uma frase cada) que um usuário faria para revisar os pontos mais importantes deste módulo.",
     "Varie o estilo entre as perguntas: uma pedindo explicação prática com exemplo visual, outra pedindo um passo a passo de criação, outra sobre a aplicação de uma técnica ou ferramenta.",
     "Não repita perguntas genéricas como 'o que é isso'. Seja específico do conteúdo.",
     "Responda APENAS com JSON, sem markdown, sem código extra, neste formato:",

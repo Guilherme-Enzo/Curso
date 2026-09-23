@@ -14,7 +14,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
   }
   if (!isStaff(user)) {
-    return NextResponse.json({ error: "Apenas professores e admin" }, { status: 403 });
+    return NextResponse.json({ error: "Apenas colaboradores e admin" }, { status: 403 });
   }
 
   const { id } = await ctx.params;
@@ -27,6 +27,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
     const ct = req.headers.get("content-type") ?? "";
     let name: string;
     let description: string | null;
+    let isFree = existing.isFree;
     let pdfUrl = existing.pdfUrl;
     let changedPdf = false;
     let uploadedPdf: string | null = null;
@@ -35,6 +36,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
       const body = await req.json();
       name = String(body.name ?? existing.name ?? "").trim();
       description = body.description !== undefined ? (String(body.description).trim() || null) : existing.description;
+      if (body.isFree !== undefined) isFree = body.isFree === true || body.isFree === "true";
       if (body.pdfUrl !== undefined && body.pdfUrl === null && existing.pdfUrl) {
         pdfUrl = null;
         changedPdf = true;
@@ -43,6 +45,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
       const form = await req.formData();
       name = String(form.get("name") ?? "").trim();
       description = String(form.get("description") ?? "").trim() || null;
+      if (form.get("isFree") !== null) isFree = String(form.get("isFree")) !== "false";
       const file = form.get("file");
       if (file && file instanceof File) uploadedPdf = file.size > 0 ? await savePdf(file) : null;
       if (uploadedPdf) {
@@ -67,6 +70,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
         data: {
           name,
           description,
+          isFree,
           pdfUrl,
           ...(!pdfUrl && changedPdf ? { content: null, synopsis: null } : {}),
         },
@@ -105,7 +109,7 @@ export async function DELETE(_req: Request, ctx: { params: Promise<{ id: string 
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
   }
   if (!isStaff(user)) {
-    return NextResponse.json({ error: "Apenas professores e admin" }, { status: 403 });
+    return NextResponse.json({ error: "Apenas colaboradores e admin" }, { status: 403 });
   }
 
   const { id } = await ctx.params;

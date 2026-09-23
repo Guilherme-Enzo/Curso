@@ -8,7 +8,7 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
   }
   if (!isStaff(user)) {
-    return NextResponse.json({ error: "Apenas professores e admin" }, { status: 403 });
+    return NextResponse.json({ error: "Apenas colaboradores e admin" }, { status: 403 });
   }
 
   try {

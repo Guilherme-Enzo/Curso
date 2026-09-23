@@ -1,5 +1,6 @@
 import { readFile } from "fs/promises";
 import { GoogleGenAI } from "@google/genai";
+import pdfParse from "pdf-parse";
 import { prisma } from "@/lib/prisma";
 import { resolveFile } from "@/lib/upload";
 import {
@@ -8,11 +9,6 @@ import {
   openRouterErrorMessage,
   openRouterModels,
 } from "@/lib/openrouter";
-
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const pdfParse = require("pdf-parse/lib/pdf-parse.js") as (
-  buffer: Buffer
-) => Promise<{ text: string }>;
 
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
 const MAX_TEXT_CHARS = 60000;
@@ -32,9 +28,9 @@ export type GeneratedContent = {
 
 function buildSynopsisPrompt(moduleName: string, text: string): string {
   return [
-    "Você é um professor de fotografia, edição e criação de imagens com inteligência artificial.",
+    "Você é um colaborador de fotografia, edição e criação de imagens com inteligência artificial.",
     `Com base no conteúdo abaixo, do módulo "${moduleName}" do livro "Fotografia e Edição com IA",`,
-    "escreva uma sinopse curta (3 a 5 frases) explicando o que o aluno vai estudar neste módulo.",
+    "escreva uma sinopse curta (3 a 5 frases) explicando o que o usuário vai estudar neste módulo.",
     "A sinopse deve ser objetiva, indicando os principais tópicos abordados no PDF.",
     "Não use markdown, não use formatação. Apenas texto corrido.",
     "",
@@ -45,7 +41,7 @@ function buildSynopsisPrompt(moduleName: string, text: string): string {
 
 function buildDescriptionPrompt(moduleName: string, text: string): string {
   return [
-    "Você é um professor de fotografia, edição e criação de imagens com inteligência artificial.",
+    "Você é um colaborador de fotografia, edição e criação de imagens com inteligência artificial.",
     `Com base no conteúdo abaixo, do módulo "${moduleName}", gere uma DESCRICAO do módulo.`,
     "A descrição deve ser uma lista dos tópicos que serão estudados, separados por vírgula.",
     "Exemplo: composição, iluminação, direção de arte, Midjourney, DALL-E e Stable Diffusion",
@@ -63,7 +59,7 @@ function buildDescriptionPrompt(moduleName: string, text: string): string {
 
 function buildContentPrompt(moduleName: string, text: string): string {
   return [
-    "Você é um professor de fotografia, edição e criação de imagens com inteligência artificial.",
+    "Você é um colaborador de fotografia, edição e criação de imagens com inteligência artificial.",
     `Com base no conteúdo abaixo, do módulo "${moduleName}" do livro "Fotografia e Edição com IA",`,
     "gere uma estrutura de conteúdo didático para estudantes.",
     "",
@@ -74,7 +70,7 @@ function buildContentPrompt(moduleName: string, text: string): string {
     "- Crie entre 3 e 8 submódulos, organizados do mais básico ao mais avançado",
     "- Cada submódulo deve ter um título curto e descritivo",
     "- O conteúdo de cada submódulo deve ser explicativo, didático, com parágrafos separados por \\n",
-    "- Use linguagem acessível, como se estivesse explicando para um aluno",
+    "- Use linguagem acessível, como se estivesse explicando para um usuário",
     "- Não invente informações, use apenas o conteúdo do PDF fornecido",
     "- Não inclua campo 'images' no JSON",
     "",

@@ -45,11 +45,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (!user.emailVerifiedAt) {
+      return NextResponse.json(
+        { error: "Confirme seu e-mail antes de entrar. Verifique sua caixa de entrada." },
+        { status: 403 }
+      );
+    }
+
     const token = signToken({ userId: user.id, role: user.role, name: user.name, loginMethod: "password" });
 
     const res = NextResponse.json({
       message: "Login realizado com sucesso",
-      user: { id: user.id, name: user.name, email: user.email, birthDate: user.birthDate, role: user.role },
+      user: { id: user.id, name: user.name, email: user.email, birthDate: user.birthDate, gender: user.gender, role: user.role },
     });
 
     res.cookies.set("token", token, {

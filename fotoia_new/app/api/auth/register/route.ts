@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-import { signToken } from "@/lib/auth";
+import { issueEmailVerification } from "@/lib/emailVerification";
 import { checkRateLimit, clientAddress } from "@/lib/rateLimit";
+import { isValidGender } from "@/lib/gender";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,13 +12,17 @@ export async function POST(req: NextRequest) {
     const email = typeof body?.email === "string" ? body.email.trim().toLowerCase() : "";
     const password = typeof body?.password === "string" ? body.password : "";
     const birthDate = typeof body?.birthDate === "string" ? body.birthDate : "";
-    const role = "student"; // cadastro público é só de aluno; professores são criados pelo admin
+    const gender = typeof body?.gender === "string" ? body.gender : "";
+    const role = "student"; // cadastro público é só de usuário; colaboradores são criados pelo admin
 
-    if (!name || !email || !password || !birthDate) {
+    if (!name || !email || !password) {
       return NextResponse.json(
         { error: "Nome, e-mail e senha são obrigatórios" },
         { status: 400 }
       );
+    }
+    if (gender && !isValidGender(gender)) {
+      return NextResponse.json({ error: "Selecione uma opção de gênero" }, { status: 400 });
     }
 
     if (name.length < 2 || name.length > 100) {
@@ -37,8 +42,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "A senha deve ter no máximo 128 caracteres" }, { status: 400 });
     }
 
-    const parsedBirthDate = new Date(`${birthDate}T00:00:00.000Z`);
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDate) || Number.isNaN(parsedBirthDate.getTime()) || parsedBirthDate > new Date()) {
+    const parsedBirthDate = birthDate ? new Date(`${birthDate}T00:00:00.000Z`) : null;
+    if (birthDate && (!/^\d{4}-\d{2}-\d{2}$/.test(birthDate) || !parsedBirthDate || Number.isNaN(parsedBirthDate.getTime()) || parsedBirthDate > new Date())) {
       return NextResponse.json({ error: "Informe uma data de nascimento válida" }, { status: 400 });
     }
 
@@ -57,25 +62,21 @@ export async function POST(req: NextRequest) {
 
     const passwordHash = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
-      data: { name, email, passwordHash, birthDate: parsedBirthDate, role },
+      data: { name, email, passwordHash, ...(parsedBirthDate ? { birthDate: parsedBirthDate } : {}), ...(gender ? { gender } : {}), role },
     });
 
-    const token = signToken({ userId: user.id, role: user.role, name: user.name });
+    try {
+      const origin = process.env.PUBLIC_SITE_URL || new URL(req.url).origin;
+      await issueEmailVerification(user.id, user.email, origin);
+    } catch (error) {
+      await prisma.user.delete({ where: { id: user.id } });
+      console.error("verification email error:", error);
+      return NextResponse.json({ error: "Não foi possível enviar o e-mail de confirmação. Tente novamente." }, { status: 502 });
+    }
 
-    const res = NextResponse.json({
-      message: "Cadastro realizado com sucesso",
-      user: { id: user.id, name: user.name, email: user.email, birthDate: user.birthDate, role: user.role },
+    return NextResponse.json({
+      message: "Cadastro realizado. Enviamos um link de confirmação para o seu e-mail.",
     });
-
-    res.cookies.set("token", token, {
-      httpOnly: true,
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-    });
-
-    return res;
   } catch (err) {
     console.error("register error:", err);
     return NextResponse.json({ error: "Erro interno" }, { status: 500 });

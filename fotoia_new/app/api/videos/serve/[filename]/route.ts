@@ -1,7 +1,8 @@
 import { createReadStream, statSync } from "fs";
 import path from "path";
 import { Readable } from "stream";
-import { getApiUser } from "@/lib/session";
+import { getApiUser, hasFullAccess } from "@/lib/session";
+import { prisma } from "@/lib/prisma";
 
 const VIDEO_DIR = path.join(process.cwd(), "public", "uploads", "videos");
 
@@ -32,6 +33,11 @@ export async function GET(
   }
 
   try {
+    const video = await prisma.video.findFirst({
+      where: { OR: [{ url: `/uploads/videos/${safe}` }, { thumbnail: `/uploads/videos/${safe}` }] },
+      select: { module: { select: { isFree: true } } },
+    });
+    if (video?.module && !video.module.isFree && !hasFullAccess(user)) return new Response("Versão completa necessária", { status: 403 });
     const filePath = path.join(VIDEO_DIR, safe);
     const stat = statSync(filePath);
     if (!stat.isFile()) throw new Error("Not a file");

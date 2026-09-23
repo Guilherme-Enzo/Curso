@@ -12,7 +12,7 @@ export async function DELETE(_req: Request, ctx: { params: Promise<{ id: string 
 
   const teacher = await prisma.user.findUnique({ where: { id } });
   if (!teacher || teacher.role !== "teacher") {
-    return NextResponse.json({ error: "Professor não encontrado" }, { status: 404 });
+    return NextResponse.json({ error: "Colaborador não encontrado" }, { status: 404 });
   }
 
   await prisma.user.delete({ where: { id } });

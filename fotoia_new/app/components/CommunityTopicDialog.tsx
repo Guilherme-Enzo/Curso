@@ -252,7 +252,7 @@ export default function CommunityTopicDialog({ topic, userId, onClose }: Props) 
                   >
                     <div className="flex items-center justify-between gap-2">
                       <p className="text-xs font-bold text-amber-400">
-                        {mine ? "Você" : m.authorName}
+                         {m.authorName}
                       </p>
                       <div className="relative flex items-center gap-1">
                         <p className="text-[11px] text-zinc-500">

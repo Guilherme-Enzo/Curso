@@ -10,6 +10,7 @@ const OG_URL = `${SITE_URL}/logofotoia.jpg`;
 
 export const metadata: Metadata = {
   title: "Retrato ImaginAdo — Prompts de Fotografia e Edição com IA",
+  applicationName: "Retrato ImaginAdo",
   description: "Domine a arte de criar imagens incríveis usando Inteligência Artificial. Aprenda prompts para Midjourney, DALL-E, Stable Diffusion e mais.",
   alternates: { canonical: SITE_URL },
   openGraph: {
@@ -34,10 +35,17 @@ export const metadata: Metadata = {
     apple: "/icofotoia-icon.png",
     shortcut: "/icofotoia-icon.png",
   },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "Retrato ImaginAdo",
+    statusBarStyle: "black-translucent",
+  },
 };
 
 export const viewport: Viewport = {
   themeColor: "#241344",
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

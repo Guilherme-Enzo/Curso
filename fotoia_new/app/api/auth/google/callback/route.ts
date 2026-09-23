@@ -69,17 +69,18 @@ export async function GET(request: NextRequest) {
           passwordHash: null,
           authProvider: "google",
           role: "student",
+          emailVerifiedAt: new Date(),
         },
       });
     } else if (user.authProvider !== "google") {
       user = await prisma.user.update({
         where: { id: user.id },
-        data: { authProvider: "google" },
+        data: { authProvider: "google", emailVerifiedAt: user.emailVerifiedAt ?? new Date() },
       });
     }
 
     const token = signToken({ userId: user.id, role: user.role, name: user.name, loginMethod: "google" });
-    const destination = !user.birthDate ? "/completar-cadastro" : user.role === "admin" ? "/admin" : user.role === "teacher" ? "/professor" : "/aluno";
+    const destination = user.role === "admin" ? "/admin" : !user.birthDate || !user.gender ? "/completar-cadastro" : user.role === "teacher" ? "/professor" : "/aluno";
     const publicOrigin = new URL(process.env.GOOGLE_REDIRECT_URI ?? request.url).origin;
     const response = NextResponse.redirect(new URL(destination, publicOrigin));
     response.cookies.set("token", token, {

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getApiUser } from "@/lib/session";
+import { displayName } from "@/lib/displayName";
 
 async function findMessage(topicId: string, messageId: string) {
   return prisma.topicMessage.findFirst({
@@ -52,7 +53,7 @@ export async function PATCH(
       id: updated.id,
       content: updated.content,
       authorId: updated.authorId,
-      authorName: updated.author.name,
+       authorName: displayName(updated.author.name, updated.author.role),
       authorRole: updated.author.role,
       createdAt: updated.createdAt,
       updatedAt: updated.updatedAt,

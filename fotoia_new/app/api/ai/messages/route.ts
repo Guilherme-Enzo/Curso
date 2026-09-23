@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getApiUser } from "@/lib/session";
+import { getApiUser, hasFullAccess } from "@/lib/session";
 
 export async function GET(req: Request) {
   const user = await getApiUser();
   if (!user) {
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
+  }
+  if (!hasFullAccess(user)) {
+    return NextResponse.json({ error: "Só na versão completa. Atualize seu plano." }, { status: 403 });
   }
 
   const { searchParams } = new URL(req.url);

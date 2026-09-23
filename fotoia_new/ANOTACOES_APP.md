@@ -44,7 +44,7 @@
 ### Tabelas
 | Tabela | Campos principais |
 |---|---|
-| User | id (uuid), name, email (único), passwordHash, role (student/teacher/admin), createdAt |
+| User | id (uuid), name, email (único), passwordHash, emailVerifiedAt?, role (student/teacher/admin), createdAt |
 | Module | id (uuid), order (Int, 1–10), name, description?, content? (JSON submodules), pdfUrl?, quiz? (1:1, onDelete: Cascade), aiMessages[], quizAttempts[], studyTimes[], createdAt |
 | Question | id, userId→User, questionText, answerText?, status (open/answered), createdAt |
 | Quiz | id, moduleId→Module (único, onDelete: Cascade), title, source ("seed" do livro / "ia" do Gemini), questions[], createdAt |
@@ -134,10 +134,11 @@
 | `/professor` | GET | Painel do professor (protegido, só teacher) |
 | `/admin` | GET | Painel do admin (protegido, só admin): dashboard + curso + professores |
 | `/perfil` | GET | Perfil (protegido): alterar nome e senha — botão "Perfil" no header de aluno/professor/admin, antes de "Sair" |
-| `/comunidade` | GET | **Comunidade (protegida, qualquer papel logado)**: fórum com memória permanente — lista tópicos (título, descrição, nome do criador, data); botão "＋ Criar novo tópico" abre formulário (título + descrição, ambos obrigatórios); clicar num tópico abre a **caixa de diálogo de conversa**; link "Comunidade" no header de aluno/professor/admin |
+| `/aluno`, `/professor`, `/admin` | GET | A aba **Comunidade** dos painéis exibe o fórum com memória permanente — lista tópicos, criação de tópicos e caixa de diálogo de conversa |
 | `/arquivos/materiais/[file]` | GET | Serve PDF (lê do public/uploads/materiais) |
-| `/api/auth/register` | POST | Cadastro público — **sempre cria aluno** (professores só via admin) |
-| `/api/auth/login` | POST | Login (bcrypt + JWT cookie 7d) |
+| `/api/auth/register` | POST | Cadastro público — **sempre cria aluno** (professores só via admin); envia confirmação por e-mail e não cria sessão antes da confirmação |
+| `/api/auth/verify-email` | GET | Confirma o e-mail por token e encaminha para o login |
+| `/api/auth/login` | POST | Login (bcrypt + JWT cookie 7d); bloqueia novos cadastros públicos sem confirmação |
 | `/api/auth/logout` | POST | Logout (limpa cookie) |
 | `/api/auth/session` | GET | Retorna sessão atual via cookie |
 | `/api/auth/me` | GET/PATCH | Dados do usuário / atualizar **nome** e/ou **senha** (senha nova exige a atual; troca de senha = bcrypt recomputado, login não é revogado) |
@@ -169,7 +170,8 @@
 - JWT: jsonwebtoken, cookie httpOnly 7 dias
 - JWT_SECRET no `.env`
 - Cookie `token`: httpOnly, sameSite lax, **secure dinâmico** (true se HTTPS, false se HTTP)
-- Middleware protege `/dashboard`, `/aluno`, `/professor`, `/admin`, `/perfil`, `/comunidade` → redirect `/login?next=...`
+- Cadastro público por senha exige confirmação de e-mail; contas existentes, Google e contas criadas pelo admin são consideradas verificadas
+- Middleware protege `/dashboard`, `/aluno`, `/professor`, `/admin`, `/perfil` → redirect `/login?next=...`
 - Painéis também checam role no cliente (admin↔professor↔aluno)
 - **Roles:** `student` (cadastro público), `teacher` (criado pelo admin), `admin` (seed)
 - **Middleware roda com `runtime: "nodejs"`** (edge não lia JWT_SECRET → 307 loop)
@@ -255,7 +257,7 @@
 - Segredos: `/srv/secrets/fotoia.env`, fora do Git e nunca documentados
 - Na Contabo o app usa a raiz do subdomínio, sem `basePath`; links antigos `/fotoia` são redirecionados pelo Caddy
 - **Upload de PDF:** salvo em `public/uploads/materiais/` (fora do build — serve por `/arquivos/materiais/[file]` em runtime, nada de cache do `next start`); **limite de 100MB por arquivo** (`lib/upload.ts` → `savePdf` valida `file.size > 100 * 1024 * 1024`; extensão só `.pdf`). Antes era 20MB
-- **💬 Comunidade (`/comunidade`, link no header de aluno/professor/admin):** fórum com memória permanente (banco). **Lista de tópicos** mostra título, descrição e nome do criador (e data); botão "＋ Criar novo tópico" abre formulário (título + descrição, obrigatórios) — qualquer logado cria. **Caixa de diálogo** (modal estilo AiChatModal) por tópico: comentários com nome do autor e hora, input para comentar; **cada usuário pode editar e excluir os próprios comentários** (botões aparecem só nos dele; API valida `authorId === user.id`, senão 403). **Excluir tópico = só teacher/admin** (aluno nem vê o botão; API 403). Feedback no padrão do painel: painel âmbar "Criando tópico, aguarde..."/"Enviando comentário, aguarde..."/"Salvando comentário, aguarde..."/"Excluindo…" com spinner, botão "Salvando...", e depois verde "Tópico criado com sucesso!"/"Comentário editado com sucesso!"/"Comentário excluído." — a lista/diálogo é atualizado na hora (fetch) sem recarregar a página; no tópico com comentário editado, aparece "(editado)". **3 pontinhos (⋮)** no canto da data do comentário (só nos próprios), dropdown com Editar/Excluir; fecha ao clicar fora. **Badge de não-lidas** server-side: tabela `TopicRead` registra `readAt` por (usuário, tópico); badge âmbar mostra mensagens com `createdAt > readAt`; sem registro = todas como não-lidas; ao abrir tópico, `upsert` marca como lido. **Sair vermelho** no diálogo (border-red-700 text-red-400). Permissões testadas em produção: 17/17. Deploy exige `npx prisma db push` (tabelas Topic + TopicMessage + TopicRead) + `npx prisma generate` + restart
+- **💬 Comunidade (aba nos painéis de aluno/professor/admin):** fórum com memória permanente (banco). **Lista de tópicos** mostra título, descrição e nome do criador (e data); botão "＋ Criar novo tópico" abre formulário (título + descrição, obrigatórios) — qualquer logado cria. **Caixa de diálogo** por tópico: comentários com nome do autor e hora, input para comentar; cada usuário pode editar e excluir os próprios comentários. **Excluir tópico = só teacher/admin**. A lista/diálogo é atualizado na hora (fetch) sem recarregar a página. **Badge de não-lidas** server-side: tabela `TopicRead` registra `readAt` por (usuário, tópico); badge âmbar mostra mensagens com `createdAt > readAt`; ao abrir tópico, `upsert` marca como lido. Deploy exige `npx prisma db push` (tabelas Topic + TopicMessage + TopicRead) + `npx prisma generate` + restart
 - **Dependências IA:** `npm install @google/genai` + `npm install pdf-parse@1.1.1` + `npm install --save-dev @types/pdf-parse`; `GEMINI_API_KEY` já configurada no `.env` da VPS (modelo opcional `GEMINI_MODEL`, default `gemini-3.6-flash` — `gemini-2.0-flash` retorna 404 "no longer available"); **reserva OpenRouter:** `OPENROUTER_API_KEY` (setada na VPS) + `OPENROUTER_MODELS` opcional (lista de modelos, vírgula) — sem nenhuma chave o app continua funcionando, só sem IA
 
 ---

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getApiUser } from "@/lib/session";
+import { getApiUser, hasFullAccess } from "@/lib/session";
 import { getModuleContent, askForSuggestions, geminiErrorMessage } from "@/lib/aiChat";
 import { checkRateLimit } from "@/lib/rateLimit";
 
@@ -11,6 +11,9 @@ export async function GET(req: Request) {
   const user = await getApiUser();
   if (!user) {
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
+  }
+  if (!hasFullAccess(user)) {
+    return NextResponse.json({ error: "Só na versão completa. Atualize seu plano." }, { status: 403 });
   }
   const rate = checkRateLimit(`ai-suggestions:${user.id}`, 10, 10 * 60 * 1000);
   if (!rate.allowed) {

@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { withBasePath } from "@/lib/publicPath";
 import SocialIcons from "@/app/components/SocialIcons";
+import PasswordInput from "@/app/components/PasswordInput";
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({ name: "", email: "", birthDate: "", password: "" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", confirmPassword: "" });
 
   useEffect(() => {
     function checkSession() {
@@ -14,7 +15,10 @@ export default function RegisterPage() {
         .then((r) => r.json())
         .then((data) => {
           if (data.user) {
-            if (!data.user.birthDate) window.location.href = withBasePath("/completar-cadastro");
+            if (data.user.role !== "admin" && (!data.user.birthDate || !data.user.gender)) {
+              window.location.href = withBasePath("/completar-cadastro");
+              return;
+            }
             const role = data.user.role;
             if (role === "admin") window.location.href = withBasePath("/admin");
             else if (role === "teacher") window.location.href = withBasePath("/professor");
@@ -28,11 +32,17 @@ export default function RegisterPage() {
     return () => window.removeEventListener("pageshow", checkSession);
   }, []);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setSuccess("");
+    if (form.password !== form.confirmPassword) {
+      setError("As senhas não coincidem.");
+      return;
+    }
     setLoading(true);
 
     try {
@@ -47,27 +57,26 @@ export default function RegisterPage() {
         setLoading(false);
         return;
       }
-      const role = data.user.role;
-      if (!data.user.birthDate) {
-        window.location.href = withBasePath("/completar-cadastro");
-        return;
-      }
-      else if (role === "admin") window.location.href = withBasePath("/admin");
-      else if (role === "teacher") window.location.href = withBasePath("/professor");
-      else window.location.href = withBasePath("/aluno");
+      setForm({ name: "", email: "", password: "", confirmPassword: "" });
+      setSuccess(data.message || "Enviamos um link de confirmação para o seu e-mail.");
+      setLoading(false);
     } catch {
       setError("Erro de conexão com o servidor");
       setLoading(false);
     }
   }
 
+  const hasPasswordComparison = form.confirmPassword.length > 0;
+  const passwordsDoNotMatch = hasPasswordComparison && form.password !== form.confirmPassword;
+  const passwordsMatch = hasPasswordComparison && !passwordsDoNotMatch;
+
   return (
     <main className="flex min-h-screen flex-col bg-[#0a0a0f]">
       <div className="flex flex-1 items-center justify-center p-4">
-      <div className="w-full max-w-md rounded-2xl border border-violet-500/20 bg-white/[0.03] backdrop-blur-sm p-8 shadow-2xl">
+       <div className="w-full max-w-md rounded-xl border border-violet-500/20 bg-white/[0.03] p-6 shadow-2xl backdrop-blur-sm sm:p-8">
         <Link href="/" className="flex items-center justify-center gap-2">
            <img src="/icofotoia-icon.png" alt="" className="h-7 w-7 rounded-xl shadow-lg shadow-violet-500/30" />
-          <span className="text-lg font-bold tracking-tight text-white">
+           <span className="text-lg font-semibold tracking-tight text-white">
             Retrato <span className="text-white"><span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">I</span>magin<span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">A</span>do</span>
           </span>
         </Link>
@@ -79,59 +88,77 @@ export default function RegisterPage() {
           </div>
         )}
 
+        {success ? (
+          <div className="mt-6 rounded-xl border border-emerald-400/30 bg-emerald-400/[0.08] p-5 text-center">
+            <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-emerald-400/15 text-2xl text-emerald-300">✓</div>
+             <h2 className="mt-4 text-lg font-medium text-emerald-300">Confirme seu e-mail</h2>
+            <p className="mt-2 text-sm leading-relaxed text-emerald-200">{success}</p>
+            <p className="mt-2 text-sm leading-relaxed text-emerald-200/80">Abra a mensagem recebida e clique no link para liberar seu primeiro acesso.</p>
+            <Link href="/login" className="mt-5 inline-flex rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 px-5 py-2 font-semibold text-zinc-950 transition hover:opacity-90">
+              Ir para o login
+            </Link>
+          </div>
+        ) : (
+          <>
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
-            <label className="text-sm text-zinc-300">Nome</label>
+              <label className="text-sm text-zinc-300">Nome completo *</label>
             <input
               type="text"
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="mt-1 w-full rounded-lg border border-violet-400/25 bg-violet-500/[0.08] px-3 py-2 text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
+               className="mt-1 w-full rounded-lg border border-zinc-700 bg-white/[0.03] px-3 py-2.5 text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
               placeholder="Seu nome"
             />
           </div>
 
           <div>
-            <label className="text-sm text-zinc-300">E-mail</label>
+             <label className="text-sm text-zinc-300">E-mail *</label>
             <input
               type="email"
               required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="mt-1 w-full rounded-lg border border-violet-400/25 bg-violet-500/[0.08] px-3 py-2 text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
+               className="mt-1 w-full rounded-lg border border-zinc-700 bg-white/[0.03] px-3 py-2.5 text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
               placeholder="voce@email.com"
             />
           </div>
 
           <div>
-            <label className="text-sm text-zinc-300">Data de nascimento</label>
-            <input
-              type="date"
-              required
-              value={form.birthDate}
-              onChange={(e) => setForm({ ...form, birthDate: e.target.value })}
-              className="mt-1 w-full rounded-lg border border-violet-400/25 bg-violet-500/[0.08] px-3 py-2 text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
-            />
-          </div>
-
-          <div>
-            <label className="text-sm text-zinc-300">Senha</label>
-            <input
-              type="password"
+             <label className="text-sm text-zinc-300">Senha *</label>
+             <PasswordInput
               required
               minLength={6}
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="mt-1 w-full rounded-lg border border-violet-400/25 bg-violet-500/[0.08] px-3 py-2 text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
+               className="mt-1 w-full rounded-lg border border-zinc-700 bg-white/[0.03] px-3 py-2.5 text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
               placeholder="Mínimo 6 caracteres"
             />
+          </div>
+
+          <div>
+             <label className="text-sm text-zinc-300">Repetir senha *</label>
+             <PasswordInput
+              required
+              minLength={6}
+              value={form.confirmPassword}
+              onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+               className={`mt-1 w-full rounded-lg border bg-white/[0.03] px-3 py-2.5 text-white outline-none focus:ring-2 focus:ring-violet-400/20 ${passwordsDoNotMatch ? "border-red-400/70 focus:border-red-400" : passwordsMatch ? "border-emerald-400/70 focus:border-emerald-400" : "border-zinc-700 focus:border-violet-400"}`}
+              placeholder="Digite a senha novamente"
+            />
+            {passwordsDoNotMatch && (
+              <p className="mt-1 text-sm text-red-400">As senhas não coincidem.</p>
+            )}
+            {passwordsMatch && (
+              <p className="mt-1 text-sm text-emerald-400">As senhas coincidem.</p>
+            )}
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 py-2 font-semibold text-zinc-950 transition hover:opacity-90 disabled:opacity-50"
+             className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 py-2.5 font-medium text-zinc-950 transition hover:opacity-90 disabled:opacity-50"
           >
             {loading ? "Criando..." : "Criar conta"}
           </button>
@@ -144,7 +171,7 @@ export default function RegisterPage() {
         </div>
         <a
           href={withBasePath("/api/auth/google")}
-          className="flex w-full items-center justify-center gap-3 rounded-lg border border-zinc-700 bg-white px-4 py-2 font-semibold text-zinc-800 transition hover:bg-zinc-100"
+           className="flex w-full items-center justify-center gap-3 rounded-lg border border-zinc-700 bg-white px-4 py-2.5 font-medium text-zinc-800 transition hover:bg-zinc-100"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
             <path fill="#4285F4" d="M21.35 12.27c0-.68-.06-1.34-.18-1.97H12v3.73h5.23a4.47 4.47 0 0 1-1.94 2.93v2.44h3.14c1.84-1.7 2.92-4.2 2.92-7.13Z" />
@@ -154,6 +181,8 @@ export default function RegisterPage() {
           </svg>
           Continuar com Google
         </a>
+          </>
+        )}
 
         <p className="mt-4 text-center text-sm text-zinc-400">
           Já tem conta?{" "}
@@ -172,13 +201,10 @@ export default function RegisterPage() {
               <span className="text-xs font-bold text-white">
                 Retrato <span className="text-white"><span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">I</span>magin<span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">A</span>do</span>
                </span>
-            </div>
-            <p className="whitespace-nowrap text-[11px] text-zinc-500 sm:text-sm">Plataforma educacional de prompts de fotografia e edição com IA.</p>
-            <SocialIcons />
-            <div className="w-full border-t border-violet-400/20 pt-4">
-              <p className="whitespace-nowrap text-[11px] text-zinc-500 sm:text-sm">© {new Date().getFullYear()} Retrato ImaginAdo. Prompts de Fotografia e Edição com IA</p>
-            </div>
-          </div>
+             </div>
+             <p className="whitespace-nowrap text-[11px] text-zinc-500 sm:text-sm">Plataforma educacional de prompts de fotografia e edição com IA.</p>
+             <SocialIcons />
+           </div>
         </div>
       </footer>
     </main>

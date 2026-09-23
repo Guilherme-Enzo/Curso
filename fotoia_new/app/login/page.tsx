@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { withBasePath } from "@/lib/publicPath";
 import SocialIcons from "@/app/components/SocialIcons";
+import PasswordInput from "@/app/components/PasswordInput";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -14,7 +15,7 @@ export default function LoginPage() {
         .then((r) => r.json())
         .then((data) => {
             if (data.user) {
-              if (!data.user.birthDate) {
+             if (data.user.role !== "admin" && (!data.user.birthDate || !data.user.gender)) {
                 window.location.href = withBasePath("/completar-cadastro");
                 return;
               }
@@ -31,18 +32,26 @@ export default function LoginPage() {
     return () => window.removeEventListener("pageshow", checkSession);
   }, []);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const errorCode = new URLSearchParams(window.location.search).get("error");
+    const params = new URLSearchParams(window.location.search);
+    const errorCode = params.get("error");
+    if (params.get("verified") === "1") {
+      setNotice("E-mail confirmado com sucesso. Agora você já pode entrar.");
+    }
     if (errorCode?.startsWith("google_")) {
       setError("Não foi possível entrar com o Google. Tente novamente.");
+    } else if (errorCode === "verification_invalid") {
+      setError("O link de confirmação é inválido ou já expirou.");
     }
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setNotice("");
     setLoading(true);
 
     try {
@@ -57,7 +66,7 @@ export default function LoginPage() {
         setLoading(false);
         return;
       }
-      if (!data.user.birthDate) {
+       if (data.user.role !== "admin" && (!data.user.birthDate || !data.user.gender)) {
         window.location.href = withBasePath("/completar-cadastro");
         return;
       }
@@ -74,10 +83,10 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-screen flex-col bg-[#0a0a0f]">
       <div className="flex flex-1 items-center justify-center p-4">
-      <div className="w-full max-w-md rounded-2xl border border-violet-500/20 bg-white/[0.03] backdrop-blur-sm p-8 shadow-2xl">
+       <div className="w-full max-w-md rounded-xl border border-violet-500/20 bg-white/[0.03] p-6 shadow-2xl backdrop-blur-sm sm:p-8">
         <Link href="/" className="flex items-center justify-center gap-2">
            <img src="/icofotoia-icon.png" alt="" className="h-7 w-7 rounded-xl shadow-lg shadow-violet-500/30" />
-          <span className="text-lg font-bold tracking-tight text-white">
+           <span className="text-lg font-semibold tracking-tight text-white">
             Retrato <span className="text-white"><span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">I</span>magin<span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">A</span>do</span>
           </span>
         </Link>
@@ -89,27 +98,32 @@ export default function LoginPage() {
           </div>
         )}
 
+        {notice && (
+          <div className="mt-4 rounded-lg border border-emerald-400/30 bg-emerald-400/[0.08] p-3 text-sm text-emerald-300">
+            {notice}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
-            <label className="text-sm text-zinc-300">E-mail</label>
+             <label className="text-sm text-zinc-300">E-mail *</label>
             <input
               type="email"
               required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="mt-1 w-full rounded-lg border border-violet-400/25 bg-violet-500/[0.08] px-3 py-2 text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
+               className="mt-1 w-full rounded-lg border border-zinc-700 bg-white/[0.03] px-3 py-2.5 text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
               placeholder="voce@email.com"
             />
           </div>
 
           <div>
-            <label className="text-sm text-zinc-300">Senha</label>
-            <input
-              type="password"
+             <label className="text-sm text-zinc-300">Senha *</label>
+             <PasswordInput
               required
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="mt-1 w-full rounded-lg border border-violet-400/25 bg-violet-500/[0.08] px-3 py-2 text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
+               className="mt-1 w-full rounded-lg border border-zinc-700 bg-white/[0.03] px-3 py-2.5 text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
               placeholder="Sua senha"
             />
           </div>
@@ -117,7 +131,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 py-2 font-semibold text-zinc-950 transition hover:opacity-90 disabled:opacity-50"
+             className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 py-2.5 font-medium text-zinc-950 transition hover:opacity-90 disabled:opacity-50"
           >
             {loading ? "Entrando..." : "Entrar"}
           </button>
@@ -135,7 +149,7 @@ export default function LoginPage() {
         </div>
         <a
           href={withBasePath("/api/auth/google")}
-          className="flex w-full items-center justify-center gap-3 rounded-lg border border-zinc-700 bg-white px-4 py-2 font-semibold text-zinc-800 transition hover:bg-zinc-100"
+           className="flex w-full items-center justify-center gap-3 rounded-lg border border-zinc-700 bg-white px-4 py-2.5 font-medium text-zinc-800 transition hover:bg-zinc-100"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
             <path fill="#4285F4" d="M21.35 12.27c0-.68-.06-1.34-.18-1.97H12v3.73h5.23a4.47 4.47 0 0 1-1.94 2.93v2.44h3.14c1.84-1.7 2.92-4.2 2.92-7.13Z" />
@@ -163,13 +177,10 @@ export default function LoginPage() {
               <span className="text-xs font-bold text-white">
                 Retrato <span className="text-white"><span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">I</span>magin<span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">A</span>do</span>
                </span>
-            </div>
-            <p className="whitespace-nowrap text-[11px] text-zinc-500 sm:text-sm">Plataforma educacional de prompts de fotografia e edição com IA.</p>
-            <SocialIcons />
-            <div className="w-full border-t border-violet-400/20 pt-4">
-              <p className="whitespace-nowrap text-[11px] text-zinc-500 sm:text-sm">© {new Date().getFullYear()} Retrato ImaginAdo. Prompts de Fotografia e Edição com IA</p>
-            </div>
-          </div>
+             </div>
+             <p className="whitespace-nowrap text-[11px] text-zinc-500 sm:text-sm">Plataforma educacional de prompts de fotografia e edição com IA.</p>
+             <SocialIcons />
+           </div>
         </div>
       </footer>
     </main>

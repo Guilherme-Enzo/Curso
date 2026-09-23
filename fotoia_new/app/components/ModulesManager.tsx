@@ -1,11 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { CourseModule } from "./types";
 import ConfirmModal from "./ConfirmModal";
 import ErrorModal from "./ErrorModal";
 import ModuleEditModal from "./ModuleEditModal";
 import { withBasePath } from "@/lib/publicPath";
+import { rememberModuleReturn } from "@/lib/moduleNavigation";
+import FilePickerField from "./FilePickerField";
 
 type Form = {
   name: string;
@@ -13,13 +16,24 @@ type Form = {
   file: File | null;
   video: File | null;
   videoTitle: string;
+  isFree: boolean;
 };
 
-const emptyForm: Form = { name: "", description: "", file: null, video: null, videoTitle: "" };
+type Props = {
+  viewer?: "admin" | "professor";
+};
 
-export default function ModulesManager() {
-  const [modules, setModules] = useState<CourseModule[] | null>(null);
-  const modulesRef = useRef<CourseModule[] | null>(null);
+type ManagedModule = CourseModule & {
+  icon: string;
+  summary: string;
+  submodules: { title: string; content: string; images: string[] }[];
+};
+
+const emptyForm: Form = { name: "", description: "", file: null, video: null, videoTitle: "", isFree: false };
+
+export default function ModulesManager({ viewer = "admin" }: Props) {
+  const [modules, setModules] = useState<ManagedModule[] | null>(null);
+  const modulesRef = useRef<ManagedModule[] | null>(null);
   const [status, setStatus] = useState<{
     type: "ok" | "err";
     msg: string;
@@ -40,7 +54,7 @@ export default function ModulesManager() {
 
   const load = useCallback(async () => {
     try {
-      const res = await fetch(withBasePath(`/api/modules?t=${Date.now()}`));
+      const res = await fetch(withBasePath(`/api/modules/public?t=${Date.now()}`));
       if (!res.ok) return;
       const data = await res.json();
       setModules(data.modules);
@@ -116,6 +130,7 @@ export default function ModulesManager() {
       const fd = new FormData();
       fd.append("name", form.name.trim());
       fd.append("description", form.description.trim());
+      fd.append("isFree", String(form.isFree));
       if (form.file) fd.append("file", form.file);
 
       const res = await fetch(url, {
@@ -206,27 +221,28 @@ export default function ModulesManager() {
   function startEdit(m: CourseModule) {
     setCreating(false);
     setEditingId(null);
-    setForm({ name: m.name, description: m.description ?? "", file: null, video: null, videoTitle: "" });
+    setForm({ name: m.name, description: m.description ?? "", file: null, video: null, videoTitle: "", isFree: m.isFree });
     setEditModule(m);
   }
 
+  const numStr = (n: number) => String(n).padStart(2, "0");
+
   return (
     <section className="mt-6 space-y-8">
-      <div className="space-y-3">
+      <div className="flex flex-col items-start gap-3 sm:flex-row">
         <button
           onClick={startCreate}
-          className="w-full rounded-2xl border-2 border-dashed border-amber-600/40 bg-zinc-900 p-6 text-lg font-bold text-amber-400 transition hover:border-amber-500/70 hover:bg-amber-500/10"
+          className="w-full rounded-lg border border-violet-400/30 bg-white/[0.025] px-4 py-3 text-sm font-medium text-violet-200 transition hover:border-violet-300/60 hover:bg-violet-500/[0.08] sm:w-auto"
         >
-          ＋ Adicionar novo módulo
+          ＋ Adicionar módulo
         </button>
-        {modules && modules.length > 1 && (
-          <button
-            onClick={() => setReordering(true)}
-            className="w-full rounded-2xl border-2 border-dashed border-zinc-600 bg-zinc-900 px-6 py-4 text-lg font-bold text-zinc-400 transition hover:border-zinc-500 hover:text-zinc-300"
-          >
-            ↕ Reorganizar módulos
-          </button>
-        )}
+        <button
+          onClick={() => setReordering(true)}
+          disabled={!modules || modules.length < 2}
+          className="w-full rounded-lg border border-violet-400/30 bg-white/[0.025] px-4 py-3 text-sm font-medium text-zinc-200 transition hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+        >
+          ↕ Organizar módulos
+        </button>
       </div>
 
       {reordering && modules && (
@@ -285,7 +301,7 @@ export default function ModulesManager() {
               <button
                 onClick={saveOrder}
                 disabled={savingOrder}
-                className="flex-1 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 py-3 text-base font-bold text-white transition hover:-translate-y-0.5 disabled:opacity-50"
+                className="flex-1 rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 py-2.5 text-sm font-semibold text-zinc-950 transition hover:-translate-y-0.5 disabled:opacity-50"
               >
                 {savingOrder ? "Salvando..." : "Salvar ordem"}
               </button>
@@ -359,15 +375,15 @@ export default function ModulesManager() {
             <form onSubmit={handleSubmit} className="mt-5 space-y-4">
               <div>
                 <label className="block text-base font-semibold text-zinc-200">
-                  Nome do módulo
+                   Nome do módulo *
                 </label>
                 <input
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   required
                   disabled={sending}
-                  placeholder="Ex.: Sensores"
-                  className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-amber-500 disabled:opacity-50"
+                  placeholder="Digite o nome do módulo"
+                  className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-violet-400 disabled:opacity-50"
                 />
               </div>
 
@@ -383,8 +399,24 @@ export default function ModulesManager() {
                   rows={6}
                   disabled={sending}
                   placeholder="Liste o conteúdo do módulo (ex.: um tópico por linha)"
-                  className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-amber-500 disabled:opacity-50"
+                  className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-violet-400 disabled:opacity-50"
                 />
+              </div>
+
+              <div>
+                <label className="flex items-center gap-3 rounded-xl border border-zinc-700 bg-zinc-950 p-4 text-base font-semibold text-zinc-200">
+                  <input
+                    type="checkbox"
+                    checked={form.isFree}
+                    onChange={(e) => setForm({ ...form, isFree: e.target.checked })}
+                    disabled={sending}
+                    className="h-5 w-5 accent-emerald-500"
+                  />
+                  Módulo gratuito
+                </label>
+                <p className="mt-1 text-sm text-zinc-500">
+                  Desmarque para liberar somente na versão completa.
+                </p>
               </div>
 
               <div>
@@ -393,15 +425,7 @@ export default function ModulesManager() {
                     ? "Trocar PDF (opcional — deixa vazio pra manter)"
                     : "PDF (opcional)"}
                 </label>
-                <input
-                  type="file"
-                  accept="application/pdf"
-                  disabled={sending}
-                  onChange={(e) =>
-                    setForm({ ...form, file: e.target.files?.[0] ?? null })
-                  }
-                  className="mt-2 block w-full cursor-pointer rounded-xl border border-dashed border-zinc-600 bg-zinc-950 px-4 py-4 text-base text-zinc-300 file:mr-4 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-amber-500 file:to-orange-600 file:px-4 file:py-2 file:text-base file:font-bold file:text-zinc-950 hover:border-amber-500/50 disabled:opacity-50"
-                />
+                <div className="mt-2"><FilePickerField accept="application/pdf" file={form.file} onChange={(file) => setForm({ ...form, file })} disabled={sending} hint="PDF, até 100 MB." actionLabel={editingId ? "Substituir PDF" : "Escolher PDF"} /></div>
               </div>
               <div>
                 <label className="block text-base font-semibold text-zinc-200">
@@ -410,20 +434,7 @@ export default function ModulesManager() {
                 <p className="mt-1 text-sm text-zinc-500">
                   Video introdutorio ou complementar para o modulo.
                 </p>
-                <input
-                  type="file"
-                  accept="video/*"
-                  disabled={sending}
-                  onChange={(e) =>
-                    setForm({ ...form, video: e.target.files?.[0] ?? null })
-                  }
-                  className="mt-2 block w-full cursor-pointer rounded-xl border border-dashed border-zinc-600 bg-zinc-950 px-4 py-4 text-base text-zinc-300 file:mr-4 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-violet-500 file:to-cyan-500 file:px-4 file:py-2 file:text-base file:font-bold file:text-zinc-950 hover:border-violet-500/50 disabled:opacity-50"
-                />
-                {form.video && (
-                  <p className="mt-2 text-sm text-violet-300">
-                    {form.video.name} ({(form.video.size / 1024 / 1024).toFixed(1)} MB)
-                  </p>
-                )}
+                <div className="mt-2"><FilePickerField accept="video/mp4,video/webm,video/ogg,video/quicktime" file={form.video} onChange={(video) => setForm({ ...form, video })} disabled={sending} hint="MP4, WebM, OGG ou MOV, até 500 MB." actionLabel="Escolher vídeo" /></div>
                 {form.video && (
                   <input
                     type="text"
@@ -456,7 +467,7 @@ export default function ModulesManager() {
                 <button
                   type="submit"
                   disabled={sending}
-                  className="rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 px-6 py-3 text-base font-bold text-zinc-950 transition hover:-translate-y-0.5 disabled:opacity-50"
+                   className="rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 px-4 py-2.5 text-sm font-semibold text-zinc-950 transition hover:-translate-y-0.5 disabled:opacity-50"
                 >
                   {sending
                     ? "Salvando..."
@@ -496,52 +507,66 @@ export default function ModulesManager() {
             Nenhum módulo cadastrado ainda.
           </p>
         ) : (
-          <div className="mt-3 space-y-3">
+           <div className="mt-3 grid gap-3 md:grid-cols-2">
             {modules.map((m) => (
               <article
                 key={m.id}
-                className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5"
+                 className="rounded-xl border border-zinc-800/80 bg-white/[0.02] p-5"
               >
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-amber-500/20 to-orange-600/20 text-sm font-black text-amber-400">
-                        {m.order}
-                      </span>
-                      <h3 className="text-xl font-bold text-white">{m.name}</h3>
+                    <div>
+                        <p className="text-xs font-medium uppercase tracking-[0.2em] text-violet-300">
+                          Módulo {numStr(m.order)}
+                        </p>
+                        <h2 className="mt-2 text-xl font-semibold text-white">{m.name}</h2>
                     </div>
                     {m.description ? (
-                      <pre className="mt-2 whitespace-pre-line text-base leading-relaxed text-zinc-400">
+                      <p className="mt-2 text-base leading-relaxed text-zinc-400">
                         {m.description}
-                      </pre>
+                      </p>
                     ) : m.synopsis ? (
-                      <pre className="mt-2 whitespace-pre-line text-base leading-relaxed text-zinc-400">
+                      <p className="mt-2 text-base leading-relaxed text-zinc-400">
                         {m.synopsis}
-                      </pre>
+                      </p>
+                    ) : m.summary ? (
+                      <p className="mt-2 text-base leading-relaxed text-zinc-400">
+                        {m.summary}
+                      </p>
                     ) : null}
+                    <p className="mt-1 text-sm text-zinc-500">
+                      {m.submodules.length} submódulos
+                    </p>
                   </div>
-                  <div className="flex shrink-0 flex-row flex-wrap gap-2">
-                    <button
-                      onClick={() => startEdit(m)}
-                      className="rounded-lg border border-amber-600/50 px-4 py-2 text-base font-semibold text-amber-400 transition hover:bg-amber-500/10"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => setConfirmDelete(m)}
-                      disabled={deleting === m.id}
-                      className="rounded-lg border border-red-800/60 px-4 py-2 text-base font-semibold text-red-400 transition hover:bg-red-500/10 disabled:opacity-80"
-                    >
-                      {deleting === m.id ? (
-                        <span className="inline-flex items-center gap-2">
-                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-red-400 border-t-transparent" />
-                          Excluindo...
-                        </span>
-                      ) : (
-                        "Excluir"
-                      )}
-                    </button>
-                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap justify-start gap-2 pb-1">
+                  <Link
+                    href={withBasePath(`/conteudo/${m.order}?from=${viewer}`)}
+                    onClick={() => rememberModuleReturn(viewer === "admin" ? "/admin" : "/professor")}
+                    className="shrink-0 rounded-lg border border-violet-400/30 px-3 py-2 text-sm font-medium text-violet-200 transition hover:border-violet-300/60 hover:bg-violet-500/10"
+                  >
+                    Visualizar
+                  </Link>
+                  <button
+                    onClick={() => startEdit(m)}
+                    className="shrink-0 text-xs font-semibold text-cyan-300 transition hover:text-cyan-200"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => setConfirmDelete(m)}
+                    disabled={deleting === m.id}
+                    className="shrink-0 text-xs font-semibold text-red-400 transition hover:text-red-300 disabled:opacity-80"
+                  >
+                    {deleting === m.id ? (
+                      <span className="inline-flex items-center gap-2">
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-red-400 border-t-transparent" />
+                        Excluindo...
+                      </span>
+                    ) : (
+                      "Excluir"
+                    )}
+                  </button>
                 </div>
               </article>
             ))}

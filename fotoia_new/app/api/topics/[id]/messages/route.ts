@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getApiUser } from "@/lib/session";
+import { displayName } from "@/lib/displayName";
 
 export async function POST(
   req: Request,
@@ -40,7 +41,7 @@ export async function POST(
         id: message.id,
         content: message.content,
         authorId: message.authorId,
-        authorName: message.author.name,
+         authorName: displayName(message.author.name, message.author.role),
         authorRole: message.author.role,
         createdAt: message.createdAt,
         updatedAt: message.updatedAt,

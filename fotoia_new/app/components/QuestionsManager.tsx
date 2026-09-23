@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { Question } from "./types";
 import ErrorModal from "./ErrorModal";
 import { withBasePath } from "@/lib/publicPath";
+import Icon from "@/app/components/Icon";
+import { displayName } from "@/lib/displayName";
 
 type StudentGroup = {
   student: { id: string; name: string };
@@ -23,13 +25,13 @@ function groupByStudent(questions: Question[]): StudentGroup[] {
     else g.pending.push(q);
   }
   return Array.from(map.values()).sort((a, b) => {
-    if (a.pending.length > 0 && b.pending.length === 0) return -1;
-    if (a.pending.length === 0 && b.pending.length > 0) return 1;
-    return b.pending.length - a.pending.length || a.student.name.localeCompare(b.student.name);
+    const latestA = [...a.pending, ...a.answered].reduce((latest, question) => Math.max(latest, Date.parse(question.createdAt)), 0);
+    const latestB = [...b.pending, ...b.answered].reduce((latest, question) => Math.max(latest, Date.parse(question.createdAt)), 0);
+    return latestB - latestA || a.student.name.localeCompare(b.student.name);
   });
 }
 
-export default function QuestionsManager() {
+export default function QuestionsManager({ onOpenCountChange }: { onOpenCountChange?: (count: number) => void } = {}) {
   const [questions, setQuestions] = useState<Question[] | null>(null);
   const [error, setError] = useState("");
   const [modalError, setModalError] = useState<string | null>(null);
@@ -50,6 +52,7 @@ export default function QuestionsManager() {
       }
       const data = await res.json();
       setQuestions(data.questions);
+      onOpenCountChange?.(data.questions.filter((question: Question) => question.status === "open").length);
       // Update selectedStudent if open
       setSelectedStudent((prev) => {
         if (!prev) return null;
@@ -59,7 +62,7 @@ export default function QuestionsManager() {
     } catch {
       setModalError("Falha de conexão");
     }
-  }, []);
+  }, [onOpenCountChange]);
 
   useEffect(() => {
     load();
@@ -118,7 +121,7 @@ export default function QuestionsManager() {
             }}
             className="flex items-center gap-2 rounded-xl border border-zinc-700 px-5 py-3 text-lg font-semibold text-zinc-300 transition hover:border-zinc-500 hover:text-white"
           >
-            ← Voltar para lista de alunos
+            ← Voltar para lista de usuários
           </button>
 
           <div className="flex items-center gap-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
@@ -141,25 +144,25 @@ export default function QuestionsManager() {
           </div>
 
           {selectedStudent.pending.length > 0 && (
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-white">Dúvidas pendentes</h3>
+            <div className="grid gap-4 md:grid-cols-2">
+                <h3 className="text-base font-medium text-white md:col-span-2">Dúvidas pendentes</h3>
               {selectedStudent.pending.map((q) => (
-                <article key={q.id} className="rounded-2xl border border-red-600/40 bg-red-950/20 p-6 shadow-lg">
+                 <article key={q.id} className="rounded-xl border border-red-600/30 bg-red-950/15 p-4">
                   <div className="flex items-start justify-between gap-4">
-                    <p className="text-lg font-bold text-white">{q.questionText}</p>
+                     <p className="text-base font-medium text-white">{q.questionText}</p>
                     <button
                       onClick={() => {
                         setAnsweringQuestion(q);
                         setAnswerText("");
                         setError("");
                       }}
-                      className="shrink-0 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 px-5 py-2.5 text-sm font-bold text-zinc-950 transition hover:-translate-y-0.5 shadow-lg shadow-orange-600/20"
+                       className="shrink-0 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 px-4 py-2 text-sm font-medium text-zinc-950 transition hover:-translate-y-0.5"
                     >
                       Responder
                     </button>
                   </div>
-                  <p className="mt-2 text-xs text-zinc-500">
-                    Enviado em {new Date(q.createdAt).toLocaleDateString("pt-BR")} às {new Date(q.createdAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+                   <p className="mt-2 text-xs text-zinc-500">
+                     Publicada em {new Date(q.createdAt).toLocaleDateString("pt-BR")} às {new Date(q.createdAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
                   </p>
                 </article>
               ))}
@@ -167,15 +170,19 @@ export default function QuestionsManager() {
           )}
 
           {selectedStudent.answered.length > 0 && (
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-white">Dúvidas respondidas</h3>
+            <div className="grid gap-4 md:grid-cols-2">
+                <h3 className="text-base font-medium text-white md:col-span-2">Dúvidas respondidas</h3>
               {selectedStudent.answered.map((q) => (
-                <article key={q.id} className="rounded-2xl border border-emerald-800/40 bg-zinc-900 p-6">
-                  <p className="text-base font-bold text-white">{q.questionText}</p>
+                 <article key={q.id} className="rounded-xl border border-emerald-800/40 bg-white/[0.02] p-4">
+                   <p className="text-base font-medium text-white">{q.questionText}</p>
+                   <p className="mt-2 text-xs text-zinc-500">
+                     Publicada em {new Date(q.createdAt).toLocaleDateString("pt-BR")} às {new Date(q.createdAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+                     {q.answeredAt && <> · Respondida em {new Date(q.answeredAt).toLocaleDateString("pt-BR")} às {new Date(q.answeredAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</>}
+                   </p>
                   <div className="mt-3 rounded-xl border border-emerald-800/40 bg-emerald-950/20 p-4 text-base leading-relaxed text-zinc-200">
-                    <p className="mb-1 text-xs font-bold uppercase tracking-wider text-emerald-400">
-                      Resposta do professor
-                    </p>
+                     <p className="mb-1 text-xs font-bold uppercase tracking-wider text-emerald-400">
+                        {q.answeredBy ? displayName(q.answeredBy.name, q.answeredBy.role) : ""}
+                     </p>
                     {q.answerText}
                   </div>
                 </article>
@@ -185,8 +192,8 @@ export default function QuestionsManager() {
         </div>
       ) : (
         <div className="space-y-4">
-          <h2 className="text-2xl font-bold text-white">
-            Alunos com dúvidas{" "}
+           <h2 className="text-lg font-medium text-white">
+            Usuários com dúvidas{" "}
             <span className="ml-2 rounded-full bg-amber-500/20 px-4 py-1.5 text-lg font-black text-amber-300 ring-1 ring-amber-500/30">
               {groups.length}
             </span>
@@ -194,21 +201,21 @@ export default function QuestionsManager() {
 
           {groups.length === 0 ? (
             <p className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 text-lg text-zinc-400">
-              Nenhuma dúvida registrada. 🎉
+               Nenhuma dúvida registrada.
             </p>
           ) : (
-            <div className="space-y-3">
+             <div className="grid gap-3 md:grid-cols-2">
               {groups.map((g) => (
                 <button
                   key={g.student.id}
                   onClick={() => setSelectedStudent(g)}
-                  className="flex w-full items-center gap-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-5 text-left transition hover:border-amber-600/60 hover:bg-amber-500/5 shadow-md"
+             className="card-interactive flex w-full items-center gap-4 rounded-xl border border-zinc-800/80 bg-white/[0.02] p-4 text-left transition hover:border-amber-500/45 hover:bg-amber-500/[0.04]"
                 >
-                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-amber-600/40 bg-amber-500/10 text-lg font-black text-amber-400">
+                   <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-amber-600/40 bg-amber-500/10 text-base font-semibold text-amber-400">
                     {g.student.name.charAt(0).toUpperCase()}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-lg font-bold text-white truncate">{g.student.name}</p>
+                     <p className="truncate text-base font-medium text-white">{g.student.name}</p>
                     <div className="mt-1 flex flex-wrap items-center gap-2">
                       {g.pending.length > 0 && (
                         <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/20 px-3 py-1 text-xs font-bold text-red-300 ring-1 ring-red-500/40">
@@ -224,7 +231,7 @@ export default function QuestionsManager() {
                       )}
                     </div>
                   </div>
-                  <span className="shrink-0 text-xl font-bold text-zinc-500">→</span>
+                   <Icon name="arrow-right" size={16} className="shrink-0 text-zinc-500" />
                 </button>
               ))}
             </div>
@@ -243,11 +250,11 @@ export default function QuestionsManager() {
           }}
         >
           <div
-            className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-zinc-700 bg-zinc-900 p-6 shadow-2xl"
+             className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-zinc-700 bg-zinc-900 p-5 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-white">
+               <h2 className="text-lg font-medium text-white">
                 {modalSuccess ? "Sucesso" : "Responder dúvida"}
               </h2>
               {!modalSuccess && !sending && (
@@ -273,13 +280,13 @@ export default function QuestionsManager() {
             ) : (
               <form onSubmit={handleAnswerSubmit} className="mt-5 space-y-4">
                 <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-                  <p className="text-xs font-bold uppercase tracking-wider text-amber-400">Pergunta do aluno</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-amber-400">Pergunta do usuário</p>
                   <p className="mt-1 text-base font-semibold text-white">{answeringQuestion.questionText}</p>
                 </div>
 
                 <div>
                   <label className="block text-base font-semibold text-zinc-200">
-                    Sua resposta
+                     Sua resposta *
                   </label>
                   <textarea
                     value={answerText}
@@ -288,7 +295,7 @@ export default function QuestionsManager() {
                     required
                     minLength={5}
                     disabled={sending}
-                    placeholder="Escreva a resposta detalhada para o aluno..."
+                    placeholder="Escreva a resposta detalhada para o usuário..."
                     className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-amber-500 disabled:opacity-50"
                   />
                 </div>
@@ -303,7 +310,7 @@ export default function QuestionsManager() {
                         Enviando resposta, aguarde...
                       </p>
                       <p className="mt-0.5 text-xs text-amber-200/70">
-                        A resposta será salva e o aluno será notificado.
+                        A resposta será salva e o usuário será notificado.
                       </p>
                     </div>
                   </div>

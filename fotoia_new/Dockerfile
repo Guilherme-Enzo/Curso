@@ -2,7 +2,7 @@ FROM node:22-bookworm-slim AS dependencies
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates openssl \
+    && apt-get install -y --no-install-recommends ca-certificates openssl poppler-utils \
     && rm -rf /var/lib/apt/lists/*
 COPY package.json package-lock.json ./
 RUN npm ci
@@ -10,9 +10,11 @@ RUN npm ci
 FROM dependencies AS builder
 WORKDIR /app
 ARG NEXT_PUBLIC_BASE_PATH=
+ARG NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY=
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL=postgresql://build:build@localhost:5432/build
 ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
+ENV NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY=$NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY
 COPY . .
 RUN npx prisma generate && npm run build
 
@@ -23,13 +25,15 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates openssl \
+    && apt-get install -y --no-install-recommends ca-certificates openssl poppler-utils \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system --gid 1001 nodejs \
     && useradd --system --uid 1001 --gid nodejs nextjs
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=dependencies --chown=nextjs:nodejs /app/node_modules/pdf-parse ./node_modules/pdf-parse
+COPY --from=dependencies --chown=nextjs:nodejs /app/node_modules/node-ensure ./node_modules/node-ensure
 USER nextjs
 EXPOSE 3000
 CMD ["node", "server.js"]

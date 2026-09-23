@@ -1,11 +1,14 @@
 import Link from "next/link";
 import Reveal from "@/app/components/reveal";
 import { getPublicModules, type PublicModule } from "@/lib/publicModules";
+import { getApiUser } from "@/lib/session";
+import Icon, { type IconName } from "@/app/components/Icon";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const modules = await getPublicModules();
+  const user = await getApiUser();
+  const modules = await getPublicModules({ includeLocked: true, user });
   const lessonCount = modules.reduce((total, module) => total + module.submodules.length, 0);
 
   return (
@@ -41,7 +44,7 @@ function Navbar() {
           <img
              src="/icofotoia-icon.png"
             alt="Retrato ImaginAdo"
-             className="h-6 w-6 rounded-lg shadow-lg shadow-violet-500/30 sm:h-8 sm:w-8 sm:rounded-xl"
+             className="h-6 w-6 rounded-lg sm:h-8 sm:w-8 sm:rounded-xl"
           />
           <span className="text-base font-bold tracking-tight text-white sm:text-lg">
             Retrato <span className="text-white"><span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">I</span>magin<span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">A</span>do</span>
@@ -69,7 +72,7 @@ function Navbar() {
           </Link>
           <Link
             href="/register"
-            className="rounded-lg bg-gradient-to-r from-violet-500 to-cyan-600 px-3 py-1.5 text-xs font-semibold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5 hover:shadow-violet-500/50 sm:px-5 sm:py-2 sm:text-sm"
+            className="rounded-lg bg-gradient-to-r from-violet-500 to-cyan-600 px-3 py-1.5 text-xs font-medium text-white transition hover:brightness-110 sm:px-5 sm:py-2 sm:text-sm"
           >
             Cadastre-se
           </Link>
@@ -103,14 +106,16 @@ function Hero({ moduleCount, lessonCount }: { moduleCount: number; lessonCount: 
       <div className="relative mx-auto max-w-6xl px-4 pb-28 pt-20 sm:px-6 sm:pt-28">
         <div className="mx-auto max-w-3xl text-center">
           <Reveal>
+            <div className="mt-4">
             <span className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-violet-300">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-violet-400" />
               Fotografia + Inteligencia Artificial
             </span>
+            </div>
           </Reveal>
 
           <Reveal delay={100}>
-            <h1 className="mt-6 text-balance text-4xl font-black leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-[64px]">
+            <h1 className="mt-6 text-balance text-4xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[56px]">
               Crie Imagens{" "}
               <span className="bg-gradient-to-r from-violet-200 via-cyan-300 to-violet-300 bg-clip-text text-transparent">
                 Incriveis com Prompts
@@ -129,10 +134,11 @@ function Hero({ moduleCount, lessonCount }: { moduleCount: number; lessonCount: 
           </Reveal>
 
           <Reveal delay={300}>
+            <p className="mb-3 text-sm font-medium text-cyan-300">Prompts e módulos atualizados regularmente.</p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 href="/register"
-                className="group w-full rounded-xl bg-gradient-to-r from-violet-500 to-cyan-600 px-8 py-4 text-base font-bold text-white shadow-xl shadow-violet-500/30 transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-violet-500/50 sm:w-auto"
+                className="group w-full rounded-lg bg-gradient-to-r from-violet-500 to-cyan-600 px-8 py-3.5 text-base font-medium text-white shadow-lg shadow-violet-500/20 transition hover:brightness-110 sm:w-auto"
               >
                 Comecar agora — e gratis
                 <span className="ml-2 inline-block transition-transform group-hover:translate-x-1">
@@ -141,7 +147,7 @@ function Hero({ moduleCount, lessonCount }: { moduleCount: number; lessonCount: 
               </Link>
               <Link
                 href="/login"
-                className="w-full rounded-xl border border-violet-400/30 bg-violet-500/[0.08] px-8 py-4 text-base font-semibold text-zinc-200 backdrop-blur transition hover:border-white/25 hover:bg-violet-500/[0.12] sm:w-auto"
+                className="w-full rounded-lg border border-violet-400/25 bg-violet-500/[0.05] px-8 py-3.5 text-base font-medium text-zinc-200 transition hover:border-violet-300/50 hover:bg-violet-500/[0.1] sm:w-auto"
               >
                 Ja tenho conta
               </Link>
@@ -149,14 +155,14 @@ function Hero({ moduleCount, lessonCount }: { moduleCount: number; lessonCount: 
           </Reveal>
 
           <Reveal delay={400}>
-            <div className="mt-10 grid grid-cols-3 gap-3 rounded-2xl border border-violet-400/30 bg-white/[0.05] backdrop-blur-md p-4 sm:mx-auto sm:max-w-xl">
+            <div className="mt-10 grid grid-cols-3 gap-3 rounded-xl border border-violet-400/20 bg-white/[0.03] p-4 sm:mx-auto sm:max-w-xl">
               {[
                 { v: String(moduleCount), l: "Modulos completos" },
                 { v: String(lessonCount), l: "Aulas praticas" },
                 { v: "200+", l: "Prompts prontos" },
               ].map((s) => (
                 <div key={s.l} className="text-center">
-                  <p className="text-2xl font-black text-violet-400 sm:text-3xl">
+                  <p className="text-xl font-semibold text-violet-300 sm:text-2xl">
                     {s.v}
                   </p>
                   <p className="mt-1 text-[11px] text-zinc-500 sm:text-xs">
@@ -166,9 +172,10 @@ function Hero({ moduleCount, lessonCount }: { moduleCount: number; lessonCount: 
               ))}
             </div>
           </Reveal>
-        </div>
-      </div>
-    </section>
+         </div>
+
+       </div>
+     </section>
   );
 }
 
@@ -224,10 +231,10 @@ function HowItWorks() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <div className="text-center">
-            <span className="text-xs font-bold uppercase tracking-widest text-violet-400">
+            <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-violet-400">
               Como funciona
             </span>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
               Simples, Pratico e{" "}
               <span className="bg-gradient-to-r from-violet-300 to-cyan-300 bg-clip-text text-transparent">
                 Direto ao Ponto
@@ -239,11 +246,11 @@ function HowItWorks() {
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (
             <Reveal key={s.n} delay={i * 100}>
-              <div className="relative rounded-2xl border border-violet-400/40 bg-violet-500/[0.08] backdrop-blur-sm p-6">
-                <span className="grid h-10 w-10 place-items-center rounded-lg bg-violet-500/10 font-black text-violet-400">
+                <div className="relative border-t border-violet-400/25 pt-5">
+                <span className="font-mono text-xs text-violet-300">
                   {s.n}
                 </span>
-                <h3 className="mt-4 text-lg font-bold text-white">{s.title}</h3>
+                <h3 className="mt-3 text-base font-medium text-white">{s.title}</h3>
                 <p className="mt-2 text-sm text-zinc-400">{s.desc}</p>
               </div>
             </Reveal>
@@ -260,10 +267,10 @@ function Modules({ modules }: { modules: PublicModule[] }) {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <div className="text-center">
-            <span className="text-xs font-bold uppercase tracking-widest text-violet-400">
+            <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-violet-400">
               Programa completo
             </span>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
               {modules.length} Modulos Para Voce{" "}
               <span className="bg-gradient-to-r from-violet-300 to-cyan-300 bg-clip-text text-transparent">
                 Dominar a IA
@@ -280,28 +287,22 @@ function Modules({ modules }: { modules: PublicModule[] }) {
             <Reveal key={mod.id} delay={i * 50}>
               <Link
                 href={`/conteudo/${mod.order}`}
-                className="group block rounded-2xl border border-violet-400/40 bg-violet-500/[0.08] backdrop-blur-sm p-6 transition-all hover:border-violet-400/80 hover:glow-violet hover:bg-violet-500/[0.12] rounded-2xl"
-              >
-                <div className="mb-4 flex items-center justify-between">
-                  <span className="grid h-12 w-12 place-items-center rounded-xl bg-violet-500/10 text-2xl">
-                    {mod.icon.startsWith("/") ? (
-                      <img src={mod.icon} alt="" className="h-8 w-8 rounded-lg" />
-                    ) : (
-                      mod.icon
-                    )}
-                  </span>
+                 className="card-interactive group block rounded-xl border border-violet-400/20 bg-white/[0.025] p-5 transition-all hover:border-violet-400/45 hover:bg-violet-500/[0.06]"
+               >
+                <div className="mb-5 flex items-center justify-between">
+                  <span className="font-mono text-xs tracking-wider text-violet-300">MÓDULO {String(mod.order).padStart(2, "0")}</span>
                   <span className="font-mono text-sm text-zinc-600">
                     {String(mod.order).padStart(2, "0")}/{modules.length}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-white transition-colors group-hover:text-violet-300">
+                <h3 className="text-lg font-medium text-white transition-colors group-hover:text-violet-300">
                   {mod.name}
                 </h3>
                 <p className="mt-2 line-clamp-2 text-sm text-zinc-500">
                   {mod.summary || mod.description || "Conteúdo prático de fotografia e edição com IA."}
                 </p>
                 <div className="mt-4 flex items-center gap-2 text-xs text-zinc-600">
-                  <span className="h-1 w-1 rounded-full bg-violet-400" />
+                   <span className="h-px w-5 bg-violet-400/60" />
                   {mod.submodules.length} aulas
                 </div>
               </Link>
@@ -315,32 +316,32 @@ function Modules({ modules }: { modules: PublicModule[] }) {
 
 const features = [
   {
-    icon: "🧠",
+    icon: "wand" as IconName,
     title: "Prompts com IA",
     desc: "Aprenda a escrever comandos que geram imagens incriveis com Midjourney, DALL-E e Stable Diffusion.",
   },
   {
-    icon: "/icofotoia-icon.png",
+    icon: "image" as IconName,
     title: "Fotografia Profissional",
     desc: "Composicao, iluminacao, profundidade de campo e outros conceitos que tornam suas criacoes impactantes.",
   },
   {
-    icon: "🎨",
+    icon: "palette" as IconName,
     title: "Estilos e Paletas",
     desc: "Domine a linguagem das cores, temperatura de cor e atmosferas visuais em cada prompt.",
   },
   {
-    icon: "✨",
+    icon: "spark" as IconName,
     title: "Edicao com IA",
     desc: "Remove backgrounds, substitui objetos, expande cenas e aplica estilos com ferramentas inteligentes.",
   },
   {
-    icon: "🎯",
+    icon: "target" as IconName,
     title: "Prompt Engineering",
     desc: "Tecnicas avancadas como weighting, negative prompts e blending para controle total.",
   },
   {
-    icon: "📱",
+    icon: "message" as IconName,
     title: "Redes Sociais",
     desc: "Conteudo otimizado para Instagram, TikTok, YouTube e LinkedIn.",
   },
@@ -352,10 +353,10 @@ function Features() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <div className="text-center">
-            <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+            <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-cyan-400">
               Diferenciais
             </span>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
               Por Que Este Curso e{" "}
               <span className="bg-gradient-to-r from-violet-300 to-cyan-300 bg-clip-text text-transparent">
                 Diferente
@@ -367,13 +368,9 @@ function Features() {
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
             <Reveal key={i} delay={i * 100}>
-              <div className="h-full rounded-2xl border border-violet-400/40 bg-violet-500/[0.08] backdrop-blur-sm p-6">
-                {f.icon.startsWith("/") ? (
-                  <img src={f.icon} alt="" className="h-8 w-8 rounded-lg" />
-                ) : (
-                  <span className="text-3xl">{f.icon}</span>
-                )}
-                <h3 className="mt-4 text-lg font-bold text-white">{f.title}</h3>
+              <div className="h-full rounded-xl border border-violet-400/20 bg-white/[0.025] p-5">
+                <Icon name={f.icon} size={22} className="text-violet-300" />
+                <h3 className="mt-5 text-base font-medium text-white">{f.title}</h3>
                 <p className="mt-2 text-sm text-zinc-400">{f.desc}</p>
               </div>
             </Reveal>
@@ -475,7 +472,7 @@ function Testimonials() {
               Depoimentos
             </span>
             <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">
-              O Que Nossos Alunos{" "}
+              O Que Nossos Usuários{" "}
               <span className="bg-gradient-to-r from-violet-300 to-cyan-300 bg-clip-text text-transparent">
                 Dizem
               </span>
@@ -585,7 +582,7 @@ function CallToAction() {
             </span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-zinc-400">
-            Junte-se a centenas de alunos que ja transformaram sua criatividade com prompts de IA.
+             Junte-se a centenas de usuários que ja transformaram sua criatividade com prompts de IA.
           </p>
           <Link
             href="/register"
@@ -635,9 +632,6 @@ function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex w-full flex-col items-center gap-3 border-t border-violet-400/20 pt-6 text-center text-xs text-zinc-600">
-          <p className="whitespace-nowrap text-[11px] text-zinc-500 sm:text-sm">© {new Date().getFullYear()} Retrato ImaginAdo. Prompts de Fotografia e Edição com IA</p>
-        </div>
       </div>
     </footer>
   );

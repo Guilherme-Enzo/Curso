@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { getApiUser } from "@/lib/session";
+import { getApiUser, hasFullAccess } from "@/lib/session";
 import { checkRateLimit } from "@/lib/rateLimit";
 import {
   getModuleContent,
@@ -21,6 +21,12 @@ export async function POST(req: Request) {
   if (!user) {
     return new Response(sse({ error: "Não autenticado" }), {
       status: 401,
+      headers: { "Content-Type": "text/event-stream", "Cache-Control": "no-cache" },
+    });
+  }
+  if (!hasFullAccess(user)) {
+    return new Response(sse({ error: "Só na versão completa. Atualize seu plano." }), {
+      status: 403,
       headers: { "Content-Type": "text/event-stream", "Cache-Control": "no-cache" },
     });
   }

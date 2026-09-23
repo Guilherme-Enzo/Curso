@@ -2,6 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 
 export function middleware(req: NextRequest) {
+  if (req.nextUrl.pathname.startsWith("/uploads/videos/")) {
+    const filename = req.nextUrl.pathname.split("/").pop();
+    if (filename) {
+      const url = req.nextUrl.clone();
+      url.pathname = `/api/videos/serve/${filename}`;
+      return NextResponse.rewrite(url);
+    }
+  }
+
+  if (req.nextUrl.pathname.startsWith("/uploads/materiais/")) {
+    const filename = req.nextUrl.pathname.split("/").pop();
+    if (filename) {
+      const url = req.nextUrl.clone();
+      url.pathname = `/arquivos/materiais/${filename}`;
+      return NextResponse.rewrite(url);
+    }
+  }
+
   const token = req.cookies.get("token")?.value;
 
   if (!token || !verifyToken(token)) {
@@ -21,9 +39,10 @@ export const config = {
     "/professor/:path*",
     "/admin/:path*",
     "/perfil/:path*",
-    "/comunidade/:path*",
     "/conteudo/:path*",
     "/completar-cadastro/:path*",
+    "/uploads/videos/:path*",
+    "/uploads/materiais/:path*",
   ],
   runtime: "nodejs",
 };

@@ -6,7 +6,7 @@ import { removeVideo } from "@/lib/upload";
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const user = await getApiUser();
   if (!user) return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
-  if (!isStaff(user)) return NextResponse.json({ error: "Apenas professores e admin" }, { status: 403 });
+  if (!isStaff(user)) return NextResponse.json({ error: "Apenas colaboradores e admin" }, { status: 403 });
 
   const { id } = await params;
   const body = await req.json().catch(() => ({}));
@@ -34,7 +34,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const user = await getApiUser();
   if (!user) return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
-  if (!isStaff(user)) return NextResponse.json({ error: "Apenas professores e admin" }, { status: 403 });
+  if (!isStaff(user)) return NextResponse.json({ error: "Apenas colaboradores e admin" }, { status: 403 });
 
   const { id } = await params;
   const video = await prisma.video.findUnique({ where: { id } });

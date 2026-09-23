@@ -7,6 +7,16 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum Plan {
+  FREE
+  FULL
+}
+
+enum PromptType {
+  EDITING
+  CREATION
+}
+
 model User {
   id            String       @id @default(uuid())
   name          String
@@ -14,14 +24,22 @@ model User {
   passwordHash  String?
   authProvider  String       @default("password")
   birthDate     DateTime?    @db.Date
+  gender        String?
   role          String       @default("student") // "student" ou "teacher"
+  plan          Plan         @default(FREE)
+  purchasedAt   DateTime?
+  refundedAt    DateTime?
   questions     Question[]
+  answeredQuestions Question[] @relation("QuestionAnsweredBy")
   aiMessages    AiMessage[]
   videoProgress VideoProgress[]
   topics        Topic[]
   topicMessages TopicMessage[]
   topicReads    TopicRead[]
   passwordResetTokens PasswordResetToken[]
+  emailVerificationTokens EmailVerificationToken[]
+  paymentTransactions PaymentTransaction[]
+  emailVerifiedAt DateTime?
   createdAt     DateTime     @default(now())
 }
 
@@ -33,6 +51,7 @@ model Module {
   synopsis    String?  // resumo gerado pela IA do que será estudado no PDF
   content     String?  // JSON com submódulos: [{title, content, images}]
   pdfUrl      String?
+  isFree      Boolean  @default(true)
   videos      Video[]
   aiMessages  AiMessage[]
   createdAt   DateTime @default(now())
@@ -45,6 +64,9 @@ model Question {
   questionText String
   answerText   String?
   status       String   @default("open") // "open" ou "answered"
+  answeredById String?
+  answeredBy   User?    @relation("QuestionAnsweredBy", fields: [answeredById], references: [id], onDelete: SetNull)
+  answeredAt   DateTime?
   createdAt    DateTime @default(now())
 }
 
@@ -135,4 +157,69 @@ model PasswordResetToken {
   createdAt DateTime @default(now())
 
   @@index([userId, expiresAt])
+}
+
+model EmailVerificationToken {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+model PaymentTransaction {
+  id                String    @id @default(uuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider          String    @default("mercado_pago")
+  externalReference String    @unique
+  orderId           String?   @unique
+  paymentId         String?   @unique
+  amountCents       Int
+  currency          String    @default("BRL")
+  status            String    @default("created")
+  statusDetail      String?
+  purchasedAt       DateTime?
+  refundedAt        DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([userId, status])
+}
+
+model PromptCategory {
+  id        String     @id @default(uuid())
+  name      String
+  type      PromptType
+  order     Int        @default(0)
+  prompts   Prompt[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([type, name])
+  @@index([type, order])
+}
+
+model Prompt {
+  id          String         @id @default(uuid())
+  categoryId  String
+  category    PromptCategory  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name        String
+  imageUrl    String
+  imageSourceUrl String?
+  imageAuthor String?
+  imageLicense String?
+  pdfUrl      String
+  description String
+  promptText  String         @db.Text
+  isFree      Boolean        @default(false)
+  order       Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([categoryId, order])
 }

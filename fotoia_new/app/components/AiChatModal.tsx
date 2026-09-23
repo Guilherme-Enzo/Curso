@@ -465,13 +465,13 @@ export default function AiChatModal({ module, onClose }: ModalProps) {
           ) : messages.length === 0 && !streamingText ? (
             <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
               <p className="text-sm font-semibold text-white">
-                Professor virtual do módulo
+                 Colaborador virtual do módulo
               </p>
               <p className="mt-1 text-sm leading-relaxed text-zinc-400">
                 Estude com a IA e aproveite ao máximo este módulo: faça
                  perguntas, tire suas dúvidas, peça explicações e exemplos
                  visuais sobre qualquer tema relacionado. A cada resposta, ela
-                te convida a continuar estudando — é como ter um professor
+                 te convida a continuar estudando — é como ter um colaborador
                 particular sempre por perto.
               </p>
               <div className="mt-3 flex flex-col gap-2">

@@ -8,9 +8,18 @@ import AiChatModal from "@/app/components/AiChatModal";
 import ErrorModal from "@/app/components/ErrorModal";
 import ComunidadeTab from "@/app/components/ComunidadeTab";
 import { withBasePath } from "@/lib/publicPath";
+import { displayName } from "@/lib/displayName";
 import SocialIcons from "@/app/components/SocialIcons";
+import InstallAppPrompt from "@/app/components/InstallAppPrompt";
+import PurchaseFullAccess from "@/app/components/PurchaseFullAccess";
+import PromptsLibrary from "@/app/components/PromptsLibrary";
+import SelectField from "@/app/components/SelectField";
+import BirthDateField from "@/app/components/BirthDateField";
+import { genderOptions } from "@/lib/gender";
+import Icon, { type IconName } from "@/app/components/Icon";
+import { rememberModuleReturn, restoreModuleScroll, takeModuleReturn } from "@/lib/moduleNavigation";
 
-type Session = { userId: string; role: string; name: string };
+type Session = { userId: string; role: string; name: string; plan: "FREE" | "FULL"; birthDate: string | null; gender: string | null };
 
 type Material = {
   id: string;
@@ -26,32 +35,53 @@ type Question = {
   id: string;
   questionText: string;
   answerText: string | null;
+  answeredAt?: string | null;
   status: "open" | "answered";
   createdAt: string;
+  answeredBy?: { id: string; name: string; role: string } | null;
 };
 
-type Tab = "conteudo" | "duvidas" | "comunidade";
+type Tab = "conteudo" | "duvidas" | "comunidade" | "prompts";
 
 export default function StudentPage() {
   const router = useRouter();
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<Tab>("conteudo");
+  const [unreadQuestions, setUnreadQuestions] = useState(0);
+  const [unreadCommunity, setUnreadCommunity] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showUpgradeNotice, setShowUpgradeNotice] = useState(false);
+  const [showEmailVerifiedNotice, setShowEmailVerifiedNotice] = useState(false);
+  const [showCompleteProfile, setShowCompleteProfile] = useState(false);
+  const [completeBirthDate, setCompleteBirthDate] = useState("");
+  const [completeGender, setCompleteGender] = useState("");
+  const [completeError, setCompleteError] = useState("");
+  const [savingComplete, setSavingComplete] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
+    function handleClickOutside(e: PointerEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setMenuOpen(false);
       }
     }
     if (menuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener('pointerdown', handleClickOutside);
+      return () => document.removeEventListener('pointerdown', handleClickOutside);
     }
   }, [menuOpen]);
+
+  useEffect(() => {
+    if (loading || new URLSearchParams(window.location.search).get("complete") !== "1") return;
+    setShowEmailVerifiedNotice(true);
+    const timer = window.setTimeout(() => {
+      setShowEmailVerifiedNotice(false);
+      setShowCompleteProfile(true);
+    }, 2500);
+    return () => window.clearTimeout(timer);
+  }, [loading]);
 
   useEffect(() => {
     async function load() {
@@ -66,7 +96,9 @@ export default function StudentPage() {
           window.location.href = withBasePath("/professor");
           return;
         }
-        setSession(data.user);
+        setSession({ ...data.user, userId: data.user.id });
+        setCompleteBirthDate(data.user.birthDate ? data.user.birthDate.slice(0, 10) : "");
+        setCompleteGender(data.user.gender || "");
       } catch {
         window.location.href = withBasePath("/login");
       } finally {
@@ -76,9 +108,70 @@ export default function StudentPage() {
     load();
   }, [router]);
 
+  useEffect(() => {
+    const scrollY = takeModuleReturn("/aluno");
+    if (scrollY !== null) restoreModuleScroll(scrollY);
+  }, []);
+
+  useEffect(() => {
+    if (!session) return;
+    const plan = session.plan;
+    let active = true;
+    async function loadNotificationCounts() {
+      const questionsRes = await fetch(withBasePath("/api/questions"));
+      if (!active) return;
+      if (questionsRes.ok) {
+        const data = await questionsRes.json();
+        if (tab !== "duvidas") setUnreadQuestions(data.questions.filter((question: { status: string }) => question.status === "answered").length);
+      }
+      if (plan !== "FULL") {
+        setUnreadCommunity(0);
+        return;
+      }
+      const topicsRes = await fetch(withBasePath("/api/topics"));
+      if (!active) return;
+      if (topicsRes.ok) {
+        const data = await topicsRes.json();
+        setUnreadCommunity(data.topics.reduce((total: number, topic: { unreadCount: number }) => total + topic.unreadCount, 0));
+      }
+    }
+    void loadNotificationCounts();
+    const timer = window.setInterval(loadNotificationCounts, 30000);
+    return () => { active = false; window.clearInterval(timer); };
+  }, [session, tab]);
+
   async function handleLogout() {
     await fetch(withBasePath("/api/auth/logout"), { method: "POST" });
     window.location.href = withBasePath("/login");
+  }
+
+  async function handleCompleteProfile(event: React.FormEvent) {
+    event.preventDefault();
+    setCompleteError("");
+    if (!completeBirthDate || !completeGender) {
+      setCompleteError("Preencha a data de nascimento e o gênero para continuar.");
+      return;
+    }
+    setSavingComplete(true);
+    try {
+      const response = await fetch(withBasePath("/api/auth/birth-date"), {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ birthDate: completeBirthDate, gender: completeGender }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setCompleteError(data.error || "Não foi possível salvar seu cadastro.");
+        return;
+      }
+      setSession((current) => current ? { ...current, birthDate: data.user.birthDate, gender: data.user.gender } : current);
+      setShowCompleteProfile(false);
+      window.history.replaceState({}, "", withBasePath("/aluno"));
+    } catch {
+      setCompleteError("Erro de conexão com o servidor.");
+    } finally {
+      setSavingComplete(false);
+    }
   }
 
   if (loading) {
@@ -89,14 +182,16 @@ export default function StudentPage() {
     );
   }
 
-  const tabs: { key: Tab; label: string; icon: string; href?: string }[] = [
-    { key: "conteudo", label: "Conteúdo", icon: "📚" },
-    { key: "duvidas", label: "Canal de Dúvidas", icon: "💬" },
-    { key: "comunidade", label: "Comunidade", icon: "👥" },
+  const tabs: { key: Tab; label: string; icon: IconName; href?: string }[] = [
+    { key: "conteudo", label: "Conteúdo", icon: "book" },
+    { key: "prompts", label: "Prompts", icon: "spark" },
+    { key: "duvidas", label: "Canal de Dúvidas", icon: "message" },
+    { key: "comunidade", label: "Comunidade", icon: "users" },
   ];
 
   return (
     <main className="min-h-screen bg-[#050508] text-white">
+      <InstallAppPrompt />
                   <header className="relative z-50 border-b border-violet-400/30 bg-violet-500/[0.06] backdrop-blur">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-2">
@@ -119,8 +214,11 @@ export default function StudentPage() {
               className="hidden sm:flex rounded-lg border border-red-500/40 px-4 py-2 text-base text-red-400 transition hover:border-red-600 hover:bg-red-500/10 hover:text-red-300"
             >
               Sair
-            </button>
-            <div className="relative sm:hidden">
+           </button>
+            <span className={`rounded-full border px-2.5 py-1 text-[11px] font-bold tracking-wide ${session?.plan === "FULL" ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-300" : "border-red-400/40 bg-red-400/10 text-red-300"}`}>
+              Plano {session?.plan === "FULL" ? "FULL" : "FREE"}
+            </span>
+            <div ref={menuRef} className="relative sm:hidden">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="rounded-lg border border-violet-400/40 px-3 py-2 text-lg text-zinc-300 transition hover:bg-violet-500/[0.12]"
@@ -145,32 +243,105 @@ export default function StudentPage() {
           {tabs.map((t) => (
             <button
               key={t.key}
-              onClick={() => t.href ? window.location.href = t.href : setTab(t.key)}
-              className={`flex min-w-max items-center gap-2 rounded-xl px-4 py-3 text-base font-semibold transition ${
+              onClick={() => {
+                if (t.key === "comunidade" && session?.plan !== "FULL") {
+                  setShowUpgradeNotice(true);
+                  return;
+                }
+                if (t.key === "duvidas") setUnreadQuestions(0);
+                t.href ? window.location.href = t.href : setTab(t.key);
+              }}
+              className={`flex min-w-max items-center gap-2 rounded-lg px-3.5 py-2.5 text-sm font-medium transition ${
                 tab === t.key && !t.href
                   ? "bg-gradient-to-r from-violet-500 to-cyan-500 text-zinc-950"
                   : "bg-white/5 text-zinc-300 hover:bg-white/10"
               }`}
             >
-              <span>{t.icon}</span>
+              <Icon name={t.icon} size={16} />
               {t.label}
+              {t.key === "duvidas" && unreadQuestions > 0 && <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-violet-500 px-1.5 py-0.5 text-[11px] font-bold leading-none text-white">{unreadQuestions}</span>}
+              {t.key === "comunidade" && unreadCommunity > 0 && <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-violet-500 px-1.5 py-0.5 text-[11px] font-bold leading-none text-white">{unreadCommunity}</span>}
             </button>
           ))}
         </div>
       </div>
 
       <div className="mx-auto max-w-5xl px-3 py-8 sm:px-6">
-        <h1 className="text-3xl font-bold sm:text-4xl">
+        <h1 className="text-2xl font-semibold sm:text-3xl">
           Olá, {session?.name?.split(" ")[0]}
         </h1>
         <p className="mt-1 text-base text-zinc-400">
-          Escolha uma seção para continuar seus estudos.
+          {tab === "conteudo"
+            ? "Acesse os módulos, materiais e aulas para avançar nos seus estudos."
+              : tab === "duvidas"
+                ? "Tire suas dúvidas sobre os conteúdos, a plataforma, pagamentos e questões técnicas."
+              : tab === "prompts"
+                ? "Encontre prompts organizados para edição e criação de imagens."
+                : "Troque experiências, compartilhe conhecimentos e converse com outros usuários."}
         </p>
+
+        <div className="mt-6">
+          <PurchaseFullAccess plan={session!.plan} />
+        </div>
 
         {tab === "conteudo" && <ConteudoTab />}
         {tab === "duvidas" && <DuvidasTab userId={session!.userId} />}
-        {tab === "comunidade" && <ComunidadeTab session={session!} />}
+         {tab === "comunidade" && <ComunidadeTab session={session!} onUnreadCountChange={setUnreadCommunity} />}
+        {tab === "prompts" && <PromptsLibrary />}
       </div>
+
+      {showUpgradeNotice && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+          onClick={() => setShowUpgradeNotice(false)}
+        >
+          <div
+            className="w-full max-w-sm rounded-2xl border border-violet-400/30 bg-zinc-900 p-6 text-center shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <p className="text-xs font-bold uppercase tracking-wider text-violet-300">Recurso exclusivo</p>
+            <p className="mt-2 text-lg font-bold text-white">Atualize seu plano para liberar.</p>
+            <button
+              type="button"
+              onClick={() => setShowUpgradeNotice(false)}
+              className="mt-5 rounded-xl border border-violet-400/30 px-5 py-2 text-sm font-semibold text-zinc-200 transition hover:bg-white/5"
+            >
+              Entendi
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showEmailVerifiedNotice && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl border border-emerald-400/30 bg-zinc-900 p-6 text-center shadow-2xl">
+            <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-emerald-400/15 text-2xl text-emerald-300">✓</div>
+            <h2 className="mt-4 text-xl font-bold text-emerald-300">E-mail confirmado!</h2>
+            <p className="mt-2 text-base text-zinc-300">Sua conta foi ativada com sucesso.</p>
+          </div>
+        </div>
+      )}
+
+      {showCompleteProfile && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+          <form onSubmit={handleCompleteProfile} className="w-full max-w-lg rounded-2xl border border-violet-400/30 bg-zinc-900 p-6 shadow-2xl">
+            <h2 className="text-xl font-bold text-white">Complete seu cadastro</h2>
+            <p className="mt-2 text-sm leading-relaxed text-zinc-400">Confirmação concluída. Agora informe estes dados para acessar todos os recursos do painel.</p>
+            {completeError && <p className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-400">{completeError}</p>}
+            <label className="mt-5 block text-sm font-semibold text-zinc-200">
+               Data de nascimento *
+              <div className="mt-2"><BirthDateField value={completeBirthDate} onChange={setCompleteBirthDate} /></div>
+            </label>
+            <label className="mt-4 block text-sm font-semibold text-zinc-200">
+               Gênero *
+              <div className="mt-2"><SelectField value={completeGender} options={genderOptions} onChange={setCompleteGender} /></div>
+            </label>
+            <button type="submit" disabled={savingComplete} className="mt-6 w-full rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 py-3 font-semibold text-zinc-950 disabled:opacity-50">
+              {savingComplete ? "Salvando..." : "Concluir cadastro"}
+            </button>
+          </form>
+        </div>
+      )}
 
       <footer className="border-t border-violet-400/20 bg-[#0a0a0f]">
          <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6">
@@ -181,12 +352,9 @@ export default function StudentPage() {
                 Retrato <span className="text-white"><span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">I</span>magin<span className="bg-gradient-to-r from-violet-500 via-blue-500 to-cyan-400 bg-clip-text text-transparent">A</span>do</span>
               </span>
             </div>
-              <p className="whitespace-nowrap text-[11px] text-zinc-500 sm:text-sm">Plataforma educacional de prompts de fotografia e edição com IA.</p>
+             <p className="whitespace-nowrap text-[11px] text-zinc-500 sm:text-sm">Plataforma educacional de prompts de fotografia e edição com IA.</p>
              <SocialIcons />
-             <div className="w-full border-t border-violet-400/20 pt-4">
-                <p className="whitespace-nowrap text-[11px] text-zinc-500 sm:text-sm">© {new Date().getFullYear()} Retrato ImaginAdo. Prompts de Fotografia e Edição com IA</p>
-             </div>
-          </div>
+           </div>
         </div>
       </footer>
     </main>
@@ -234,37 +402,21 @@ function ConteudoTab() {
 
   return (
     <section className="mt-6 space-y-4">
-      <p className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5 text-base leading-relaxed text-zinc-300">
-        Conteúdo baseado no livro{" "}
-        <span className="font-semibold text-white">
-           "Fotografia e Edição com IA"
-        </span>
-        . Clique em <span className="font-semibold text-white">Visualizar</span> para
-        estudar o conteúdo completo de cada módulo.
-      </p>
-
-      <div className="grid gap-4">
+       <div className="grid gap-4 md:grid-cols-2">
         {modules.map((mod: any) => (
-          <article
+          <Link
             key={mod.order}
-            className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6"
+            href={withBasePath(`/conteudo/${mod.order}`)}
+            onClick={() => rememberModuleReturn("/aluno")}
+            className="card-interactive block rounded-xl border border-zinc-800/80 bg-zinc-900/80 p-5"
           >
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
-                <div className="flex items-center gap-3">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-violet-500/20 to-cyan-500/20 text-xl">
-                    {mod.icon?.startsWith("/") ? (
-                      <img src={mod.icon} alt="" className="h-8 w-8 rounded-lg" />
-                    ) : (
-                      mod.icon
-                    )}
-                  </span>
-                  <div>
-                    <p className="text-sm font-bold uppercase tracking-wider text-violet-300">
+                <div>
+                    <p className="text-xs font-medium uppercase tracking-[0.2em] text-violet-300">
                       Módulo {numStr(mod.order)}
                     </p>
-                    <h2 className="text-2xl font-bold text-white">{mod.name}</h2>
-                  </div>
+                    <h2 className="mt-2 text-xl font-semibold text-white">{mod.name}</h2>
                 </div>
                 {mod.description ? (
                   <p className="mt-2 text-base leading-relaxed text-zinc-400">
@@ -284,15 +436,7 @@ function ConteudoTab() {
                 </p>
               </div>
             </div>
-            <div className="mt-4 flex justify-center">
-              <Link
-                href={`/conteudo/${mod.order}`}
-                className="rounded-xl bg-gradient-to-r from-violet-500 to-cyan-500 px-8 py-3 text-base font-bold text-zinc-950 transition hover:-translate-y-0.5"
-              >
-                Visualizar
-              </Link>
-            </div>
-          </article>
+          </Link>
         ))}
       </div>
     </section>
@@ -340,7 +484,7 @@ function ModulesTab() {
   return (
     <section className="mt-6 space-y-4">
       <div className="flex items-center justify-between">
-        <p className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5 text-base leading-relaxed text-zinc-300">
+         <p className="max-w-3xl rounded-xl border border-zinc-800 bg-zinc-900 p-5 text-base leading-relaxed text-zinc-300">
           Os módulos do curso estão logo abaixo. Cada módulo tem sua apostila em
           PDF: clique em <span className="font-semibold text-white">Visualizar</span>{" "}
           para ler on-line ou <span className="font-semibold text-white">Baixar</span>{" "}
@@ -357,15 +501,15 @@ function ModulesTab() {
 
       {modules.length === 0 && (
         <p className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 text-lg text-zinc-400">
-          Nenhum módulo publicado ainda. O professor vai liberar em breve.
+           Nenhum módulo publicado ainda. O colaborador vai liberar em breve.
         </p>
       )}
 
-      <div className="grid gap-4">
+       <div className="grid gap-4 md:grid-cols-2">
         {modules.map((mod) => (
           <article
             key={mod.id}
-            className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6"
+             className="rounded-xl border border-zinc-800/80 bg-white/[0.02] p-5"
           >
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
@@ -377,7 +521,7 @@ function ModulesTab() {
                     <p className="text-sm font-bold uppercase tracking-wider text-violet-300">
                       Módulo
                     </p>
-                    <h2 className="text-2xl font-bold text-white">{mod.name}</h2>
+                     <h2 className="text-xl font-semibold text-white">{mod.name}</h2>
                   </div>
                 </div>
                 {mod.description ? (
@@ -418,9 +562,10 @@ function ModulesTab() {
             {mod.pdfUrl && (
               <button
                 onClick={() => setChatModule(mod)}
-                className="mt-4 w-full rounded-xl border border-cyan-600/50 bg-cyan-500/10 px-5 py-3 text-base font-semibold text-cyan-300 transition hover:bg-cyan-500/20"
+                 className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-cyan-600/50 bg-cyan-500/10 px-5 py-2.5 text-sm font-medium text-cyan-300 transition hover:bg-cyan-500/20"
               >
-                💬 Estude com a IA sobre este módulo
+                <Icon name="wand" size={16} />
+                Estude com a IA sobre este módulo
               </button>
             )}
           </article>
@@ -440,6 +585,9 @@ function DuvidasTab({ userId: _userId }: { userId: string }) {
   const [sending, setSending] = useState(false);
   const [creating, setCreating] = useState(false);
   const [modalSuccess, setModalSuccess] = useState<string | null>(null);
+  const [questionToDelete, setQuestionToDelete] = useState<Question | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -474,7 +622,7 @@ function DuvidasTab({ userId: _userId }: { userId: string }) {
         setModalError(data.error || "Erro ao enviar dúvida");
         return;
       }
-      setModalSuccess("Dúvida enviada com sucesso! Aguarde a resposta do professor.");
+      setModalSuccess("Dúvida enviada com sucesso! Aguarde a resposta da equipe.");
       load();
       setTimeout(() => {
         setCreating(false);
@@ -488,6 +636,27 @@ function DuvidasTab({ userId: _userId }: { userId: string }) {
     }
   }
 
+  async function handleDeleteQuestion() {
+    if (!questionToDelete) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(withBasePath(`/api/questions/${questionToDelete.id}`), { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok) {
+        setModalError(data.error || "Erro ao excluir dúvida");
+        return;
+      }
+      setQuestions((current) => current?.filter((question) => question.id !== questionToDelete.id) ?? current);
+      setQuestionToDelete(null);
+      setDeleteSuccess(true);
+      window.setTimeout(() => setDeleteSuccess(false), 2000);
+    } catch {
+      setModalError("Falha de conexão");
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   return (
     <section className="mt-6 space-y-8">
       <button
@@ -496,7 +665,7 @@ function DuvidasTab({ userId: _userId }: { userId: string }) {
           setError("");
           setModalSuccess(null);
         }}
-        className="w-full rounded-2xl border-2 border-dashed border-amber-600/40 bg-zinc-900 p-6 text-lg font-bold text-violet-300 transition hover:border-amber-500/70 hover:bg-amber-500/10"
+         className="w-full rounded-lg border border-violet-400/30 bg-white/[0.025] px-4 py-3 text-sm font-medium text-violet-200 transition hover:border-violet-300/60 hover:bg-violet-500/[0.08] sm:w-auto"
       >
         ＋ Enviar dúvida
       </button>
@@ -542,7 +711,7 @@ function DuvidasTab({ userId: _userId }: { userId: string }) {
               <form onSubmit={handleSubmit} className="mt-5 space-y-4">
                 <div>
                   <label className="block text-base font-semibold text-zinc-200">
-                    Envie sua dúvida de bancada
+                     Envie sua dúvida *
                   </label>
                   <textarea
                     value={text}
@@ -551,7 +720,7 @@ function DuvidasTab({ userId: _userId }: { userId: string }) {
                     required
                     minLength={5}
                     disabled={sending}
-                    placeholder="Ex.: carro falha a frio no Módulo 2, mas quente funciona..."
+                     placeholder="Digite sua dúvida sobre estudos, plataforma, pagamentos ou outro assunto..."
                     className="mt-2 w-full rounded-xl border border-violet-400/25 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-amber-500 disabled:opacity-50"
                   />
                 </div>
@@ -606,7 +775,7 @@ function DuvidasTab({ userId: _userId }: { userId: string }) {
       ) : (
         <div>
           <h2 className="text-xl font-bold text-white">Histórico</h2>
-          <div className="mt-3 space-y-3">
+           <div className="mt-3 grid gap-3 md:grid-cols-2">
             {questions.map((q) => (
               <article
                 key={q.id}
@@ -617,9 +786,9 @@ function DuvidasTab({ userId: _userId }: { userId: string }) {
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <p className="text-base font-semibold text-white">
-                    {q.questionText}
-                  </p>
+                 <p className="text-base font-semibold text-white">
+                     {q.questionText}
+                   </p>
                   <span
                     className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
                       q.status === "answered"
@@ -630,14 +799,27 @@ function DuvidasTab({ userId: _userId }: { userId: string }) {
                     {q.status === "answered" ? "Respondida" : "Aguardando"}
                   </span>
                 </div>
+                <p className="mt-2 text-xs text-zinc-500">
+                  Publicada em {new Date(q.createdAt).toLocaleDateString("pt-BR")} às {new Date(q.createdAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+                </p>
                 {q.answerText && (
                   <div className="mt-3 rounded-xl bg-zinc-950/60 p-4 text-base leading-relaxed text-zinc-300">
-                    <p className="mb-1 text-xs uppercase tracking-wider text-emerald-400">
-                      Resposta do professor
-                    </p>
-                    {q.answerText}
+                     <p className="mb-1 text-xs uppercase tracking-wider text-emerald-400">
+                         {q.answeredBy ? displayName(q.answeredBy.name, q.answeredBy.role) : ""}
+                     </p>
+                    <p>{q.answerText}</p>
+                    {q.answeredAt && <p className="mt-2 text-xs text-zinc-500">Respondida em {new Date(q.answeredAt).toLocaleDateString("pt-BR")} às {new Date(q.answeredAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</p>}
                   </div>
                 )}
+                <div className="mt-4 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setQuestionToDelete(q)}
+                    className="text-xs font-semibold text-red-400 transition hover:text-red-300"
+                  >
+                    Excluir
+                  </button>
+                </div>
               </article>
             ))}
           </div>
@@ -646,6 +828,42 @@ function DuvidasTab({ userId: _userId }: { userId: string }) {
 
       {modalError && (
         <ErrorModal message={modalError} onClose={() => setModalError(null)} />
+      )}
+      {questionToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl border border-amber-500/40 bg-zinc-900 p-6 shadow-2xl">
+            <h2 className="text-xl font-bold text-white">Apagar dúvida?</h2>
+            <p className="mt-3 text-sm leading-relaxed text-zinc-300">
+              Esta ação é permanente e removerá a dúvida do seu histórico. Deseja continuar?
+            </p>
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setQuestionToDelete(null)}
+                disabled={deleting}
+                className="rounded-lg border border-zinc-700 px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteQuestion}
+                disabled={deleting}
+                className="rounded-lg bg-red-500 px-4 py-2 text-sm font-semibold text-white hover:bg-red-400 disabled:opacity-50"
+              >
+                {deleting ? "Excluindo..." : "Confirmar exclusão"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {deleteSuccess && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl border border-emerald-500/40 bg-zinc-900 p-6 text-center shadow-2xl">
+            <h2 className="text-xl font-bold text-emerald-400">Sucesso</h2>
+            <p className="mt-2 text-sm text-zinc-300">Dúvida apagada com sucesso.</p>
+          </div>
+        </div>
       )}
     </section>
   );

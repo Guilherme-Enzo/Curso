@@ -11,6 +11,7 @@ export async function GET() {
   }
 
   const modules = await prisma.module.findMany({
+    where: isStaff(user) || user.plan === "FULL" ? {} : { isFree: true },
     orderBy: { order: "asc" },
   });
 
@@ -25,13 +26,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
   }
   if (!isStaff(user)) {
-    return NextResponse.json({ error: "Apenas professores e admin podem criar módulos" }, { status: 403 });
+    return NextResponse.json({ error: "Apenas colaboradores e admin podem criar módulos" }, { status: 403 });
   }
 
   try {
     const form = await req.formData();
     const name = String(form.get("name") ?? "").trim();
     const description = String(form.get("description") ?? "").trim() || null;
+    const isFree = String(form.get("isFree") ?? "true") !== "false";
     const file = form.get("file");
 
     if (!name) {
@@ -52,7 +54,7 @@ export async function POST(req: Request) {
     let module;
     try {
       module = await prisma.module.create({
-        data: { order, name, description, pdfUrl },
+        data: { order, name, description, pdfUrl, isFree },
       });
     } catch (error) {
       if (pdfUrl) await removeFile(pdfUrl);

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getApiUser } from "@/lib/session";
+import { displayName } from "@/lib/displayName";
 
 export async function GET() {
   const user = await getApiUser();
@@ -17,10 +18,16 @@ export async function GET() {
     },
   });
 
+  const rolePriority: Record<string, number> = { admin: 0, teacher: 1, student: 2 };
+  topics.sort((a, b) => {
+    const roleOrder = (rolePriority[a.author.role] ?? 2) - (rolePriority[b.author.role] ?? 2);
+    return roleOrder || b.createdAt.getTime() - a.createdAt.getTime();
+  });
+
   const unreadEntries = await Promise.all(
     topics.map(async (topic) => {
       const readAt = topic.reads[0]?.readAt;
-      if (!readAt) return [topic.id, topic._count.messages] as const;
+       if (!readAt) return [topic.id, topic._count.messages || 1] as const;
       const count = await prisma.topicMessage.count({
         where: { topicId: topic.id, createdAt: { gt: readAt } },
       });
@@ -34,7 +41,8 @@ export async function GET() {
       id: t.id,
       title: t.title,
       description: t.description,
-      authorName: t.author.name,
+      authorId: t.authorId,
+      authorName: displayName(t.author.name, t.author.role),
       authorRole: t.author.role,
       createdAt: t.createdAt,
       messageCount: t._count.messages,

@@ -1,7 +1,8 @@
 import { createReadStream, statSync } from "fs";
 import path from "path";
 import { Readable } from "stream";
-import { getApiUser } from "@/lib/session";
+import { getApiUser, hasFullAccess } from "@/lib/session";
+import { prisma } from "@/lib/prisma";
 import { resolveFile } from "@/lib/upload";
 
 export async function GET(
@@ -19,6 +20,8 @@ export async function GET(
 
   const filePath = resolveFile(safe);
   try {
+    const module = await prisma.module.findFirst({ where: { pdfUrl: `/arquivos/materiais/${safe}` }, select: { isFree: true } });
+    if (module && !module.isFree && !hasFullAccess(user)) return new Response("Versão completa necessária", { status: 403 });
     const stat = statSync(filePath);
     if (!stat.isFile()) throw new Error("Not a file");
 

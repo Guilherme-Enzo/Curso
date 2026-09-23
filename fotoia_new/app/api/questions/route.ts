@@ -13,7 +13,10 @@ export async function GET() {
   const questions = await prisma.question.findMany({
     where,
     orderBy: { createdAt: "desc" },
-    include: { user: { select: { id: true, name: true } } },
+    include: {
+      user: { select: { id: true, name: true } },
+      answeredBy: { select: { id: true, name: true, role: true } },
+    },
   });
 
   return NextResponse.json({ questions });

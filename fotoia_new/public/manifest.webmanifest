@@ -1,0 +1,27 @@
+{
+  "name": "Retrato ImaginAdo",
+  "short_name": "Retrato ImaginAdo",
+  "description": "Plataforma de prompts de fotografia e edição com IA.",
+  "id": "/dashboard",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone"],
+  "background_color": "#241344",
+  "theme_color": "#241344",
+  "navigation_bar_color": "#241344",
+  "icons": [
+    {
+      "src": "/pwa-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

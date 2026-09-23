@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import ConfirmModal from "./ConfirmModal";
 import { withBasePath } from "@/lib/publicPath";
+import FilePickerField from "./FilePickerField";
 
 type VideoItem = {
   id: string;
@@ -22,6 +23,7 @@ type ModuleData = {
   synopsis: string | null;
   pdfUrl: string | null;
   order: number;
+  isFree: boolean;
 };
 
 type Props = {
@@ -45,6 +47,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
   const [tab, setTab] = useState<"edit" | "videos">("edit");
   const [name, setName] = useState(mod.name);
   const [desc, setDesc] = useState(mod.description ?? "");
+  const [isFree, setIsFree] = useState(mod.isFree);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
   const [deletingPdf, setDeletingPdf] = useState(false);
@@ -100,6 +103,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
       const fd = new FormData();
       fd.append("name", name.trim());
       fd.append("description", desc.trim());
+      fd.append("isFree", String(isFree));
       if (pdfFile) fd.append("file", pdfFile);
       const res = await fetch(withBasePath(`/api/modules/${mod.id}`), { method: "PATCH", body: fd });
       if (!res.ok) {
@@ -280,10 +284,10 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
 
         {/* Tabs */}
         <div className="mt-4 flex gap-2">
-          <button onClick={() => setTab("edit")} className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${tab === "edit" ? "bg-amber-500/20 text-amber-400" : "text-zinc-400 hover:text-white"}`}>
+          <button onClick={() => setTab("edit")} className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${tab === "edit" ? "bg-violet-500/15 text-violet-300" : "text-zinc-400 hover:text-white"}`}>
             Editar
           </button>
-          <button onClick={() => setTab("videos")} className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${tab === "videos" ? "bg-violet-500/20 text-violet-400" : "text-zinc-400 hover:text-white"}`}>
+          <button onClick={() => setTab("videos")} className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${tab === "videos" ? "bg-cyan-500/10 text-cyan-300" : "text-zinc-400 hover:text-white"}`}>
             🎬 Vídeos ({videos.length})
           </button>
         </div>
@@ -294,17 +298,29 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
             <div>
               <label className="block text-base font-semibold text-zinc-200">Nome do módulo</label>
               <input value={name} onChange={(e) => setName(e.target.value)} disabled={saving}
-                className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-amber-500" />
+                className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-violet-400" />
             </div>
             <div>
               <label className="block text-base font-semibold text-zinc-200">Descrição</label>
               <textarea value={desc} onChange={(e) => setDesc(e.target.value)} rows={4} disabled={saving}
-                className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-amber-500" />
+                className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none transition focus:border-violet-400" />
+            </div>
+            <div>
+              <label className="flex items-center gap-3 rounded-xl border border-zinc-700 bg-zinc-950 p-4 text-base font-semibold text-zinc-200">
+                <input
+                  type="checkbox"
+                  checked={isFree}
+                  onChange={(e) => setIsFree(e.target.checked)}
+                  disabled={saving}
+                  className="h-5 w-5 accent-emerald-500"
+                />
+                Módulo gratuito
+              </label>
+              <p className="mt-1 text-sm text-zinc-500">Desmarque para liberar somente na versão completa.</p>
             </div>
             <div>
               <label className="block text-base font-semibold text-zinc-200">Substituir PDF</label>
-              <input type="file" accept=".pdf" disabled={saving} onChange={(e) => setPdfFile(e.target.files?.[0] ?? null)}
-                className="mt-2 block w-full cursor-pointer rounded-xl border border-dashed border-zinc-600 bg-zinc-950 px-4 py-3 text-base text-zinc-300 file:mr-4 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-amber-500 file:to-orange-600 file:px-4 file:py-2 file:text-base file:font-bold file:text-white hover:border-amber-500/50 disabled:opacity-50" />
+              <div className="mt-2"><FilePickerField accept="application/pdf" file={pdfFile} onChange={setPdfFile} disabled={saving} hint="PDF, até 100 MB. Selecione apenas para substituir." actionLabel="Substituir PDF" /></div>
             </div>
             {mod.pdfUrl && (
               <div className="flex items-center gap-3">
@@ -312,7 +328,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
                   📄 PDF atual
                 </a>
                 <button type="button" onClick={() => setConfirmPdfDelete(true)} disabled={deletingPdf}
-                  className="rounded-lg border border-red-800/60 px-3 py-1 text-sm font-semibold text-red-400 transition hover:bg-red-500/10 disabled:opacity-50">
+                  className="text-xs font-semibold text-red-400 transition hover:text-red-300 disabled:opacity-50">
                   {deletingPdf ? "Excluindo..." : "🗑 Excluir PDF"}
                 </button>
               </div>
@@ -335,7 +351,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
               </div>
             ) : (
               <button type="submit" disabled={!name.trim()}
-                className="w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 py-3 text-base font-bold text-white transition hover:-translate-y-0.5 disabled:opacity-50">
+                 className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 py-3 text-sm font-semibold text-zinc-950 transition hover:-translate-y-0.5 disabled:opacity-50">
                 Salvar alterações
               </button>
             )}
@@ -350,7 +366,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
               {reordering ? (
                 <>
                   <button onClick={handleSaveOrder} disabled={savingOrder}
-                    className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-purple-600 px-4 py-2.5 text-sm font-bold text-white disabled:opacity-50">
+                     className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 px-4 py-2.5 text-sm font-semibold text-zinc-950 disabled:opacity-50">
                     {savingOrder ? "Salvando..." : "Salvar ordem"}
                   </button>
                   <button onClick={() => { setReordering(false); setVideoOrder(videos); }}
@@ -361,7 +377,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
               ) : (
                 <>
                   <button onClick={() => { setShowUpload(true); setUploadTitle(mod.name); setUploadDesc(""); setUploadFile(null); setUploadSuccess(false); }}
-                    className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-purple-600 px-4 py-2.5 text-sm font-bold text-white">
+                     className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 px-4 py-2.5 text-sm font-semibold text-zinc-950">
                     + Adicionar vídeo
                   </button>
                   {videos.length > 1 && (
@@ -416,11 +432,11 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
                     </div>
                     <div className="flex shrink-0 gap-2">
                       <button onClick={() => { setEditVideo(v); setEditTitle(v.title); setEditDesc(v.description ?? ""); setEditFile(null); }}
-                        className="rounded-lg border border-amber-600/50 px-3 py-1 text-xs font-semibold text-amber-400 transition hover:bg-amber-500/10">
+                         className="text-xs font-semibold text-cyan-300 transition hover:text-cyan-200">
                         Editar
                       </button>
                       <button onClick={() => setConfirmVideoDelete(v.id)} disabled={deletingVideoId === v.id}
-                            className="rounded-lg border border-red-800/60 px-3 py-1 text-xs font-semibold text-red-400 transition hover:bg-red-500/10 disabled:opacity-50">
+                             className="text-xs font-semibold text-red-400 transition hover:text-red-300 disabled:opacity-50">
                             {deletingVideoId === v.id ? "..." : "Excluir"}
                           </button>
                     </div>
@@ -460,13 +476,11 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
                             className="mt-1 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2 text-sm text-white outline-none focus:border-violet-500" />
                         </div>
                         <div>
-                          <label className="block text-sm font-semibold text-zinc-200">Arquivo (MP4, WebM)</label>
-                          <input type="file" accept="video/mp4,video/webm,video/ogg,video/quicktime"
-                            onChange={(e) => setUploadFile(e.target.files?.[0] ?? null)}
-                            className="mt-1 block w-full cursor-pointer rounded-xl border border-dashed border-zinc-600 bg-zinc-950 px-4 py-3 text-sm text-zinc-300 file:mr-3 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-violet-500 file:to-purple-600 file:px-3 file:py-1.5 file:text-sm file:font-bold file:text-white hover:border-violet-500/50" />
+                           <label className="block text-sm font-semibold text-zinc-200">Arquivo de vídeo</label>
+                           <div className="mt-1"><FilePickerField accept="video/mp4,video/webm,video/ogg,video/quicktime" file={uploadFile} onChange={setUploadFile} hint="MP4, WebM, OGG ou MOV, até 500 MB." actionLabel="Escolher vídeo" /></div>
                         </div>
                         <button onClick={handleUploadVideo} disabled={!uploadTitle.trim() || !uploadFile}
-                          className="w-full rounded-xl bg-gradient-to-r from-violet-500 to-purple-600 py-2.5 text-sm font-bold text-white disabled:opacity-50">
+                          className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 py-2.5 text-sm font-semibold text-zinc-950 disabled:opacity-50">
                           Enviar vídeo
                         </button>
                       </div>
@@ -516,28 +530,25 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
               <div>
                 <label className="block text-sm font-semibold text-zinc-200">Título</label>
                 <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} disabled={savingVideo}
-                  className="mt-1 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2.5 text-sm text-white outline-none transition focus:border-amber-500" />
+                   className="mt-1 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2.5 text-sm text-white outline-none transition focus:border-violet-400" />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-zinc-200">Descrição</label>
                 <textarea value={editDesc} onChange={(e) => setEditDesc(e.target.value)} rows={3} disabled={savingVideo}
-                  className="mt-1 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2.5 text-sm text-white outline-none transition focus:border-amber-500" />
+                   className="mt-1 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-2.5 text-sm text-white outline-none transition focus:border-violet-400" />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-zinc-200">Substituir vídeo (opcional)</label>
-                <input type="file" accept="video/mp4,video/webm,video/ogg,video/quicktime" disabled={savingVideo}
-                  onChange={(e) => setEditFile(e.target.files?.[0] ?? null)}
-                  className="mt-1 block w-full cursor-pointer rounded-xl border border-dashed border-zinc-600 bg-zinc-950 px-4 py-3 text-sm text-zinc-300 file:mr-3 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-violet-500 file:to-purple-600 file:px-3 file:py-1.5 file:text-sm file:font-bold file:text-white hover:border-violet-500/50 disabled:opacity-50" />
-                {editFile && <p className="mt-1 text-xs text-emerald-400">Novo arquivo selecionado</p>}
+                 <div className="mt-1"><FilePickerField accept="video/mp4,video/webm,video/ogg,video/quicktime" file={editFile} onChange={setEditFile} disabled={savingVideo} hint="MP4, WebM, OGG ou MOV, até 500 MB. Selecione apenas para substituir." actionLabel="Substituir vídeo" /></div>
               </div>
               {savingVideo ? (
                 <div className="flex flex-col items-center gap-3 py-4">
-                  <span className="h-8 w-8 animate-spin rounded-full border-4 border-amber-400 border-t-transparent" />
-                  <p className="text-sm font-bold text-amber-300">Salvando alterações...</p>
+                   <span className="h-8 w-8 animate-spin rounded-full border-4 border-violet-400 border-t-transparent" />
+                   <p className="text-sm font-semibold text-violet-300">Salvando alterações...</p>
                 </div>
               ) : (
                 <button onClick={handleSaveVideoEdit} disabled={!editTitle.trim()}
-                  className="w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 py-2.5 text-sm font-bold text-white transition hover:-translate-y-0.5 disabled:opacity-50">
+                   className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 py-2.5 text-sm font-semibold text-zinc-950 transition hover:-translate-y-0.5 disabled:opacity-50">
                   Salvar alterações
                 </button>
               )}

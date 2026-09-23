@@ -7,8 +7,10 @@ export type ApiUser = {
   name: string;
   email: string;
   birthDate: Date | null;
+  gender: string | null;
   role: string;
   authProvider: string;
+  plan: "FREE" | "FULL";
 };
 
 export async function getApiUser(): Promise<ApiUser | null> {
@@ -20,7 +22,7 @@ export async function getApiUser(): Promise<ApiUser | null> {
 
   const user = await prisma.user.findUnique({
     where: { id: payload.userId },
-    select: { id: true, name: true, email: true, birthDate: true, role: true, authProvider: true },
+    select: { id: true, name: true, email: true, birthDate: true, gender: true, role: true, authProvider: true, plan: true },
   });
 
   return user;
@@ -28,4 +30,8 @@ export async function getApiUser(): Promise<ApiUser | null> {
 
 export function isStaff(user: ApiUser | null): boolean {
   return !!user && (user.role === "teacher" || user.role === "admin");
+}
+
+export function hasFullAccess(user: ApiUser | null): boolean {
+  return isStaff(user) || user?.plan === "FULL";
 }

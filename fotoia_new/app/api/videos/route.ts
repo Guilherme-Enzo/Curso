@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getApiUser, isStaff } from "@/lib/session";
+import { getApiUser, hasFullAccess, isStaff } from "@/lib/session";
 import { removeVideo, saveVideo } from "@/lib/upload";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
@@ -18,6 +18,12 @@ export async function GET(req: Request) {
   const moduleId = searchParams.get("moduleId");
   if (!moduleId) {
     return NextResponse.json({ error: "moduleId obrigatório" }, { status: 400 });
+  }
+
+  const module = await prisma.module.findUnique({ where: { id: moduleId }, select: { isFree: true } });
+  if (!module) return NextResponse.json({ error: "Módulo não encontrado" }, { status: 404 });
+  if (!module.isFree && !hasFullAccess(user)) {
+    return NextResponse.json({ error: "Só na versão completa. Atualize seu plano." }, { status: 403 });
   }
 
   const videos = await prisma.video.findMany({
@@ -51,7 +57,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
   }
   if (!isStaff(user)) {
-    return NextResponse.json({ error: "Apenas professores e admin" }, { status: 403 });
+    return NextResponse.json({ error: "Apenas colaboradores e admin" }, { status: 403 });
   }
 
   try {
