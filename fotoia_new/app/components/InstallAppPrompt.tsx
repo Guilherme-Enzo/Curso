@@ -71,7 +71,7 @@ export default function InstallAppPrompt() {
           ) : ios ? (
             <p className="mt-1 text-sm leading-relaxed text-zinc-300">Toque em Compartilhar e depois em “Adicionar à Tela de Início”.</p>
           ) : (
-            <p className="mt-1 text-sm leading-relaxed text-zinc-300">Crie um atalho para abrir o painel como aplicativo. Use “Instalar aplicativo”, não “Adicionar à tela inicial”.</p>
+             <p className="mt-1 text-sm leading-relaxed text-zinc-300">Crie um atalho para abrir o painel como aplicativo.</p>
           )}
           {!cancelNotice && (
             <div className="mt-3 flex flex-wrap gap-2">
