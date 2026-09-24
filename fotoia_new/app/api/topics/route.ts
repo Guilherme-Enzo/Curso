@@ -35,8 +35,10 @@ export async function GET() {
     })
   );
   const unreadCounts = Object.fromEntries(unreadEntries) as Record<string, number>;
+  const newTopicCount = topics.filter((topic) => topic.createdAt > user.createdAt && topic.reads.length === 0).length;
 
   return NextResponse.json({
+    newTopicCount,
     topics: topics.map((t) => ({
       id: t.id,
       title: t.title,
@@ -47,6 +49,7 @@ export async function GET() {
       createdAt: t.createdAt,
       messageCount: t._count.messages,
       unreadCount: unreadCounts[t.id] ?? t._count.messages,
+      isNew: t.createdAt > user.createdAt && t.reads.length === 0,
     })),
   });
 }

@@ -321,6 +321,7 @@ export default function ModuleEditModal({ module: mod, onClose, onSaved, onError
             <div>
               <label className="block text-base font-semibold text-zinc-200">Substituir PDF</label>
               <div className="mt-2"><FilePickerField accept="application/pdf" file={pdfFile} onChange={setPdfFile} disabled={saving} hint="PDF, até 100 MB. Selecione apenas para substituir." actionLabel="Substituir PDF" /></div>
+              <p className="mt-2 text-xs text-amber-300">Importante: a IA usa o conteúdo do PDF para gerar o resumo do módulo e preencher a descrição somente se ela estiver em branco.</p>
             </div>
             {mod.pdfUrl && (
               <div className="flex items-center gap-3">

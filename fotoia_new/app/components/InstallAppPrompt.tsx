@@ -12,7 +12,7 @@ export default function InstallAppPrompt() {
   const [installEvent, setInstallEvent] = useState<InstallEvent | null>(null);
   const [visible, setVisible] = useState(false);
   const [ios, setIos] = useState(false);
-  const [cancelNotice, setCancelNotice] = useState(false);
+  const [postponeNotice, setPostponeNotice] = useState(false);
 
   function wasRecentlyCancelled() {
     const value = window.localStorage.getItem("retrato-install-dismissed-at");
@@ -49,13 +49,9 @@ export default function InstallAppPrompt() {
     setVisible(false);
   }
 
-  function cancel() {
+  function postpone() {
     window.localStorage.setItem("retrato-install-dismissed-at", String(Date.now()));
-    setCancelNotice(true);
-    window.setTimeout(() => {
-      setCancelNotice(false);
-      setVisible(false);
-    }, 3500);
+    setPostponeNotice(true);
   }
 
   if (!visible) return null;
@@ -65,18 +61,20 @@ export default function InstallAppPrompt() {
       <div className="flex items-start gap-3">
         <img src="/pwa-icon.png" alt="" className="h-11 w-11 shrink-0 rounded-xl" />
         <div className="min-w-0 flex-1">
-          <p className="font-semibold text-white">Instalar Retrato ImaginAdo</p>
-          {cancelNotice ? (
+          <p className="font-semibold text-white">{postponeNotice ? "Instalação adiada" : "Instalar Retrato ImaginAdo"}</p>
+          {postponeNotice ? (
             <p className="mt-1 text-sm leading-relaxed text-emerald-300">Este aviso não será mostrado novamente por uma semana.</p>
           ) : ios ? (
             <p className="mt-1 text-sm leading-relaxed text-zinc-300">Toque em Compartilhar e depois em “Adicionar à Tela de Início”.</p>
           ) : (
              <p className="mt-1 text-sm leading-relaxed text-zinc-300">Crie um atalho para abrir o painel como aplicativo.</p>
           )}
-          {!cancelNotice && (
+          {postponeNotice ? (
+            <button type="button" onClick={() => setVisible(false)} className="mt-3 rounded-lg border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300 hover:bg-white/5">Fechar</button>
+          ) : (
             <div className="mt-3 flex flex-wrap gap-2">
               {!ios && installEvent && <button type="button" onClick={install} className="rounded-lg bg-gradient-to-r from-violet-500 to-cyan-500 px-4 py-2 text-sm font-semibold text-zinc-950">Instalar aplicativo</button>}
-              <button type="button" onClick={cancel} className="rounded-lg border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300 hover:bg-white/5">Cancelar</button>
+              <button type="button" onClick={postpone} className="rounded-lg border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300 hover:bg-white/5">Adiar</button>
             </div>
           )}
         </div>

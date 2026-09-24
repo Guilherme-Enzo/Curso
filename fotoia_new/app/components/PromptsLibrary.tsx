@@ -12,9 +12,11 @@ type Prompt = {
   description: string;
   promptText: string;
   order: number;
+  isNew: boolean;
 };
-type Category = { id: string; name: string; type: PromptType; order: number; prompts: Prompt[] };
+type Category = { id: string; name: string; type: PromptType; order: number; prompts: Prompt[]; unreadCount: number };
 type ModalTransition = "idle" | "next" | "previous";
+type Props = { onUnreadCountChange?: (count: number) => void };
 
 async function responseJson(response: Response): Promise<Record<string, any>> {
   const raw = await response.text();
@@ -25,10 +27,11 @@ async function responseJson(response: Response): Promise<Record<string, any>> {
   }
 }
 
-export default function PromptsLibrary() {
+export default function PromptsLibrary({ onUnreadCountChange }: Props) {
   const [type, setType] = useState<PromptType>("EDITING");
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [selected, setSelected] = useState<Prompt | null>(null);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,6 +52,7 @@ export default function PromptsLibrary() {
         const data = await responseJson(res);
         if (!res.ok) throw new Error(data.error || "Não foi possível carregar os prompts.");
         setCategories(Array.isArray(data.categories) ? data.categories : []);
+        setUnreadCount(Number(data.unreadCount) || 0);
       })
       .catch((reason) => {
         setCategories([]);
@@ -63,6 +67,10 @@ export default function PromptsLibrary() {
       controller.abort();
     };
   }, []);
+
+  useEffect(() => {
+    onUnreadCountChange?.(unreadCount);
+  }, [onUnreadCountChange, unreadCount]);
 
   const visibleCategories = useMemo(() => categories?.filter((category) => category.type === type) ?? [], [categories, type]);
   const allPrompts = useMemo(() => categories.flatMap((category) => category.prompts), [categories]);
@@ -79,6 +87,27 @@ export default function PromptsLibrary() {
     setSelected(null);
   }
 
+  async function markPromptSeen(prompt: Prompt) {
+    if (!prompt.isNew) return;
+    const response = await fetch(withBasePath(`/api/prompts/${prompt.id}/view`), { method: "POST" });
+    if (!response.ok) return;
+    setCategories((current) => current.map((category) => ({
+      ...category,
+      unreadCount: category.prompts.some((item) => item.id === prompt.id && item.isNew)
+        ? Math.max(0, category.unreadCount - 1)
+        : category.unreadCount,
+      prompts: category.prompts.map((item) => item.id === prompt.id ? { ...item, isNew: false } : item),
+    })));
+    setUnreadCount((current) => Math.max(0, current - 1));
+  }
+
+  function openPrompt(prompt: Prompt) {
+    closeSelected();
+    setSelected(prompt);
+    setCopied(false);
+    void markPromptSeen(prompt);
+  }
+
   function navigatePrompt(direction: -1 | 1) {
     if (modalTransition !== "idle" || selectedIndex < 0) return;
     const nextIndex = selectedIndex + direction;
@@ -91,6 +120,7 @@ export default function PromptsLibrary() {
     setModalTransition(movement);
     transitionTimer.current = window.setTimeout(() => {
       setSelected(allPrompts[nextIndex]);
+      void markPromptSeen(allPrompts[nextIndex]);
       setTransitionTarget(null);
       setCopied(false);
       transitionTimer.current = null;
@@ -197,8 +227,8 @@ export default function PromptsLibrary() {
     <section className="mt-6 space-y-5">
       <div className="grid grid-cols-2 gap-1 rounded-xl border border-violet-400/20 bg-white/[0.025] p-1">
         {([
-          ["EDITING", "Prompts para edição"],
-          ["CREATION", "Prompts para criação"],
+           ["EDITING", "Prompts para edição"],
+           ["CREATION", "Prompts para criação"],
         ] as const).map(([key, label]) => (
           <button
             key={key}
@@ -206,7 +236,11 @@ export default function PromptsLibrary() {
             onClick={() => { setType(key); closeSelected(); }}
             className={`rounded-lg px-3 py-2.5 text-sm font-medium transition sm:text-base ${type === key ? "bg-gradient-to-r from-violet-500 to-cyan-500 text-zinc-950" : "text-zinc-300 hover:bg-white/5"}`}
           >
-            {label}
+             {label}
+             {(() => {
+               const count = categories.filter((category) => category.type === key).reduce((total, category) => total + category.unreadCount, 0);
+               return count > 0 ? <span className="ml-1 rounded-full bg-violet-500/20 px-2 py-0.5 text-xs font-semibold text-violet-200">{count}</span> : null;
+             })()}
           </button>
         ))}
       </div>
@@ -220,7 +254,10 @@ export default function PromptsLibrary() {
       ) : (
         visibleCategories.map((category) => (
           <div key={category.id} className="border-b border-zinc-800/80 pb-5">
-            <h2 className="text-base font-medium text-white">{category.name}</h2>
+             <h2 className="text-base font-medium text-white">
+               {category.name}
+               {category.unreadCount > 0 && <span className="ml-2 rounded-full bg-violet-500/20 px-2 py-0.5 text-xs font-semibold text-violet-200">{category.unreadCount}</span>}
+             </h2>
             {category.prompts.length === 0 ? (
               <p className="mt-3 text-sm text-zinc-500">Nenhum prompt nesta categoria.</p>
             ) : (
@@ -229,11 +266,14 @@ export default function PromptsLibrary() {
                    <button
                      key={prompt.id}
                      type="button"
-                      onClick={() => { closeSelected(); setSelected(prompt); setCopied(false); }}
+                       onClick={() => openPrompt(prompt)}
                      className="card-interactive flex w-full items-center gap-3 rounded-lg border border-zinc-800/80 bg-white/[0.02] p-2.5 text-left transition hover:border-violet-400/45 hover:bg-violet-500/[0.06]"
                    >
                      <img src={prompt.imageUrl} alt="" className="h-auto w-auto max-h-16 max-w-16 shrink-0 rounded-lg object-contain" />
-                     <span className="line-clamp-2 text-sm font-medium text-zinc-100">{prompt.name}</span>
+                      <span className="min-w-0">
+                        {prompt.isNew && <span className="block text-[10px] font-bold uppercase tracking-wider text-violet-300">Novo</span>}
+                        <span className="line-clamp-2 text-sm font-medium text-zinc-100">{prompt.name}</span>
+                      </span>
                    </button>
                  ))}
                </div>
@@ -244,14 +284,16 @@ export default function PromptsLibrary() {
 
       {selected && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm" onClick={closeSelected}>
-          <div className="relative w-full max-w-3xl" onClick={(event) => event.stopPropagation()}>
-            <button type="button" aria-label="Prompt anterior" disabled={selectedIndex <= 0 || modalTransition !== "idle"} onClick={() => navigatePrompt(-1)} className="absolute left-0 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-violet-300/40 bg-zinc-950/90 text-xl leading-none text-violet-200 shadow-lg transition hover:border-cyan-300 hover:text-cyan-200 disabled:pointer-events-none disabled:opacity-20 sm:-left-11">
-              <span aria-hidden="true">&lt;</span>
-            </button>
-            <button type="button" aria-label="Próximo prompt" disabled={selectedIndex < 0 || selectedIndex >= allPrompts.length - 1 || modalTransition !== "idle"} onClick={() => navigatePrompt(1)} className="absolute right-0 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-violet-300/40 bg-zinc-950/90 text-xl leading-none text-violet-200 shadow-lg transition hover:border-cyan-300 hover:text-cyan-200 disabled:pointer-events-none disabled:opacity-20 sm:-right-11">
-              <span aria-hidden="true">&gt;</span>
-            </button>
-            <div className="relative max-h-[92vh] w-full overflow-y-auto rounded-xl border border-violet-400/30 bg-zinc-900 p-5 shadow-2xl sm:p-7" style={{ touchAction: "pan-y" }} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd} onTouchCancel={handleTouchEnd}>
+          <div className="relative w-full max-w-3xl sm:w-[calc(100%-5rem)]" onClick={(event) => event.stopPropagation()}>
+            <div className="mb-2 flex items-center justify-between sm:contents">
+              <button type="button" aria-label="Prompt anterior" disabled={selectedIndex <= 0 || modalTransition !== "idle"} onClick={() => navigatePrompt(-1)} className="relative z-10 flex h-8 w-8 items-center justify-center text-2xl leading-none text-violet-300 transition hover:text-cyan-300 disabled:pointer-events-none disabled:opacity-20 sm:absolute sm:-left-11 sm:top-1/2 sm:-translate-y-1/2">
+                <span aria-hidden="true">&lt;</span>
+              </button>
+              <button type="button" aria-label="Próximo prompt" disabled={selectedIndex < 0 || selectedIndex >= allPrompts.length - 1 || modalTransition !== "idle"} onClick={() => navigatePrompt(1)} className="relative z-10 flex h-8 w-8 items-center justify-center text-2xl leading-none text-violet-300 transition hover:text-cyan-300 disabled:pointer-events-none disabled:opacity-20 sm:absolute sm:-right-11 sm:top-1/2 sm:-translate-y-1/2">
+                <span aria-hidden="true">&gt;</span>
+              </button>
+            </div>
+            <div className="relative max-h-[calc(92vh-2.5rem)] w-full overflow-y-auto rounded-xl border border-violet-400/30 bg-zinc-900 p-5 shadow-2xl sm:max-h-[92vh] sm:p-7" style={{ touchAction: "pan-y" }} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd} onTouchCancel={handleTouchEnd}>
               <div className={modalTransition === "idle" && touchOffset === 0 ? "" : modalTransition === "idle" ? "" : "prompt-modal-fade-out"} style={touchOffset !== 0 ? { opacity: Math.max(0.15, 1 - Math.abs(touchOffset) / 220), transition: "none" } : undefined}>{renderPromptContent(selected)}</div>
               {transitionTarget && <div className={touchOffset !== 0 ? "absolute inset-0 bg-zinc-900 p-5" : `absolute inset-0 bg-zinc-900 p-5 sm:p-7 prompt-modal-enter-${modalTransition}`} style={touchOffset !== 0 ? { transform: `translateX(calc(${touchDirection === 1 ? "100%" : "-100%"} + ${touchOffset}px))`, opacity: Math.min(1, Math.abs(touchOffset) / 72), transition: "none" } : undefined}>{renderPromptContent(transitionTarget)}</div>}
             </div>

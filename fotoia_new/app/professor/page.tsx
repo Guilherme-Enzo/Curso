@@ -78,7 +78,7 @@ export default function TeacherPage() {
       }
       if (topicsRes.ok) {
         const data = await topicsRes.json();
-        setUnreadCommunity(data.topics.reduce((total: number, topic: { unreadCount: number }) => total + topic.unreadCount, 0));
+        setUnreadCommunity((Number(data.newTopicCount) || 0) + data.topics.reduce((total: number, topic: { unreadCount: number }) => total + topic.unreadCount, 0));
       }
     }
     void loadNotificationCounts();

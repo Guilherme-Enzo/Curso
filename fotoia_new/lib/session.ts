@@ -11,6 +11,7 @@ export type ApiUser = {
   role: string;
   authProvider: string;
   plan: "FREE" | "FULL";
+  createdAt: Date;
 };
 
 export async function getApiUser(): Promise<ApiUser | null> {
@@ -22,7 +23,7 @@ export async function getApiUser(): Promise<ApiUser | null> {
 
   const user = await prisma.user.findUnique({
     where: { id: payload.userId },
-    select: { id: true, name: true, email: true, birthDate: true, gender: true, role: true, authProvider: true, plan: true },
+    select: { id: true, name: true, email: true, birthDate: true, gender: true, role: true, authProvider: true, plan: true, createdAt: true },
   });
 
   return user;

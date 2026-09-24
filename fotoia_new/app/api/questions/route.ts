@@ -22,6 +22,19 @@ export async function GET() {
   return NextResponse.json({ questions });
 }
 
+export async function PATCH() {
+  const user = await getApiUser();
+  if (!user) return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
+  if (isStaff(user)) return NextResponse.json({ error: "Acesso não autorizado" }, { status: 403 });
+
+  const readAt = new Date();
+  await prisma.question.updateMany({
+    where: { userId: user.id, status: "answered", answeredAt: { lte: readAt } },
+    data: { answeredReadAt: readAt },
+  });
+  return NextResponse.json({ ok: true });
+}
+
 export async function POST(req: Request) {
   const user = await getApiUser();
   if (!user) {

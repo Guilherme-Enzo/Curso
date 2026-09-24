@@ -426,6 +426,7 @@ export default function ModulesManager({ viewer = "admin" }: Props) {
                     : "PDF (opcional)"}
                 </label>
                 <div className="mt-2"><FilePickerField accept="application/pdf" file={form.file} onChange={(file) => setForm({ ...form, file })} disabled={sending} hint="PDF, até 100 MB." actionLabel={editingId ? "Substituir PDF" : "Escolher PDF"} /></div>
+                <p className="mt-2 text-xs text-amber-300">Importante: a IA usa o conteúdo do PDF para gerar o resumo do módulo e preencher a descrição somente se ela estiver em branco.</p>
               </div>
               <div>
                 <label className="block text-base font-semibold text-zinc-200">

@@ -36,6 +36,8 @@ model User {
   topics        Topic[]
   topicMessages TopicMessage[]
   topicReads    TopicRead[]
+  promptViews   PromptView[]
+  moduleViews   ModuleView[]
   passwordResetTokens PasswordResetToken[]
   emailVerificationTokens EmailVerificationToken[]
   paymentTransactions PaymentTransaction[]
@@ -54,6 +56,7 @@ model Module {
   isFree      Boolean  @default(true)
   videos      Video[]
   aiMessages  AiMessage[]
+  views       ModuleView[]
   createdAt   DateTime @default(now())
 }
 
@@ -67,6 +70,7 @@ model Question {
   answeredById String?
   answeredBy   User?    @relation("QuestionAnsweredBy", fields: [answeredById], references: [id], onDelete: SetNull)
   answeredAt   DateTime?
+  answeredReadAt DateTime?
   createdAt    DateTime @default(now())
 }
 
@@ -220,6 +224,31 @@ model Prompt {
   order       Int            @default(0)
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
+  views       PromptView[]
 
   @@index([categoryId, order])
+}
+
+model PromptView {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  promptId  String
+  prompt    Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  viewedAt  DateTime @default(now())
+
+  @@unique([userId, promptId])
+  @@index([userId, viewedAt])
+}
+
+model ModuleView {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId  String
+  module    Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  viewedAt  DateTime @default(now())
+
+  @@unique([userId, moduleId])
+  @@index([userId, viewedAt])
 }

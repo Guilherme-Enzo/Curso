@@ -16,6 +16,7 @@ type Topic = {
   createdAt: string;
   messageCount: number;
   unreadCount: number;
+  isNew: boolean;
 };
 
 type Session = { userId: string; role: string; name: string };
@@ -44,7 +45,7 @@ export default function ComunidadeTab({ session, onUnreadCountChange }: Props) {
       if (!res.ok) return;
       const data = await res.json();
       setTopics(data.topics);
-      onUnreadCountChange?.(data.topics.reduce((total: number, topic: Topic) => total + topic.unreadCount, 0));
+      onUnreadCountChange?.((Number(data.newTopicCount) || 0) + data.topics.reduce((total: number, topic: Topic) => total + topic.unreadCount, 0));
     } catch {
       setModalError("Falha de conexão");
     }
@@ -108,6 +109,14 @@ export default function ComunidadeTab({ session, onUnreadCountChange }: Props) {
     setCreating(false);
     setEditingTopic(null);
     setForm(emptyForm);
+  }
+
+  function handleOpenTopic(t: Topic) {
+    if (t.isNew) {
+      setTopics((current) => current?.map((topic) => topic.id === t.id ? { ...topic, isNew: false } : topic) ?? null);
+      onUnreadCountChange?.(Math.max(0, (topics ?? []).filter((topic) => topic.isNew).length - 1) + (topics ?? []).reduce((total, topic) => total + topic.unreadCount, 0));
+    }
+    setOpenTopic(t);
   }
 
   return (
@@ -178,6 +187,7 @@ export default function ComunidadeTab({ session, onUnreadCountChange }: Props) {
                <article key={t.id} className="rounded-xl border border-zinc-800/80 bg-white/[0.02] p-5 transition hover:border-violet-500/40 hover:bg-violet-500/[0.04]">
                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                    <div className="min-w-0">
+                     {t.isNew && <p className="text-[10px] font-bold uppercase tracking-wider text-violet-300">Novo</p>}
                      <h3 className="text-xl font-semibold text-white">{t.title}</h3>
                      <p className="mt-2 whitespace-pre-line text-base leading-relaxed text-zinc-400">{t.description}</p>
                     <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-zinc-500">
@@ -188,7 +198,7 @@ export default function ComunidadeTab({ session, onUnreadCountChange }: Props) {
                    </div>
                  </div>
                  <div className="mt-4 flex flex-wrap items-center gap-2">
-                    <button onClick={(e) => { e.stopPropagation(); setOpenTopic(t); }} className="inline-flex items-center gap-2 rounded-lg border border-violet-400/30 px-3 py-2 text-sm font-medium text-violet-200 transition hover:border-violet-300/60 hover:bg-violet-500/10">
+                     <button onClick={(e) => { e.stopPropagation(); handleOpenTopic(t); }} className="inline-flex items-center gap-2 rounded-lg border border-violet-400/30 px-3 py-2 text-sm font-medium text-violet-200 transition hover:border-violet-300/60 hover:bg-violet-500/10">
                       <Icon name="message" size={15} />
                       Abrir conversa
                       {t.unreadCount > 0 && <span className="rounded-full bg-violet-500/20 px-2 py-0.5 text-xs font-semibold text-violet-200">{t.unreadCount}</span>}

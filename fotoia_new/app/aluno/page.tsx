@@ -50,6 +50,8 @@ export default function StudentPage() {
   const [tab, setTab] = useState<Tab>("conteudo");
   const [unreadQuestions, setUnreadQuestions] = useState(0);
   const [unreadCommunity, setUnreadCommunity] = useState(0);
+  const [unreadModules, setUnreadModules] = useState(0);
+  const [unreadPrompts, setUnreadPrompts] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showUpgradeNotice, setShowUpgradeNotice] = useState(false);
   const [showEmailVerifiedNotice, setShowEmailVerifiedNotice] = useState(false);
@@ -122,7 +124,13 @@ export default function StudentPage() {
       if (!active) return;
       if (questionsRes.ok) {
         const data = await questionsRes.json();
-        if (tab !== "duvidas") setUnreadQuestions(data.questions.filter((question: { status: string }) => question.status === "answered").length);
+        if (tab !== "duvidas") setUnreadQuestions(data.questions.filter((question: { status: string; answeredAt: string | null; answeredReadAt: string | null }) => question.status === "answered" && (!question.answeredReadAt || (!!question.answeredAt && question.answeredAt > question.answeredReadAt))).length);
+      }
+      const promptsRes = await fetch(withBasePath("/api/prompts/public?countOnly=1"));
+      if (!active) return;
+      if (promptsRes.ok) {
+        const data = await promptsRes.json();
+        setUnreadPrompts(Number(data.unreadCount) || 0);
       }
       if (plan !== "FULL") {
         setUnreadCommunity(0);
@@ -132,7 +140,7 @@ export default function StudentPage() {
       if (!active) return;
       if (topicsRes.ok) {
         const data = await topicsRes.json();
-        setUnreadCommunity(data.topics.reduce((total: number, topic: { unreadCount: number }) => total + topic.unreadCount, 0));
+        setUnreadCommunity((Number(data.newTopicCount) || 0) + data.topics.reduce((total: number, topic: { unreadCount: number }) => total + topic.unreadCount, 0));
       }
     }
     void loadNotificationCounts();
@@ -248,7 +256,11 @@ export default function StudentPage() {
                   setShowUpgradeNotice(true);
                   return;
                 }
-                if (t.key === "duvidas") setUnreadQuestions(0);
+                if (t.key === "duvidas" && tab !== "duvidas") {
+                  void fetch(withBasePath("/api/questions"), { method: "PATCH" })
+                    .then((response) => { if (response.ok) setUnreadQuestions(0); })
+                    .catch(() => {});
+                }
                 t.href ? window.location.href = t.href : setTab(t.key);
               }}
               className={`flex min-w-max items-center gap-2 rounded-lg px-3.5 py-2.5 text-sm font-medium transition ${
@@ -259,7 +271,9 @@ export default function StudentPage() {
             >
               <Icon name={t.icon} size={16} />
               {t.label}
-              {t.key === "duvidas" && unreadQuestions > 0 && <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-violet-500 px-1.5 py-0.5 text-[11px] font-bold leading-none text-white">{unreadQuestions}</span>}
+               {t.key === "conteudo" && unreadModules > 0 && <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-violet-500 px-1.5 py-0.5 text-[11px] font-bold leading-none text-white">{unreadModules}</span>}
+               {t.key === "prompts" && unreadPrompts > 0 && <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-violet-500 px-1.5 py-0.5 text-[11px] font-bold leading-none text-white">{unreadPrompts}</span>}
+               {t.key === "duvidas" && unreadQuestions > 0 && <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-violet-500 px-1.5 py-0.5 text-[11px] font-bold leading-none text-white">{unreadQuestions}</span>}
               {t.key === "comunidade" && unreadCommunity > 0 && <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-violet-500 px-1.5 py-0.5 text-[11px] font-bold leading-none text-white">{unreadCommunity}</span>}
             </button>
           ))}
@@ -284,10 +298,10 @@ export default function StudentPage() {
           <PurchaseFullAccess plan={session!.plan} />
         </div>
 
-        {tab === "conteudo" && <ConteudoTab />}
+        {tab === "conteudo" && <ConteudoTab onUnreadCountChange={setUnreadModules} />}
         {tab === "duvidas" && <DuvidasTab userId={session!.userId} />}
          {tab === "comunidade" && <ComunidadeTab session={session!} onUnreadCountChange={setUnreadCommunity} />}
-        {tab === "prompts" && <PromptsLibrary />}
+        {tab === "prompts" && <PromptsLibrary onUnreadCountChange={setUnreadPrompts} />}
       </div>
 
       {showUpgradeNotice && (
@@ -361,14 +375,19 @@ export default function StudentPage() {
   );
 }
 
-function ConteudoTab() {
+function ConteudoTab({ onUnreadCountChange }: { onUnreadCountChange: (count: number) => void }) {
   const [modules, setModules] = useState<any[] | null>(null);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     fetch(withBasePath(`/api/modules/public?t=${Date.now()}`))
       .then((r) => (r.ok ? r.json() : null))
-      .then((d) => d && setModules(d.modules))
+       .then((d) => {
+         if (!d) return;
+         setModules(d.modules);
+         setUnreadCount(Number(d.unreadCount) || 0);
+       })
       .catch(() => {});
   }, [refreshKey]);
 
@@ -379,6 +398,18 @@ function ConteudoTab() {
     document.addEventListener("visibilitychange", onVis);
     return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
+
+  useEffect(() => {
+    onUnreadCountChange(unreadCount);
+  }, [onUnreadCountChange, unreadCount]);
+
+  async function markModuleSeen(module: any) {
+    if (!module.isNew) return;
+    const response = await fetch(withBasePath(`/api/modules/${module.id}/view`), { method: "POST" });
+    if (!response.ok) return;
+    setModules((current) => current?.map((item) => item.id === module.id ? { ...item, isNew: false } : item) ?? null);
+    setUnreadCount((current) => Math.max(0, current - 1));
+  }
 
   const numStr = (n: number) => String(n).padStart(2, "0");
 
@@ -402,17 +433,22 @@ function ConteudoTab() {
 
   return (
     <section className="mt-6 space-y-4">
+      <h2 className="text-base font-medium text-white">
+        Módulos do curso
+        {unreadCount > 0 && <span className="ml-2 rounded-full bg-violet-500/20 px-2 py-1 text-xs font-semibold text-violet-200">{unreadCount}</span>}
+      </h2>
        <div className="grid gap-4 md:grid-cols-2">
         {modules.map((mod: any) => (
           <Link
             key={mod.order}
             href={withBasePath(`/conteudo/${mod.order}`)}
-            onClick={() => rememberModuleReturn("/aluno")}
+            onClick={() => { rememberModuleReturn("/aluno"); void markModuleSeen(mod); }}
             className="card-interactive block rounded-xl border border-zinc-800/80 bg-zinc-900/80 p-5"
           >
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
                 <div>
+                    {mod.isNew && <p className="text-[10px] font-bold uppercase tracking-wider text-violet-300">Novo</p>}
                     <p className="text-xs font-medium uppercase tracking-[0.2em] text-violet-300">
                       Módulo {numStr(mod.order)}
                     </p>
